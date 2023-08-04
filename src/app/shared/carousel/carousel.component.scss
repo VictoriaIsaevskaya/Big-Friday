@@ -1,0 +1,41 @@
+@import 'src/theme/theme-vars';
+
+.carousel-container {
+  position: relative;
+  overflow: hidden;
+
+  .carousel-gradient {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px; /* Высота затемнения */
+    --background: linear-gradient(to bottom, #222428, transparent); /* Градиентный фон */
+    pointer-events: none; /* Чтобы не мешать взаимодействию с каруселью */
+  }
+}
+
+swiper-container {
+  height: 100%;
+  width: 100%;
+}
+
+.slide-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: $secondary-color;
+  color: $light-color;
+  border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  height: 100%; /* Занимает всю высоту родителя */
+  width: 100%; /* Занимает всю ширину родителя */
+}
+
+swiper-slide img {
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: 100%;
+}

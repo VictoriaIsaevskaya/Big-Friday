@@ -1,0 +1,9 @@
+<div class="carousel-container">
+  <div class="carousel-gradient"></div>
+  <swiper-container [modules]="swiperModules" [slidesPerView]="1" [centeredSlides]="true" [autoplay]="true" [spaceBetween]="20"
+                    [pagination]="{clickable: true, dynamicBullets: true}" [initialSlide]="2">
+    <swiper-slide class="slide-card" *ngFor="let slide of slides">
+      <img [src]="slide.item">
+    </swiper-slide>
+  </swiper-container>
+</div>
