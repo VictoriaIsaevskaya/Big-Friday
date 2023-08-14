@@ -4,8 +4,12 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./core/home/home.module').then(m => m.HomeModule)
-  }
+    loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule),
+  },
+  {
+    path: 'events',
+    loadChildren: () => import('./core/footer/footer.module').then(m => m.FooterModule)
+  },
 ];
 @NgModule({
   imports: [

@@ -24,7 +24,11 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-body {
-  --background-color: var(--ion-color-dark);
-  --color: var(--ion-color-dark-contrast);
+h1, h2, p, span, ion-card-title {
+  color: var(--ion-color-secondary-contrast);
+}
+
+ion-tab-button {
+  --color: var(--ion-color-secondary-contrast);
+  --color-selected: var(--ion-color-primary);
 }

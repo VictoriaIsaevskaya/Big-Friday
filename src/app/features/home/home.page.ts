@@ -7,14 +7,6 @@ import {CarouselItem} from "../../shared/models/interfaces/carousel";
   styleUrls: ['home.page.scss']
 })
 export class HomePage {
-
-  slides: CarouselItem[] = [
-    { item: 'assets/images/alcohol.jpg' },
-    { item: 'assets/images/beach.jpg' },
-    { item: 'assets/images/concert.jpg' },
-    { item: 'assets/images/bubbles.jpg' },
-  ]
-
   constructor() {}
 
 }

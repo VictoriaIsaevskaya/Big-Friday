@@ -1,21 +1,21 @@
 import { IonicModule } from '@ionic/angular';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
-import { HomeComponent } from './home.component';
-import { HomeRoutingModule } from "./home-routing.module";
-import { FooterModule } from "../../core/footer/footer.module";
+import { HomePage } from './home.page';
+import { HomeRoutingModule } from './home-routing.module';
+import {ExploreContainerComponentModule} from "../../explore-container/explore-container.module";
 import {RouterModule} from "@angular/router";
+import {HeaderComponent} from "../../layout/header/header.component";
 
 @NgModule({
   imports: [
     IonicModule,
     CommonModule,
-    FormsModule,
     HomeRoutingModule,
     RouterModule,
-    FooterModule
+    ExploreContainerComponentModule,
+    HeaderComponent,
   ],
-  declarations: [HomeComponent]
+  declarations: [HomePage]
 })
 export class HomeModule {}

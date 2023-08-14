@@ -1,0 +1,30 @@
+@import '../../../theme/variables.scss';
+
+.activity-card {
+  background-color: var(--ion-color-light);
+  border: 1px solid var(--ion-color-medium);
+  border-radius: 6px;
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s, box-shadow 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 20px;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.activity-icon {
+  font-size: 26px; // Увеличиваем размер иконки
+  color: var(--ion-color-primary);
+  margin-right: 20px; // Увеличиваем отступ между иконкой и текстом
+}
+
+ion-card-title {
+  font-size: 20px; // Увеличиваем размер шрифта
+  font-weight: 500; // Средняя жирность
+  color: var(--ion-color-dark);
+}

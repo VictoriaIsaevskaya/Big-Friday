@@ -4,12 +4,12 @@ import { FooterPage } from './footer.page';
 
 const routes: Routes = [
   {
-    path: 'events',
+    path: '',
     component: FooterPage,
     children: [
       {
         path: 'active',
-        loadChildren: () => import('../../tab1/tab1.module').then(m => m.Tab1PageModule)
+        loadChildren: () => import('../../features/active-pastime/active-pastime.module').then(m => m.ActivePastimeModule)
       },
       {
         path: 'passive',
@@ -26,11 +26,6 @@ const routes: Routes = [
       }
     ]
   },
-  {
-    path: '',
-    redirectTo: '/events/active',
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({
