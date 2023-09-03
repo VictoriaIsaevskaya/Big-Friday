@@ -2,15 +2,13 @@ import {AfterViewInit, Component, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from "@angular/common";
 import {IonicModule, IonInput, ModalController} from "@ionic/angular";
-import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 
 @Component({
   selector: 'app-create-event',
   templateUrl: './create-event.component.html',
   styleUrls: ['./create-event.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonicModule, NgxMaskDirective, NgxMaskPipe],
-  providers: [provideNgxMask()],
+  imports: [CommonModule, ReactiveFormsModule, IonicModule],
 })
 export class CreateEventComponent implements AfterViewInit{
   @ViewChild('input', { read: IonInput }) input?: IonInput;

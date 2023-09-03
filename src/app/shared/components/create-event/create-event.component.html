@@ -22,15 +22,10 @@
             <ion-textarea [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-textarea>
           </ng-container>
           <ng-container *ngIf="field.type === 'datetime'">
-            <ion-item class="date-time-input">
-              <span class="date-label">Event Date (DD/MM/YYYY)</span>
-              <input class="date-input" type="text" formControlName="date" mask="00/00/0000">
-            </ion-item>
-
+            <ion-datetime-button datetime="datetime"></ion-datetime-button>
           </ng-container>
         </ion-item>
       </ng-container>
-
       <div>
         <ion-button expand="block" type="submit" [disabled]="!eventForm.valid" class="submit-btn align-block-center">Create</ion-button>
       </div>
@@ -38,3 +33,10 @@
     </form>
   </ion-content>
 </ion-content>
+
+
+<ion-modal [keepContentsMounted]="true">
+  <ng-template>
+    <ion-datetime id="datetime" formControlName="date"></ion-datetime>
+  </ng-template>
+</ion-modal>
