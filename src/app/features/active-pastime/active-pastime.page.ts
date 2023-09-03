@@ -1,54 +1,52 @@
 import { Component } from '@angular/core';
-
+import { NavController } from '@ionic/angular';
+import {Router} from "@angular/router";
 @Component({
   selector: 'app-active-pastime',
-  templateUrl: './active-pastime.component.html',
-  styleUrls: ['./active-pastime.component.scss'],
+  templateUrl: './active-pastime.page.html',
+  styleUrls: ['./active-pastime.page.scss'],
 })
-export class ActivePastimeComponent {
+export class ActivePastimePage {
   path = '../../../assets/images/';
   activities = [
     {
       activity: 'bowling',
-      img: `${this.path}bowling.jpg`,
       icon: 'bowling-ball-outline'
     },
     {
       activity: 'drinking',
-      img: `${this.path}alcohol.jpg`,
       icon: 'wine-outline'
     },
     {
       activity: 'playing kids',
-      img: `${this.path}bubbles.jpg`,
       icon: 'happy-outline'
     },
     {
       activity: 'clubing',
-      img: `${this.path}concert.jpg`,
       icon: 'musical-notes-outline'
     },
     {
       activity: 'barbecue',
-      img: `${this.path}barbecue.jpg`,
       icon: 'flame-outline'
     },
     {
       activity: 'soccer',
-      img: `${this.path}soccer.jpg`,
       icon: 'football-outline'
     },
     {
       activity: 'volleyball',
-      img: `${this.path}volleyball.jpg`,
       icon: 'baseball-outline'
     },
   ]
 
-  constructor() { }
+  constructor(private navCtrl: NavController, private router: Router) { }
 
   goToActivity(activity: string) {
-    console.log(activity)
+    this.router.navigate(['/events-list', activity]);
+  }
+
+  goBack() {
+    this.navCtrl.back();
   }
 
 }

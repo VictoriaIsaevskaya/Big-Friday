@@ -1,11 +1,11 @@
 import {NgModule} from "@angular/core";
 import {RouterModule, Routes} from "@angular/router";
-import {ActivePastimeComponent} from "./active-pastime.component";
+import {ActivePastimePage} from "./active-pastime.page";
 
 const routes: Routes = [
   {
     path: '',
-    component: ActivePastimeComponent
+    component: ActivePastimePage
   }
 ]
 

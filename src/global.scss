@@ -32,3 +32,75 @@ ion-tab-button {
   --color: var(--ion-color-secondary-contrast);
   --color-selected: var(--ion-color-primary);
 }
+
+.d-flex {
+  display: flex;
+}
+
+.align-block-center {
+  margin: 0 auto;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.ml-s {
+  margin-left: 5px;
+}
+
+.mr-s {
+  margin-right: 5px;
+}
+
+.white-color {
+  color: var(--ion-color-light);
+}
+
+.activity-icon, {
+  font-size: 26px;
+  color: var(--ion-color-primary);
+  margin-right: 20px;
+}
+
+ion-card-title {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ion-color-light);
+}
+
+.submit-btn {
+  --background: var(--ion-color-secondary);
+  --color: #fff;
+  border-radius: 8px;
+  margin: 20px auto;
+  height: 50px;
+  font-weight: bold;
+  transition: transform 0.2s, background-color 0.2s;
+  width: 90%;
+  padding: 10px 0;
+
+  &:hover {
+    transform: scale(1.05);
+    --background: var(--ion-color-secondary-shade);
+  }
+}
+
+.form-item {
+  --background: transparent;
+  --color: #fff;
+  --border-color: var(--ion-color-primary);
+  --placeholder-color: #888;
+  width: 100%;
+
+  ion-icon {
+    color: var(--ion-color-primary);
+    margin-right: 10px;
+  }
+
+  &::part(native) {
+    border-bottom: 2px solid var(--ion-color-primary);
+    width: 90%;
+    margin: 0 auto;
+  }
+}

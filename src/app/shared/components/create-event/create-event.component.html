@@ -1,0 +1,40 @@
+<ion-content class="form-content">
+  <ion-header no-border>
+    <ion-toolbar class="custom-toolbar">
+      <ion-buttons slot="start">
+        <ion-button fill="clear" (click)="dismissModal()">
+          <ion-icon name="close-outline" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Create Awesome Event</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="form-container">
+    <form [formGroup]="eventForm" (ngSubmit)="createEvent()">
+      <ng-container *ngFor="let field of formFieldsMap">
+        <ion-item lines="none" class="form-item">
+          <ion-icon [name]="field.icon" slot="start" color="primary"></ion-icon>
+          <ng-container *ngIf="field.type === 'input'">
+            <ion-input [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-input>
+          </ng-container>
+          <ng-container *ngIf="field.type === 'textarea'">
+            <ion-textarea [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-textarea>
+          </ng-container>
+          <ng-container *ngIf="field.type === 'datetime'">
+            <ion-item class="date-time-input">
+              <span class="date-label">Event Date (DD/MM/YYYY)</span>
+              <input class="date-input" type="text" formControlName="date" mask="00/00/0000">
+            </ion-item>
+
+          </ng-container>
+        </ion-item>
+      </ng-container>
+
+      <div>
+        <ion-button expand="block" type="submit" [disabled]="!eventForm.valid" class="submit-btn align-block-center">Create</ion-button>
+      </div>
+
+    </form>
+  </ion-content>
+</ion-content>

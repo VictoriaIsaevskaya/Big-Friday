@@ -10,6 +10,10 @@ const routes: Routes = [
     path: 'events',
     loadChildren: () => import('./core/footer/footer.module').then(m => m.FooterModule)
   },
+  {
+    path: 'events-list/:activityType',
+    loadChildren: () => import('./features/events-list/events-list.module').then( m => m.EventsListPageModule)
+  },
 ];
 @NgModule({
   imports: [

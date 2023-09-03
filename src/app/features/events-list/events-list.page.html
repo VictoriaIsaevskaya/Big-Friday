@@ -1,0 +1,18 @@
+<ion-content [fullscreen]="true">
+  <ion-header>
+    <ion-toolbar class="white-color">
+      <ion-buttons slot="start">
+        <ion-back-button defaultHref="/" (click)="goBack()"></ion-back-button>
+      </ion-buttons>
+      <ion-buttons slot="end">
+        <ion-button (click)="openCreateEventModal()">
+          <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>{{ pageTitle }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ng-container *ngFor="let event of eventsList">
+    <app-event-card [event]="event"></app-event-card>
+  </ng-container>
+</ion-content>

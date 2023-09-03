@@ -1,5 +1,5 @@
 import {Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnInit} from '@angular/core';
-import {CarouselItem} from "../models/interfaces/carousel";
+import {CarouselItem} from "../../models/interfaces/carousel";
 import {IonicSlides} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
 
