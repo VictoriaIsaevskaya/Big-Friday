@@ -12,7 +12,7 @@
       <ion-title>{{ pageTitle }}</ion-title>
     </ion-toolbar>
   </ion-header>
-  <ng-container *ngFor="let event of eventsList">
+  <ng-container *ngFor="let event of events$ | async">
     <app-event-card [event]="event"></app-event-card>
   </ng-container>
 </ion-content>

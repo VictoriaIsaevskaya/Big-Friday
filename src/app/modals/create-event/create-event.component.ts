@@ -1,7 +1,12 @@
-import {AfterViewInit, Component, ViewChild} from '@angular/core';
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { CommonModule } from "@angular/common";
-import {IonicModule, IonInput, ModalController} from "@ionic/angular";
+import { Component, ViewChild } from '@angular/core';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
+import { IonicModule, IonInput, ModalController } from "@ionic/angular";
+import {Store} from "@ngrx/store";
+
+import {UserEvent} from "../../pages/events/model/interfaces";
+import * as EventsState from '../../pages/events/state';
+
 
 @Component({
   selector: 'app-create-event',
@@ -10,7 +15,7 @@ import {IonicModule, IonInput, ModalController} from "@ionic/angular";
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule, IonicModule],
 })
-export class CreateEventComponent implements AfterViewInit{
+export class CreateEventComponent {
   @ViewChild('input', { read: IonInput }) input?: IonInput;
   eventForm: FormGroup;
   formFieldsMap = [
@@ -22,8 +27,7 @@ export class CreateEventComponent implements AfterViewInit{
     { controlName: 'maxAttendees', placeholder: 'Max Attendees', icon: 'people-circle-outline', type: 'input' }
   ];
 
-
-  constructor(private formBuilder: FormBuilder, private modalController: ModalController) {
+  constructor(private formBuilder: FormBuilder, private modalController: ModalController, private store: Store) {
     this.eventForm = this.formBuilder.group({
       title: ['', [Validators.required, Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.maxLength(500)]],
@@ -35,16 +39,16 @@ export class CreateEventComponent implements AfterViewInit{
     });
   }
 
-  ngAfterViewInit() {
-    const nativeInput = this.input?.getInputElement();
-    nativeInput?.then(inputElement => {
-      inputElement.setAttribute('mask', '00/00/0000');
-    });
-  }
-
   createEvent() {
     if (this.eventForm.valid) {
-      const eventData = this.eventForm.value;
+      const event: UserEvent = {
+        ...this.eventForm.value,
+        organizer: {
+          name: 'Ray Clay ',
+          avatar: 'assets/images/avatar.jpg'
+        }
+      };
+      this.store.dispatch(EventsState.addEvent({ event }) )
       this.dismissModal();
     }
   }

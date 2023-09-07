@@ -1,11 +1,13 @@
-import { IonicModule } from '@ionic/angular';
-import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { HomePage } from './home.page';
-import { HomeRoutingModule } from './home-routing.module';
+import { NgModule } from '@angular/core';
+import { RouterModule } from "@angular/router";
+import { IonicModule } from '@ionic/angular';
+
 import {ExploreContainerComponentModule} from "../../explore-container/explore-container.module";
-import {RouterModule} from "@angular/router";
 import {HeaderComponent} from "../../layout/header/header.component";
+
+import { HomeRoutingModule } from './home-routing.module';
+import { HomePage } from './home.page';
 
 @NgModule({
   imports: [

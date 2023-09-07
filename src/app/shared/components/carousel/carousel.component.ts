@@ -1,7 +1,8 @@
-import {Component, CUSTOM_ELEMENTS_SCHEMA, Input, OnInit} from '@angular/core';
-import {CarouselItem} from "../../models/interfaces/carousel";
-import {IonicSlides} from "@ionic/angular";
 import {CommonModule} from "@angular/common";
+import {Component, CUSTOM_ELEMENTS_SCHEMA, Input} from '@angular/core';
+import {IonicSlides} from "@ionic/angular";
+
+import {CarouselItem} from "../../models/interfaces/carousel";
 
 @Component({
   selector: 'app-carousel',
@@ -11,11 +12,9 @@ import {CommonModule} from "@angular/common";
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
   imports: [CommonModule],
 })
-export class CarouselComponent  implements OnInit {
+export class CarouselComponent {
   @Input() slides?: CarouselItem[]
   swiperModules = [IonicSlides];
   constructor() { }
-
-  ngOnInit() {}
 
 }

@@ -6,7 +6,7 @@
           <ion-icon name="close-outline" color="light"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title>Create Awesome Event</ion-title>
+      <ion-title>Create Event</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -29,14 +29,14 @@
       <div>
         <ion-button expand="block" type="submit" [disabled]="!eventForm.valid" class="submit-btn align-block-center">Create</ion-button>
       </div>
-
+      <ion-modal [keepContentsMounted]="true">
+        <ng-template>
+          <ion-datetime id="datetime" formControlName="date"></ion-datetime>
+        </ng-template>
+      </ion-modal>
     </form>
   </ion-content>
 </ion-content>
 
 
-<ion-modal [keepContentsMounted]="true">
-  <ng-template>
-    <ion-datetime id="datetime" formControlName="date"></ion-datetime>
-  </ng-template>
-</ion-modal>
+

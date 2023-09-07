@@ -1,0 +1,41 @@
+<ion-content class="form-content">
+  <ion-header no-border>
+    <ion-toolbar class="custom-toolbar">
+      <ion-buttons slot="start">
+        <ion-button fill="clear" (click)="dismissModal()">
+          <ion-icon name="close-outline" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Your Preferences</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="form-container">
+    <p class="intro-text">
+      In just a few taps, shape your ideal Big Friday! Indicate your interests, and we'll find events that will thrill you.
+    </p>
+
+    <form [formGroup]="preferencesForm" (ngSubmit)="submitPreferences()">
+      <ng-container *ngFor="let field of formFieldsMap">
+        <ion-item lines="none" class="form-item">
+          <ion-icon [name]="field.icon" slot="start" color="primary"></ion-icon>
+          <ng-container *ngIf="field.type === 'input'">
+            <ion-input [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-input>
+          </ng-container>
+          <ng-container *ngIf="field.type === 'textarea'">
+            <ion-textarea [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-textarea>
+          </ng-container>
+          <ng-container *ngIf="field.type === 'select'">
+            <ion-select [formControlName]="field.controlName" [placeholder]="field.placeholder" [multiple]="field.multiple">
+              <ion-select-option *ngFor="let option of field.options" [value]="option">{{ option }}</ion-select-option>
+            </ion-select>
+          </ng-container>
+
+        </ion-item>
+      </ng-container>
+      <div>
+        <ion-button expand="block" type="submit" [disabled]="!preferencesForm.valid" class="submit-btn align-block-center">Submit</ion-button>
+      </div>
+    </form>
+  </ion-content>
+</ion-content>

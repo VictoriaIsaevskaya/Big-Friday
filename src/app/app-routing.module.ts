@@ -4,15 +4,15 @@ import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule),
+    loadChildren: () => import('./core/home/home.module').then(m => m.HomeModule),
   },
   {
     path: 'events',
     loadChildren: () => import('./core/footer/footer.module').then(m => m.FooterModule)
   },
   {
-    path: 'events-list/:activityType',
-    loadChildren: () => import('./features/events-list/events-list.module').then( m => m.EventsListPageModule)
+    path: 'events/:activityType',
+    loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule)
   },
 ];
 @NgModule({

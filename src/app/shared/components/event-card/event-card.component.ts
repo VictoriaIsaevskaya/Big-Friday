@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
 import {CommonModule} from "@angular/common";
+import {Component, Input} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
-import {UserEvent} from "../../../features/events-list/model/interfaces";
+
+import {UserEvent} from "../../../pages/events/model/interfaces";
 
 @Component({
   selector: 'app-event-card',
@@ -10,11 +11,9 @@ import {UserEvent} from "../../../features/events-list/model/interfaces";
   standalone: true,
   imports: [CommonModule, IonicModule]
 })
-export class EventCardComponent implements OnInit {
+export class EventCardComponent {
   @Input() event?: UserEvent
   constructor() { }
-
-  ngOnInit() {}
   joinEvent(eventId: number) {
   }
 

@@ -12,3 +12,11 @@ export interface UserEvent {
   };
   isJoined: boolean;
 }
+
+export interface EventsState {
+  events: UserEvent[];
+  loadingStatus: 'idle' | 'loading' | 'loaded' | 'error';
+  error: string | null;
+  selectedEvent: UserEvent | null;
+  createdEvent: UserEvent| null;
+}

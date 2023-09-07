@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from "@angular/router";
 import { NavController } from '@ionic/angular';
-import {Router} from "@angular/router";
 @Component({
   selector: 'app-active-pastime',
   templateUrl: './active-pastime.page.html',
@@ -42,7 +42,7 @@ export class ActivePastimePage {
   constructor(private navCtrl: NavController, private router: Router) { }
 
   goToActivity(activity: string) {
-    this.router.navigate(['/events-list', activity]);
+    this.router.navigate(['/events', activity]);
   }
 
   goBack() {
