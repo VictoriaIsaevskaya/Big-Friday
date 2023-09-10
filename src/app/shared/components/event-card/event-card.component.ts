@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
 
-import {UserEvent} from "../../../pages/events/model/interfaces";
+import {EventSummary} from "../../../pages/events/model/interfaces";
 
 @Component({
   selector: 'app-event-card',
@@ -13,7 +13,7 @@ import {UserEvent} from "../../../pages/events/model/interfaces";
   imports: [CommonModule, IonicModule]
 })
 export class EventCardComponent {
-  @Input() event?: UserEvent
+  @Input() event?: EventSummary
   constructor(private router: Router) { }
   joinEvent(eventId: number) {
   }

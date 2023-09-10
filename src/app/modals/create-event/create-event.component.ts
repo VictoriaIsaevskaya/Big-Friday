@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { IonicModule, IonInput, ModalController } from "@ionic/angular";
 import { Store } from "@ngrx/store";
 
-import {UserEvent} from "../../pages/events/model/interfaces";
+import {EventDetails} from "../../pages/events/model/interfaces";
 import * as EventsState from '../../pages/events/state';
 
 
@@ -26,8 +26,6 @@ export class CreateEventComponent {
     { controlName: 'attendees', placeholder: 'Attendees', icon: 'people-outline', type: 'input' },
     { controlName: 'maxAttendees', placeholder: 'Max Attendees', icon: 'people-circle-outline', type: 'input' },
     { controlName: 'eventCost', placeholder: 'Event Cost', icon: 'cash-outline', type: 'input' },
-    { controlName: 'eventImage', placeholder: 'Event Image URL', icon: 'image-outline', type: 'input' },
-    { controlName: 'eventRating', placeholder: 'Event Rating', icon: 'star-outline', type: 'input' },
     { controlName: 'recommendedAgeGroup', placeholder: 'Recommended Age Group', icon: 'people-outline', type: 'select', options: ['2+', '4-6', '7-9', '10-13', '14-17', '18-25', '26-35', '36-45', '46-55', '56+', 'Custom'] }
   ];
 
@@ -37,11 +35,9 @@ export class CreateEventComponent {
       description: ['', [Validators.required, Validators.maxLength(500)]],
       date: [null, Validators.required],
       location: ['', [Validators.required, Validators.maxLength(200)]],
-      attendees: ['', [Validators.required, Validators.min(2)]],
-      maxAttendees: ['', [Validators.required, Validators.min(10)]],
+      attendees: ['', [Validators.required]],
+      maxAttendees: ['', [Validators.required]],
       eventCost: ['', Validators.required],
-      eventImage: [''],
-      eventRating: ['', [Validators.required, Validators.min(1), Validators.max(5)]],
       recommendedAgeGroup: [''],
       customAgeGroup: ['']
     });
@@ -49,7 +45,7 @@ export class CreateEventComponent {
 
   createEvent() {
     if (this.eventForm.valid) {
-      const event: UserEvent = {
+      const event: EventDetails = {
         ...this.eventForm.value,
         organizer: {
           name: 'Ray Clay ',

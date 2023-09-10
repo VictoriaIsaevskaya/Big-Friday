@@ -1,4 +1,4 @@
-export interface UserEvent {
+export interface EventSummary {
   id: number;
   title: string;
   description: string;
@@ -6,6 +6,10 @@ export interface UserEvent {
   location: string;
   attendees: number;
   maxAttendees: number;
+  isJoined: boolean;
+}
+
+export interface EventDetails extends EventSummary {
   organizer: {
     name: string;
     avatar: string;
@@ -13,13 +17,12 @@ export interface UserEvent {
   ageGroup: string;
   language: string;
   cost: number | string;
-  isJoined: boolean;
 }
 
 export interface EventsState {
-  events: UserEvent[];
+  events: EventSummary[];
   loadingStatus: 'idle' | 'loading' | 'loaded' | 'error';
   error: string | null;
-  selectedEvent: UserEvent | null;
-  createdEvent: UserEvent| null;
+  selectedEvent: EventDetails | null;
+  createdEvent: EventDetails| null;
 }

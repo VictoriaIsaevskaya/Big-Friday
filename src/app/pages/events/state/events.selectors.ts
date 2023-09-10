@@ -9,6 +9,11 @@ export const selectAllEvents = createSelector(
   (state: EventsState) => state.events
 );
 
+export const selectEventDetails = createSelector(
+  selectEventsState,
+  (state: EventsState) => state.selectedEvent
+);
+
 export const selectCreatedEvent = createSelector(
   selectEventsState,
   (state: EventsState) => state.createdEvent

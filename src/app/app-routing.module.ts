@@ -12,7 +12,7 @@ const routes: Routes = [
   },
   {
     path: 'events/:activityType',
-    loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule)
+    loadChildren: () => import('./pages/events/list/events.module').then(m => m.EventsPageModule)
   },
   {
     path: 'event-details/:eventId',

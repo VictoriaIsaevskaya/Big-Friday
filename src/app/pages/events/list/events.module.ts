@@ -3,8 +3,8 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
-import {CreateEventComponent} from "../../modals/create-event/create-event.component";
-import { EventCardComponent } from '../../shared/components/event-card/event-card.component';
+import { CreateEventComponent } from "../../../modals/create-event/create-event.component";
+import { EventCardComponent } from '../../../shared/components/event-card/event-card.component';
 
 import { EventsPageRoutingModule } from './events-routing.module';
 import { EventsPage } from './events.page';

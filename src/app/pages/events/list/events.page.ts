@@ -4,10 +4,9 @@ import {ModalController, NavController} from "@ionic/angular";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 
-import {CreateEventComponent} from "../../modals/create-event/create-event.component";
-
-import {UserEvent} from "./model/interfaces";
-import * as EventsState from './state';
+import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
+import {EventSummary} from "../model/interfaces";
+import * as EventsState from '../state';
 
 @Component({
   selector: 'app-events',
@@ -17,7 +16,7 @@ import * as EventsState from './state';
 export class EventsPage implements OnInit {
   pageTitle?: string;
   activityType?: string | null;
-  events$?: Observable<UserEvent[]>;
+  events$?: Observable<EventSummary[]>;
 
   constructor(private navCtrl: NavController, private route: ActivatedRoute, private modalController: ModalController, private store: Store) {
     this.activityType = this.route.snapshot.paramMap.get('activityType');
