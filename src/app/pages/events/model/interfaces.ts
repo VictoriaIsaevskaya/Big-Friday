@@ -10,6 +10,9 @@ export interface UserEvent {
     name: string;
     avatar: string;
   };
+  ageGroup: string;
+  language: string;
+  cost: number | string;
   isJoined: boolean;
 }
 

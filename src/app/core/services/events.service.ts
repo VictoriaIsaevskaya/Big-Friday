@@ -12,7 +12,7 @@ export class EventsService {
     {
       id: 1,
       title: 'Bowling Night Out',
-      description: 'Join us for a fun night of bowling and socializing!',
+      description: 'Join us for a fun night of bowling and socializing! This event is recommended for ages 18-35, but everyone is welcome.',
       date: new Date(2023, 8, 30, 19, 0),
       location: 'Bowling Alley, Main Street',
       attendees: 5,
@@ -21,12 +21,15 @@ export class EventsService {
         name: 'John Doe',
         avatar: 'assets/images/avatar.jpg',
       },
+      ageGroup: '18-35',
+      language: 'English',
+      cost: 10,
       isJoined: false,
     },
     {
       id: 2,
       title: 'Bowling & Beer',
-      description: 'Bowling for newbees.',
+      description: "Bowling for newbies. This event is best suited for ages 26-45, but don't let that stop you from joining!",
       date: new Date(2023, 9, 5, 18, 30),
       location: 'Winery, Vine Street',
       attendees: 10,
@@ -35,9 +38,14 @@ export class EventsService {
         name: 'Jane Smith',
         avatar: 'assets/images/avatar.jpg',
       },
+      ageGroup: '26-45',
+      language: 'English',
+      cost: 15,
       isJoined: true,
     },
   ];
+
+
 
   constructor() { }
 

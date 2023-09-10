@@ -1,5 +1,6 @@
 import {CommonModule} from "@angular/common";
 import {Component, Input} from '@angular/core';
+import {Router} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
 
 import {UserEvent} from "../../../pages/events/model/interfaces";
@@ -13,13 +14,14 @@ import {UserEvent} from "../../../pages/events/model/interfaces";
 })
 export class EventCardComponent {
   @Input() event?: UserEvent
-  constructor() { }
+  constructor(private router: Router) { }
   joinEvent(eventId: number) {
   }
 
   leaveEvent(eventId: number) {
   }
 
-  goToEventDetails(eventId: number) {
+  openEventDetails(eventId: number) {
+    this.router.navigate(['event-details', eventId]);
   }
 }

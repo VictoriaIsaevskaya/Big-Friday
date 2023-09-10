@@ -33,6 +33,10 @@ ion-tab-button {
   --color-selected: var(--ion-color-primary);
 }
 
+.primary-color {
+  color: var(--ion-color-primary)
+}
+
 .d-flex {
   display: flex;
 }
@@ -53,7 +57,7 @@ ion-tab-button {
   margin-right: 5px;
 }
 
-.white-color {
+.secondary-color {
   color: var(--ion-color-light);
 }
 

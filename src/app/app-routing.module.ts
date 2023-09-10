@@ -14,6 +14,10 @@ const routes: Routes = [
     path: 'events/:activityType',
     loadChildren: () => import('./pages/events/events.module').then(m => m.EventsPageModule)
   },
+  {
+    path: 'event-details/:eventId',
+    loadChildren: () => import('./pages/events/event-details/event-details.module').then(m => m.EventDetailsPageModule)
+  },
 ];
 @NgModule({
   imports: [
