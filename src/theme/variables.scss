@@ -159,18 +159,3 @@
   }
 }
 
-.activity-card {
-  background-color: var(--ion-color-dark);
-  border: 1px solid var(--ion-color-medium);
-  border-radius: 6px;
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
-  transition: transform 0.2s, box-shadow 0.2s;
-  display: flex;
-  align-items: center;
-  padding: 5px 20px;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-  }
-}

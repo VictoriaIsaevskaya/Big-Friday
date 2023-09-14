@@ -1,1 +1,46 @@
-<p>Hello</p>
+<ng-container *ngIf="event$ | async as eventDetails">
+  <ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+        <ion-back-button class="secondary-color" defaultHref="/events"></ion-back-button>
+      </ion-buttons>
+      <ion-title class="secondary-color">{{ eventDetails.title }}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="event-details-content">
+    <ion-card class="activity-card">
+      <ion-card-content>
+        <ion-card-title class="title primary-color">{{ eventDetails.title }}</ion-card-title>
+        <p class="description">{{ eventDetails.description }}</p>
+        <div class="secondary-color">
+          <div><ion-icon name="calendar-outline"></ion-icon> {{ eventDetails.date | date:'mediumDate' }} {{ eventDetails.date | date:'shortTime' }}</div>
+          <div><ion-icon name="location-outline"></ion-icon> {{ eventDetails.location }}</div>
+          <div><ion-icon name="people-outline"></ion-icon> {{ eventDetails.attendees }}/{{ eventDetails.maxAttendees }} participants</div>
+          <div><ion-icon name="wallet-outline"></ion-icon> {{ eventDetails.cost | currency }}</div>
+          <div><ion-icon name="chatbubble-outline"></ion-icon> {{ eventDetails.language }}</div>
+          <div><ion-icon name="person-outline"></ion-icon> {{ eventDetails.ageGroup }}</div>
+          <div class="rules-section">
+            <h4>Event Rules:</h4>
+            <ul>
+              <li *ngFor="let rule of eventDetails.rules">{{ rule }}</li>
+            </ul>
+          </div>
+          <div class="additional-info-section">
+            <h4>Additional Information:</h4>
+            <p>{{ eventDetails.additionalInfo }}</p>
+          </div>
+        </div>
+        <div class="organizer-section">
+          <p><strong>Organized by:</strong> {{ eventDetails.organizer.name }}</p>
+          <ion-avatar>
+            <img [src]="eventDetails.organizer.avatar" alt="Organizer's avatar">
+          </ion-avatar>
+        </div>
+        <ion-button *ngIf="!eventDetails.isJoined" (click)="joinEvent(eventDetails.id)">Join</ion-button>
+        <ion-button *ngIf="eventDetails.isJoined" color="danger" (click)="leaveEvent(eventDetails.id)">Leave</ion-button>
+      </ion-card-content>
+    </ion-card>
+
+  </ion-content>
+</ng-container>

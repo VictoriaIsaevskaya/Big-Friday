@@ -17,6 +17,8 @@ export interface EventDetails extends EventSummary {
   ageGroup: string;
   language: string;
   cost: number | string;
+  rules: string[],
+  additionalInfo: string
 }
 
 export interface EventsState {

@@ -15,6 +15,9 @@ export class PreferencesComponent {
   preferencesForm: FormGroup;
   formFieldsMap = [
     { controlName: 'username', placeholder: 'Username', type: 'input', icon: 'person-outline' },
+    { controlName: 'email', placeholder: 'Email', type: 'input', icon: 'mail-outline' },
+    { controlName: 'password', placeholder: 'Password', type: 'password', icon: 'lock-closed-outline' },
+    { controlName: 'confirmPassword', placeholder: 'Confirm Password', type: 'password', icon: 'lock-closed-outline' },
     { controlName: 'about', placeholder: 'About You', type: 'textarea', icon: 'information-circle-outline' },
     { controlName: 'preferredLanguage', placeholder: 'Preferred Language', type: 'select', icon: 'language-outline', options: ['English', 'Russian', 'Polish', 'Spanish', 'French'], multiple: true },
     { controlName: 'interests', placeholder: 'Interests', type: 'select', icon: 'heart-outline', options: ['Bowling', 'Cinema', 'Theatre', 'Hiking', 'Reading'], multiple: true },
@@ -25,10 +28,17 @@ export class PreferencesComponent {
   constructor(private fb: FormBuilder, private modalController: ModalController, private storage: Storage) {
     this.preferencesForm = this.fb.group({
       username: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]],
+      confirmPassword: ['', [Validators.required]],
       about: [''],
       preferredLanguage: [''],
       interests: [[]],
       ageGroup: ['']
+    });
+
+    this.preferencesForm.get('password')?.valueChanges.subscribe(() => {
+      this.preferencesForm.get('confirmPassword')?.updateValueAndValidity();
     });
   }
 
@@ -39,6 +49,7 @@ export class PreferencesComponent {
   }
 
   async savePreferences(preferences: any) {
+    this.dismissModal();
     await this.storage.set('userPreferences', preferences);
   }
 

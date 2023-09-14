@@ -1,0 +1,16 @@
+@import 'src/theme/variables.scss';
+
+.event-details-content {
+  background-color: var(--ion-color-dark);
+}
+
+.activity-card {
+  margin: 16px;
+
+  .organizer-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 24px;
+  }
+}

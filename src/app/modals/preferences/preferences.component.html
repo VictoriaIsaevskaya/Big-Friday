@@ -19,8 +19,8 @@
       <ng-container *ngFor="let field of formFieldsMap">
         <ion-item lines="none" class="form-item">
           <ion-icon [name]="field.icon" slot="start" color="primary"></ion-icon>
-          <ng-container *ngIf="field.type === 'input'">
-            <ion-input [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-input>
+          <ng-container *ngIf="field.type === 'input' || field.type === 'password'" >
+            <ion-input [placeholder]="field.placeholder" [formControlName]="field.controlName" [type]="field.type"></ion-input>
           </ng-container>
           <ng-container *ngIf="field.type === 'textarea'">
             <ion-textarea [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-textarea>
@@ -31,6 +31,23 @@
             </ion-select>
           </ng-container>
 
+          <ng-container *ngIf="preferencesForm.controls[field.controlName].invalid && preferencesForm.controls[field.controlName].touched">
+            <div class="error-message">
+              <div *ngIf="field.controlName === 'email' && preferencesForm.controls[field.controlName].errors?.['email']">
+                Please enter a valid email.
+              </div>
+              <div *ngIf="field.controlName === 'password' && preferencesForm.controls[field.controlName].errors?.['minLength']">
+                Password should be at least 6 characters.
+              </div>
+              <div *ngIf="field.controlName === 'confirmPassword' && preferencesForm.errors?.['mismatch']">
+                Passwords do not match.
+              </div>
+              <div *ngIf="preferencesForm.controls[field.controlName].errors?.['required']">
+                {{ field.placeholder }} is required.
+              </div>
+            </div>
+
+          </ng-container>
         </ion-item>
       </ng-container>
       <div>

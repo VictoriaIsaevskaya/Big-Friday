@@ -12,7 +12,8 @@ import {PreferencesComponent} from "../../modals/preferences/preferences.compone
 })
 export class HomePage implements OnInit {
   constructor(private storage: Storage, private modalController: ModalController, private router: Router) {
-    this.initStorage();
+    // this.initStorage();
+    // this.removePreferences()
   }
 
   ngOnInit() {
@@ -25,14 +26,14 @@ export class HomePage implements OnInit {
   }
 
   async openPreferencesModal() {
-    if (!(await this.hasPreferences())) {
-      const modal = await this.modalController.create({
-        component: PreferencesComponent
-      });
-      return await modal.present();
-    } else {
+    // if (!(await this.hasPreferences())) {
+    //   const modal = await this.modalController.create({
+    //     component: PreferencesComponent
+    //   });
+    //   return await modal.present();
+    // } else {
       this.router.navigate(['/events']);
-    }
+    // }
   }
 
   async hasPreferences() {

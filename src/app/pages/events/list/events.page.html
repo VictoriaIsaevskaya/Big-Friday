@@ -2,7 +2,7 @@
   <ion-header>
     <ion-toolbar class="secondary-color">
       <ion-buttons slot="start">
-        <ion-back-button defaultHref="/" (click)="goBack()"></ion-back-button>
+        <ion-back-button [defaultHref]="getActivityCategory()"></ion-back-button>
       </ion-buttons>
       <ion-buttons slot="end">
         <ion-button (click)="openCreateEventModal()">

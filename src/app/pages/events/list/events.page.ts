@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
-import {ModalController, NavController} from "@ionic/angular";
+import {ModalController} from "@ionic/angular";
 import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 
 import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
+import {eventCategories} from "../model/helpers/event-categories";
 import {EventSummary} from "../model/interfaces";
 import * as EventsState from '../state';
 
@@ -18,7 +19,7 @@ export class EventsPage implements OnInit {
   activityType?: string | null;
   events$?: Observable<EventSummary[]>;
 
-  constructor(private navCtrl: NavController, private route: ActivatedRoute, private modalController: ModalController, private store: Store) {
+  constructor(private route: ActivatedRoute, private modalController: ModalController, private store: Store) {
     this.activityType = this.route.snapshot.paramMap.get('activityType');
     if (this.activityType) {
       const decodedActivityType = decodeURIComponent(this.activityType);
@@ -38,8 +39,15 @@ export class EventsPage implements OnInit {
       .join(' ');
   }
 
-  goBack() {
-    this.navCtrl.back();
+  public getActivityCategory(): string {
+    if (this.activityType) {
+      for (const category in eventCategories) {
+        if (eventCategories[category].includes(this.activityType.toLowerCase())) {
+          return `events/${category}`;
+        }
+      }
+    }
+    return '/events/active';
   }
 
   async openCreateEventModal() {

@@ -1,11 +1,1 @@
-@import 'src/theme/variables.scss';
 
-.event-card {
-  @extend .activity-card;
-}
-
-ion-avatar {
-  width: 40px;
-  height: 40px;
-  margin-left: 10px;
-}

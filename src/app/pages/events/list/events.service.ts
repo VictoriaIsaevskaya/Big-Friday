@@ -24,7 +24,14 @@ export class EventsService {
       ageGroup: '18-35',
       language: 'English',
       cost: 10,
-      isJoined: false,
+      isJoined: true,
+      rules: [
+        "No outside food or drinks allowed.",
+        "Bowling shoes are mandatory. You can rent them at the venue.",
+        "Respect other participants and maintain a friendly atmosphere.",
+        "Any kind of aggressive behavior will lead to immediate expulsion."
+      ],
+      additionalInfo: "We have a special guest, professional bowler John Doe, who will be giving a short demo and some tips. Also, the first round of beer is on the house!"
     },
     {
       id: 2,
@@ -41,7 +48,14 @@ export class EventsService {
       ageGroup: '26-45',
       language: 'English',
       cost: 15,
-      isJoined: true,
+      isJoined: false,
+      rules: [
+        "No outside food or drinks allowed.",
+        "Bowling shoes are mandatory. You can rent them at the venue.",
+        "Respect other participants and maintain a friendly atmosphere.",
+        "Any kind of aggressive behavior will lead to immediate expulsion."
+      ],
+      additionalInfo: "We have a special guest, professional bowler John Doe, who will be giving a short demo and some tips. Also, the first round of beer is on the house!"
     },
   ]
 
