@@ -6,7 +6,7 @@ import {Observable} from "rxjs";
 
 import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
 import {eventCategories} from "../model/helpers/event-categories";
-import {EventSummary} from "../model/interfaces";
+import {EventSummary} from "../model/interfaces/interfaces";
 import * as EventsState from '../state';
 
 @Component({

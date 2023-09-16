@@ -2,7 +2,9 @@ import {CommonModule} from "@angular/common";
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IonicModule, ModalController} from "@ionic/angular";
-import { Storage } from '@ionic/storage-angular';
+import {Storage} from '@ionic/storage-angular';
+
+import {User} from "../../shared/models/interfaces/user";
 @Component({
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
@@ -29,16 +31,12 @@ export class PreferencesComponent {
     this.preferencesForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
+      password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
       about: [''],
       preferredLanguage: [''],
       interests: [[]],
       ageGroup: ['']
-    });
-
-    this.preferencesForm.get('password')?.valueChanges.subscribe(() => {
-      this.preferencesForm.get('confirmPassword')?.updateValueAndValidity();
     });
   }
 
@@ -48,9 +46,10 @@ export class PreferencesComponent {
     }
   }
 
-  async savePreferences(preferences: any) {
+  async savePreferences(user: User) {
     this.dismissModal();
-    await this.storage.set('userPreferences', preferences);
+    console.log(user)
+    // await this.storage.set('userPreferences', preferences);
   }
 
   dismissModal() {

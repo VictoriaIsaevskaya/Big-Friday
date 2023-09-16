@@ -3,7 +3,7 @@ import {Component, Input} from '@angular/core';
 import {Router} from "@angular/router";
 import {IonicModule} from "@ionic/angular";
 
-import {EventSummary} from "../../../pages/events/model/interfaces";
+import {EventSummary} from "../../../pages/events/model/interfaces/interfaces";
 
 @Component({
   selector: 'app-event-card',

@@ -4,7 +4,7 @@ import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 
 import {PreferencesComponent} from "../../../modals/preferences/preferences.component";
-import {EventDetails} from "../model/interfaces";
+import {EventDetails} from "../model/interfaces/interfaces";
 import * as EventsState from '../state';
 
 @Component({

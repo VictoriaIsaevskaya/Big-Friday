@@ -1,6 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-import { EventsState } from "../model/interfaces";
+import { EventsState } from "../model/interfaces/interfaces";
 
 export const selectEventsState = createFeatureSelector<EventsState>('events');
 
