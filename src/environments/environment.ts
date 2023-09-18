@@ -3,7 +3,16 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  firebaseConfig: {
+    apiKey: "AIzaSyAilTrmF_eDCvtxOz1GAh6hpDebvk9hg2g",
+    authDomain: "big-friday.firebaseapp.com",
+    projectId: "big-friday",
+    storageBucket: "big-friday.appspot.com",
+    messagingSenderId: "663869675591",
+    appId: "1:663869675591:web:c78d65f107b4fcc693f962",
+    measurementId: "G-C9TLJRGPJQ"
+  }
 };
 
 /*

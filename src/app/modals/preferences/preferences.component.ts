@@ -1,8 +1,9 @@
 import {CommonModule} from "@angular/common";
 import {Component} from '@angular/core';
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IonicModule, ModalController} from "@ionic/angular";
-import {Storage} from '@ionic/storage-angular';
+
 
 import {User} from "../../shared/models/interfaces/user";
 @Component({
@@ -27,7 +28,7 @@ export class PreferencesComponent {
   ];
 
 
-  constructor(private fb: FormBuilder, private modalController: ModalController, private storage: Storage) {
+  constructor(private fb: FormBuilder, private modalController: ModalController, private afAuth: AngularFireAuth) {
     this.preferencesForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -47,13 +48,21 @@ export class PreferencesComponent {
   }
 
   async savePreferences(user: User) {
+    this.register(user.email, user.password)
     this.dismissModal();
-    console.log(user)
-    // await this.storage.set('userPreferences', preferences);
+  }
+
+  private register(email: string, password: string) {
+    this.afAuth.createUserWithEmailAndPassword(email, password)
+      .then((result) => {
+        console.log('User registered successfully:', result.user);
+      })
+      .catch(error => {
+        console.error('Error during registration:', error);
+      });
   }
 
   dismissModal() {
     this.modalController.dismiss();
-
   }
 }

@@ -1,0 +1,37 @@
+<ion-content class="form-content">
+  <ion-header no-border>
+    <ion-toolbar class="custom-toolbar">
+      <ion-buttons slot="start">
+        <ion-button fill="clear" (click)="modalCtrl.dismiss()">
+          <ion-icon name="close-outline" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Authentication</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="form-container">
+    <p class="intro-text" *ngIf="!showLoginForm">
+      Are you already registered? Proceed with your credentials or explore as a guest.
+    </p>
+
+    <div *ngIf="!showLoginForm">
+      <ion-button expand="block" (click)="showLogin()" class="submit-btn align-block-center">Enter email and password</ion-button>
+      <ion-button expand="block" fill="outline" (click)="continueAsGuest()" class="submit-btn align-block-center">Continue as Guest</ion-button>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" *ngIf="showLoginForm">
+      <ion-item lines="none" class="form-item">
+        <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+        <ion-input placeholder="Email" formControlName="email" type="input"></ion-input>
+      </ion-item>
+      <ion-item lines="none" class="form-item">
+        <ion-icon name="lock-closed-outline" slot="start" color="primary"></ion-icon>
+        <ion-input placeholder="Password" formControlName="password" type="password"></ion-input>
+      </ion-item>
+      <div>
+        <ion-button expand="block" type="submit" [disabled]="!loginForm.valid" class="submit-btn align-block-center">Login</ion-button>
+      </div>
+    </form>
+  </ion-content>
+</ion-content>
