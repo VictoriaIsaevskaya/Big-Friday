@@ -48,8 +48,11 @@ export class PreferencesComponent {
   }
 
   async savePreferences(user: User) {
-    this.register(user.email, user.password)
-    this.dismissModal();
+    if (user.email && user.password) {
+      this.register(user.email, user.password)
+      this.dismissModal();
+    }
+
   }
 
   private register(email: string, password: string) {

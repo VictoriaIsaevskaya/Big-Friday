@@ -3,7 +3,7 @@ import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 
-import {EventsService} from "../list/events.service";
+import {EventsService} from "../../pages/events/list/events.service";
 
 import * as eventActions from "./events.actions";
 

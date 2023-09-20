@@ -5,9 +5,9 @@ import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 
 import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
+import * as EventsState from '../../../state/events';
 import {eventCategories} from "../model/helpers/event-categories";
 import {EventSummary} from "../model/interfaces/interfaces";
-import * as EventsState from '../state';
 
 @Component({
   selector: 'app-events',

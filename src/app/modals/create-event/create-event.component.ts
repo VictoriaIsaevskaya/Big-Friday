@@ -5,7 +5,7 @@ import { IonicModule, IonInput, ModalController } from "@ionic/angular";
 import { Store } from "@ngrx/store";
 
 import {EventDetails} from "../../pages/events/model/interfaces/interfaces";
-import * as EventsState from '../../pages/events/state';
+import * as EventsState from '../../state/events';
 
 
 @Component({

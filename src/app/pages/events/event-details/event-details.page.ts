@@ -4,8 +4,8 @@ import {Store} from "@ngrx/store";
 import {Observable} from "rxjs";
 
 import {PreferencesComponent} from "../../../modals/preferences/preferences.component";
+import * as EventsState from '../../../state/events';
 import {EventDetails} from "../model/interfaces/interfaces";
-import * as EventsState from '../state';
 
 @Component({
   selector: 'app-event-details',

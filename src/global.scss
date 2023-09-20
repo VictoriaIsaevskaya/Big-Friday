@@ -158,3 +158,24 @@ ion-avatar {
   }
 }
 
+.form-content {
+  --ion-background-color: #000;
+}
+
+.intro-text {
+  font-weight: 500;
+  margin: 20px;
+  color: var(--ion-color-light);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.custom-toolbar {
+  --background: rgba(255, 255, 255, 0.05);
+  --color: var(--ion-color-light);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-container {
+  padding: 20px;
+}

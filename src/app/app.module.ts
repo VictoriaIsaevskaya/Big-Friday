@@ -15,7 +15,8 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {AuthModule} from "./core/auth/auth.module";
-import * as eventsState from "./pages/events/state";
+import * as authState from "./state/auth";
+import * as eventsState from "./state/events";
 
 
 @NgModule({
@@ -25,8 +26,8 @@ import * as eventsState from "./pages/events/state";
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(),
     AppRoutingModule,
-    EffectsModule.forRoot([eventsState.EventsEffects]),
-    StoreModule.forRoot({ events: eventsState.eventsReducer}),
+    EffectsModule.forRoot([eventsState.EventsEffects, authState.AuthEffects]),
+    StoreModule.forRoot({ events: eventsState.eventsReducer, auth: authState.authReducer}),
     StoreDevtoolsModule.instrument({
     maxAge: 25,
     logOnly: !isDevMode(),

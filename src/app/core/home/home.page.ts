@@ -1,8 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {ModalController} from "@ionic/angular";
-import {Storage} from '@ionic/storage-angular';
+import {Store} from "@ngrx/store";
+import {Observable, Subject, takeUntil, tap} from "rxjs";
 
+import {selectIsLoggedIn} from "../../state/auth";
 import {AuthPromptModalComponent} from "../auth/auth-prompt-modal/auth-prompt-modal.component";
 
 @Component({
@@ -10,58 +12,44 @@ import {AuthPromptModalComponent} from "../auth/auth-prompt-modal/auth-prompt-mo
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss']
 })
-export class HomePage implements OnInit {
-  constructor(private storage: Storage, private modalController: ModalController, private router: Router) {
-    // this.initStorage();
-    // this.removePreferences()
+export class HomePage implements OnInit, OnDestroy {
+  isLoggedIn$?: Observable<boolean>
+  isModalOpen = false;
+  private destroy$ = new Subject<void>();
+
+
+  constructor(private store: Store, private modalController: ModalController, private router: Router) {
   }
 
   ngOnInit() {
-    return
-    // console.log('preferences', this.getPreferences())
-  }
-
-  async initStorage() {
-    await this.storage.create();
-  }
-
-  async openPreferencesModal() {
-    this.openAuthPromptModal()
-    // if (!(await this.hasPreferences())) {
-    //   const modal = await this.modalController.create({
-    //     component: PreferencesComponent
-    //   });
-    //   return await modal.present();
-    // } else {
-
-      // this.router.navigate(['/events']);
-    // }
-
+    this.isLoggedIn$ = this.store.select(selectIsLoggedIn)
   }
 
   private async openAuthPromptModal() {
+    if (this.isModalOpen) return;
+
     const modal = await this.modalController.create({
       component: AuthPromptModalComponent
     });
+
+    this.isModalOpen = true;
+
     await modal.present();
 
-    const { data } = await modal.onDidDismiss();
-    // if (data && data.loggedIn) {
-      this.router.navigate(['/events']);
-    // }
+    modal.onDidDismiss().then(() => {
+      this.isModalOpen = false;
+    });
   }
 
-  async hasPreferences() {
-    const preferences = await this.storage.get('userPreferences');
-    return preferences !== null;
+  checkLoginAndNavigate() {
+    this.isLoggedIn$?.pipe(
+      takeUntil(this.destroy$),
+      tap(isLoggedIn => !isLoggedIn ? this.openAuthPromptModal() : this.router.navigate(['/events']))
+    ).subscribe();
   }
 
-  async getPreferences() {
-    return await this.storage.get('userPreferences');
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
-
-  async removePreferences() {
-    await this.storage.remove('userPreferences');
-  }
-
 }
