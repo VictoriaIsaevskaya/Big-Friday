@@ -1,7 +1,5 @@
 import {isDevMode, NgModule} from '@angular/core';
-import { provideFirebaseApp, initializeApp } from '@angular/fire/app';
-import {AngularFireModule} from "@angular/fire/compat";
-import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { AngularFireModule } from "@angular/fire/compat";
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
@@ -36,12 +34,12 @@ import * as eventsState from "./state/events";
     traceLimit: 75,
     }),
     AngularFireModule.initializeApp(environment.firebaseConfig),
-    provideFirebaseApp(() => initializeApp(environment.firebaseConfig)),
-    provideFirestore(() => getFirestore()),
     IonicStorageModule.forRoot(),
     AuthModule,
   ],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

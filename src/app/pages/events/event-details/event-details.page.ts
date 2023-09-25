@@ -19,7 +19,6 @@ export class EventDetailsPage implements OnInit {
   constructor(private store: Store, private modalController: ModalController) {
     this.store.dispatch(EventsState.loadEvent({eventId: '2'}))
     this.event$ = this.store.select(EventsState.selectEventDetails);
-    this.event$.subscribe(data => console.log(data))
   }
 
   ngOnInit() { }

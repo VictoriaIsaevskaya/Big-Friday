@@ -1,11 +1,14 @@
 import {CommonModule} from "@angular/common";
 import {Component} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IonicModule, ModalController} from "@ionic/angular";
+import {EMPTY, from, switchMap, tap} from "rxjs";
+import {catchError} from "rxjs/operators";
 
+import {registerFields} from "../../shared/helpers/preference-fields";
 
-import {User} from "../../shared/models/interfaces/user";
 @Component({
   selector: 'app-preferences',
   templateUrl: './preferences.component.html',
@@ -16,19 +19,11 @@ import {User} from "../../shared/models/interfaces/user";
 export class PreferencesComponent {
 
   preferencesForm: FormGroup;
-  formFieldsMap = [
-    { controlName: 'username', placeholder: 'Username', type: 'input', icon: 'person-outline' },
-    { controlName: 'email', placeholder: 'Email', type: 'input', icon: 'mail-outline' },
-    { controlName: 'password', placeholder: 'Password', type: 'password', icon: 'lock-closed-outline' },
-    { controlName: 'confirmPassword', placeholder: 'Confirm Password', type: 'password', icon: 'lock-closed-outline' },
-    { controlName: 'about', placeholder: 'About You', type: 'textarea', icon: 'information-circle-outline' },
-    { controlName: 'preferredLanguage', placeholder: 'Preferred Language', type: 'select', icon: 'language-outline', options: ['English', 'Russian', 'Polish', 'Spanish', 'French'], multiple: true },
-    { controlName: 'interests', placeholder: 'Interests', type: 'select', icon: 'heart-outline', options: ['Bowling', 'Cinema', 'Theatre', 'Hiking', 'Reading'], multiple: true },
-    { controlName: 'ageGroup', placeholder: 'Age Group', type: 'select', icon: 'calendar-outline', options: ['18-25', '26-35', '36-45', '46-55', '56+'] }
-  ];
+  formFieldsMap = registerFields;
 
 
-  constructor(private fb: FormBuilder, private modalController: ModalController, private afAuth: AngularFireAuth) {
+  constructor(private fb: FormBuilder, private modalController: ModalController, private afAuth: AngularFireAuth,
+              private firestore: AngularFirestore) {
     this.preferencesForm = this.fb.group({
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -43,26 +38,36 @@ export class PreferencesComponent {
 
   submitPreferences() {
     if (this.preferencesForm.valid) {
-      this.savePreferences(this.preferencesForm.value);
+      const { email, password } = this.preferencesForm.value
+      this.savePreferences(email, password);
     }
   }
 
-  async savePreferences(user: User) {
-    if (user.email && user.password) {
-      this.register(user.email, user.password)
-      this.dismissModal();
-    }
-
+  async savePreferences(email: string, password: string) {
+    this.register(email, password)
+    this.dismissModal();
   }
 
-  private register(email: string, password: string) {
-    this.afAuth.createUserWithEmailAndPassword(email, password)
-      .then((result) => {
-        console.log('User registered successfully:', result.user);
-      })
-      .catch(error => {
+  private register(email: string, password: string): void {
+    from(this.afAuth.createUserWithEmailAndPassword(email, password)).pipe(
+      tap(result=> console.log('User registered successfully:', result.user)),
+      catchError(error => {
         console.error('Error during registration:', error);
-      });
+        return EMPTY;
+      }),
+      switchMap((aUser) => {
+        if (aUser.user) {
+          return from(this.firestore.collection('users').doc(aUser.user.uid).set(this.preferencesForm.value)).pipe(
+            tap(() => 'Your preferencess were saved.'),
+            catchError((err) => {
+              console.log(err);
+              return EMPTY
+            })
+          );
+        }
+        return EMPTY
+      }),
+    ).subscribe()
   }
 
   dismissModal() {

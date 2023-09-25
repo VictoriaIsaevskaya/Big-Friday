@@ -1,0 +1,63 @@
+<ion-content class="form-content">
+  <ion-header no-border>
+    <ion-toolbar class="custom-toolbar">
+      <ion-buttons slot="start">
+        <ion-button fill="clear">
+          <ion-icon name="close-outline" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Your Profile</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="form-container">
+    <p class="intro-text">
+      Update your profile information to get a personalized experience.
+    </p>
+
+    <!-- Avatar section -->
+    <div class="avatar-section">
+      <ion-avatar>
+        <img src="assets/images/avatar.jpg">
+      </ion-avatar>
+    </div>
+
+    <form [formGroup]="profileForm" (ngSubmit)="submitProfile()">
+      <ion-list>
+        <ng-container *ngFor="let field of formFieldsMap">
+          <ion-item lines="none" class="form-item">
+            <ion-icon [name]="field['icon']" slot="start" color="primary"></ion-icon>
+
+            <ion-input [readonly]="!field.isEditing" [placeholder]="field.placeholder"  [formControlName]="field.controlName"></ion-input>
+
+            <ion-icon name="pencil-outline" slot="end" (click)="toggleFieldEdit(field)"></ion-icon>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+
+      <ion-button expand="full" (click)="saveProfile()">
+        Save
+      </ion-button>
+    </form>
+
+    <ion-list-header>
+      Upcoming Events
+    </ion-list-header>
+    <ion-list>
+      <!-- Здесь будет список предстоящих событий. Можете использовать *ngFor для отображения событий. -->
+    </ion-list>
+
+    <!-- Прошедшие события -->
+    <ion-list-header>
+      Past Events
+    </ion-list-header>
+    <ion-list>
+      <!-- Здесь будет история прошедших событий. -->
+    </ion-list>
+
+
+    <ion-button expand="full" color="danger">
+      Log Out
+    </ion-button>
+  </ion-content>
+</ion-content>

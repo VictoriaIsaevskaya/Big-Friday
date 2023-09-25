@@ -179,3 +179,10 @@ ion-avatar {
 .form-container {
   padding: 20px;
 }
+
+ion-popover {
+  .popover-content {
+    box-shadow: none !important;
+    background-color: transparent !important;
+  }
+}

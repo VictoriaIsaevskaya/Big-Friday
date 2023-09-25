@@ -1,10 +1,9 @@
-import { Injectable } from '@angular/core';
-import { AngularFireAuth} from "@angular/fire/compat/auth";
+import { Injectable} from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { of } from 'rxjs';
+import {of, switchMap} from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
-import {AuthService} from "../../core/auth/auth-prompt-modal/auth.service";
+import {AuthService} from "../../services/auth.service";
 
 import * as AuthActions from './auth.actions';
 
@@ -26,9 +25,17 @@ export class AuthEffects {
     );
   }
 
+  logout$ = createEffect(() => this.actions$.pipe(
+    ofType(AuthActions.logout),
+    switchMap(() => this.authService.logout().pipe(
+      map(() => AuthActions.logoutSuccess()),
+      catchError(error => of(AuthActions.logoutFailure({ error })))
+    ))
+  ))
+
+
   constructor(
     private actions$: Actions,
-    private afAuth: AngularFireAuth,
     private authService: AuthService
   ) {}
 }

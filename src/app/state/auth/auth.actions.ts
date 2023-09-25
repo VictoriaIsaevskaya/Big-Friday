@@ -26,3 +26,6 @@ export const setCurrentUser = createAction(
   props<{ user: User | null }>()
 );
 
+export const logoutSuccess = createAction('[Auth] Logout Success');
+export const logoutFailure = createAction('[Auth] Logout Failure', props<{ error: any }>());
+

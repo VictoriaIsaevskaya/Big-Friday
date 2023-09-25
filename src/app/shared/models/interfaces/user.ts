@@ -4,10 +4,11 @@ export interface User {
   displayName: string | null;
   email: string | null;
   avatar?: string;
-  password?: string;
-  confirmPassword?: string;
   about?: string;
   preferredLanguage?: string;
   interests?: string[];
   ageGroup?: string;
+  joinedEvents?: string[];
+  pastEvents?: string[];
+  notifications?: any;
 }

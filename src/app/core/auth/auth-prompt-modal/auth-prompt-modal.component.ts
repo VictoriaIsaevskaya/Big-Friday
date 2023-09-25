@@ -1,13 +1,14 @@
 import {Component, OnDestroy} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {Router} from "@angular/router";
 import {ModalController, ToastController} from '@ionic/angular';
 import {select, Store} from "@ngrx/store";
 import {combineLatest, Subject, takeUntil, tap} from "rxjs";
 
+import {AuthService} from "../../../services/auth.service";
 import * as fromAuthState from '../../../state/auth';
 
-import {AuthService} from "./auth.service";
 
 
 @Component({
@@ -21,7 +22,8 @@ export class AuthPromptModalComponent implements OnDestroy {
   private destroy$ = new Subject<void>();
 
   constructor(private fb: FormBuilder, public modalCtrl: ModalController, private afAuth: AngularFireAuth,
-              private toastCtrl: ToastController, private authService: AuthService, private store: Store) {
+              private toastCtrl: ToastController, private authService: AuthService, private store: Store,
+              private router: Router) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -34,6 +36,8 @@ export class AuthPromptModalComponent implements OnDestroy {
 
   continueAsGuest() {
     this.modalCtrl.dismiss({ continueAsGuest: true });
+    this.store.dispatch(fromAuthState.loginSuccess({user: { uid: '', displayName: 'guest', email: '' }}))
+    this.router.navigate(['/events'])
   }
 
   ngOnInit() {
@@ -62,7 +66,7 @@ export class AuthPromptModalComponent implements OnDestroy {
   async showToast(message: string) {
     const toast = await this.toastCtrl.create({
       message: message,
-      duration: 2000,  // сообщение будет показано в течение 2 секунд
+      duration: 2000,
       position: 'bottom',
       color: 'danger'
     });

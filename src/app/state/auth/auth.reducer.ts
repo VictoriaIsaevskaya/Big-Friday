@@ -18,6 +18,5 @@ export const authReducer = createReducer(
   initialState,
   on(AuthActions.loginSuccess, (state, { user }) => ({ ...state, user })),
   on(AuthActions.loginFailure, (state, { error }) => ({ ...state, error })),
-  on(AuthActions.logout, state => ({ ...state, user: null })),
   on(AuthActions.setCurrentUser, (state, { user }) => ({ ...state, user })),
 );

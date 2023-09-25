@@ -3,5 +3,10 @@
     <ion-title>
       <img src="../../../assets/logo/header-logo.svg" alt="Big Friday">
     </ion-title>
+    <ion-buttons slot="end">
+      <ion-avatar class="header-toolbar__user" (click)="openUserOptions($event)">
+        <ion-icon name="person-circle-outline"></ion-icon>
+      </ion-avatar>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>

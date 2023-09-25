@@ -1,10 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
+import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {Router} from "@angular/router";
 import {ModalController} from "@ionic/angular";
 import {Store} from "@ngrx/store";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
 
 import {selectIsLoggedIn} from "../../state/auth";
+import * as fromAuth from "../../state/auth";
 import {AuthPromptModalComponent} from "../auth/auth-prompt-modal/auth-prompt-modal.component";
 
 @Component({
@@ -17,12 +19,20 @@ export class HomePage implements OnInit, OnDestroy {
   isModalOpen = false;
   private destroy$ = new Subject<void>();
 
-
-  constructor(private store: Store, private modalController: ModalController, private router: Router) {
+  constructor(private store: Store, private afAuth: AngularFireAuth, private modalController: ModalController, private router: Router) {
   }
 
   ngOnInit() {
     this.isLoggedIn$ = this.store.select(selectIsLoggedIn)
+
+    if (localStorage.getItem('loggingOut') === 'true') {
+      this.doSignOut();
+      localStorage.removeItem('loggingOut');
+    }
+  }
+
+  async doSignOut() {
+    this.store.dispatch(fromAuth.logout())
   }
 
   private async openAuthPromptModal() {

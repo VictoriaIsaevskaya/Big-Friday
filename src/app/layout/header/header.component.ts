@@ -1,6 +1,8 @@
 import {CommonModule} from "@angular/common";
 import { Component } from '@angular/core';
-import {IonicModule} from "@ionic/angular";
+import {IonicModule, PopoverController} from "@ionic/angular";
+
+import {UserSettingsDropdownComponent} from "../user-settings-dropdown/user-settings-dropdown.component";
 
 @Component({
   selector: 'app-header',
@@ -10,7 +12,14 @@ import {IonicModule} from "@ionic/angular";
   imports: [IonicModule, CommonModule,]
 })
 export class HeaderComponent   {
+  constructor(private popoverController: PopoverController) { }
 
-  constructor() { }
-
+  async openUserOptions(ev: any) {
+    const popover = await this.popoverController.create({
+      component: UserSettingsDropdownComponent,
+      event: ev,
+      translucent: true
+    });
+    return await popover.present();
+  }
 }
