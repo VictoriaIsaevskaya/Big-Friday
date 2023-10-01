@@ -16,8 +16,8 @@
     </p>
 
     <div *ngIf="!showLoginForm">
-      <ion-button expand="block" (click)="showLogin()" class="submit-btn align-block-center">Enter email and password</ion-button>
-      <ion-button expand="block" fill="outline" (click)="continueAsGuest()" class="submit-btn align-block-center">Continue as Guest</ion-button>
+      <ion-button expand="block" (click)="showLogin()" class="single-btn align-block-center">Enter email and password</ion-button>
+      <ion-button expand="block" fill="outline" (click)="continueAsGuest()" class="single-btn align-block-center">Continue as Guest</ion-button>
     </div>
 
     <form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()" *ngIf="showLoginForm">
@@ -30,7 +30,7 @@
         <ion-input placeholder="Password" formControlName="password" type="password"></ion-input>
       </ion-item>
       <div>
-        <ion-button expand="block" type="submit" [disabled]="!loginForm.valid" class="submit-btn align-block-center">Login</ion-button>
+        <ion-button expand="block" type="submit" [disabled]="!loginForm.valid" class="single-btn align-block-center">Login</ion-button>
       </div>
     </form>
   </ion-content>

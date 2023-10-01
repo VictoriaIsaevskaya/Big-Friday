@@ -1,14 +1,5 @@
 <ion-content class="form-content">
-  <ion-header no-border>
-    <ion-toolbar class="custom-toolbar">
-      <ion-buttons slot="start">
-        <ion-button fill="clear">
-          <ion-icon name="close-outline" color="light"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      <ion-title>Your Profile</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <app-page-header pageTitle="Your profile" backRedirectionLink="/home"></app-page-header>
 
   <ion-content class="form-container">
     <p class="intro-text">
@@ -35,7 +26,7 @@
         </ng-container>
       </ion-list>
 
-      <ion-button expand="full" (click)="saveProfile()">
+      <ion-button expand="block" class="single-btn align-block-center" (click)="saveProfile()">
         Save
       </ion-button>
     </form>
@@ -56,7 +47,7 @@
     </ion-list>
 
 
-    <ion-button expand="full" color="danger">
+    <ion-button expand="block" color="danger" class="single-btn">
       Log Out
     </ion-button>
   </ion-content>

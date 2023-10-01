@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { IonicModule, IonInput, ModalController } from "@ionic/angular";
 import { Store } from "@ngrx/store";
 
-import {EventDetails} from "../../pages/events/model/interfaces/interfaces";
+import {EventDetails} from "../../pages/events/model/interfaces";
 import * as EventsState from '../../state/events';
 
 

@@ -1,12 +1,6 @@
 <ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar class="secondary-color">
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/home"></ion-back-button>
-      </ion-buttons>
-      <ion-title>Active Events</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <app-page-header pageTitle="Active Events" backRedirectionLink="/home"></app-page-header>
+
   <ion-card *ngFor="let act of activities" (click)="goToActivity(act.activity)" class="activity-card">
     <ion-icon [name]="act.icon" class="activity-icon"></ion-icon>
     <ion-card-content>

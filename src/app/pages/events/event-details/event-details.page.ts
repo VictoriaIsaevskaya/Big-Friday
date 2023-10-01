@@ -5,7 +5,7 @@ import {Observable} from "rxjs";
 
 import {PreferencesComponent} from "../../../modals/preferences/preferences.component";
 import * as EventsState from '../../../state/events';
-import {EventDetails} from "../model/interfaces/interfaces";
+import {EventDetails} from "../model/interfaces";
 
 @Component({
   selector: 'app-event-details',

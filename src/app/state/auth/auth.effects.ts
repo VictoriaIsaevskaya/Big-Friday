@@ -1,6 +1,7 @@
 import { Injectable} from '@angular/core';
+import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import {of, switchMap} from 'rxjs';
+import { from, of, switchMap } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
 import {AuthService} from "../../services/auth.service";
@@ -10,10 +11,33 @@ import * as AuthActions from './auth.actions';
 @Injectable()
 export class AuthEffects {
 
+  register$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AuthActions.register),
+      mergeMap(({email, password, preferences}) => {
+        return this.authService.register(email, password).pipe(
+          mergeMap((aUser) => {
+            return from(this.firestore.collection('users').doc(aUser.user.uid).set(preferences)).pipe(
+              map(() => AuthActions.preferencesUploadSuccess({preferences})),
+              catchError((err) => {
+                console.error('Error saving preferences:', err);
+                return of(AuthActions.preferencesUploadFailure({ error: err }));
+              }),
+            )}
+          ),
+          catchError(error => {
+            console.error('Error during registration:', error);
+            return of(AuthActions.registerFailure({ error }));
+          }),
+        )}
+      )
+    )
+  );
+
   login$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AuthActions.login),
-      mergeMap(action => this.performLogin(action.email, action.password)),
+      mergeMap(({email, password}) => this.performLogin(email, password)),
       catchError(error => of(AuthActions.loginFailure({ error })))
     )
   );
@@ -36,6 +60,7 @@ export class AuthEffects {
 
   constructor(
     private actions$: Actions,
-    private authService: AuthService
+    private authService: AuthService,
+    private firestore: AngularFirestore
   ) {}
 }

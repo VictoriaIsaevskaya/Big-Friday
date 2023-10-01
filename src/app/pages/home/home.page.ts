@@ -5,9 +5,9 @@ import {ModalController} from "@ionic/angular";
 import {Store} from "@ngrx/store";
 import {Observable, Subject, takeUntil, tap} from "rxjs";
 
+import {AuthPromptModalComponent} from "../../features/auth/auth-prompt-modal/auth-prompt-modal.component";
 import {selectIsLoggedIn} from "../../state/auth";
 import * as fromAuth from "../../state/auth";
-import {AuthPromptModalComponent} from "../auth/auth-prompt-modal/auth-prompt-modal.component";
 
 @Component({
   selector: 'app-home',

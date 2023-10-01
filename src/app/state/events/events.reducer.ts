@@ -1,6 +1,6 @@
 import { createReducer, on } from '@ngrx/store';
 
-import { EventsState } from '../../pages/events/model/interfaces/interfaces';
+import { EventsState } from '../../pages/events/model/interfaces';
 
 import {
   loadEvents,

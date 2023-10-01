@@ -1,12 +1,6 @@
 <ng-container *ngIf="event$ | async as eventDetails">
-  <ion-header>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button class="secondary-color" defaultHref="/events"></ion-back-button>
-      </ion-buttons>
-      <ion-title class="secondary-color">{{ eventDetails.title }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+
+  <app-page-header [pageTitle]="eventDetails.title" backRedirectionLink="/events"></app-page-header>
 
   <ion-content class="event-details-content">
     <ion-card class="activity-card">

@@ -1,6 +1,6 @@
 import {createAction, props} from '@ngrx/store';
 
-import {EventDetails, EventSummary} from "../../pages/events/model/interfaces/interfaces";
+import {EventDetails, EventSummary} from "../../pages/events/model/interfaces";
 
 export const loadEvents = createAction('[Events] Load Events');
 export const loadEventsSuccess = createAction('[Events] Load Events Success', props<{ events: EventSummary[] }>());

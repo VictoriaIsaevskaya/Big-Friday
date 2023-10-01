@@ -3,6 +3,8 @@ import { NgModule } from '@angular/core';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
+import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
+
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
 
@@ -13,6 +15,7 @@ import { ProfilePage } from './profile.page';
     IonicModule,
     ProfilePageRoutingModule,
     ReactiveFormsModule,
+    PageHeaderComponent,
   ],
   declarations: [ProfilePage]
 })

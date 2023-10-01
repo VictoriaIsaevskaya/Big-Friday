@@ -12,7 +12,7 @@ import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AuthModule} from "./core/auth/auth.module";
+import {AuthModule} from "./features/auth/auth.module";
 import * as authState from "./state/auth";
 import * as eventsState from "./state/events";
 
