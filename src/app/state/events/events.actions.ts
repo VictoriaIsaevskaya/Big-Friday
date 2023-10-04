@@ -1,12 +1,35 @@
-import {createAction, props} from '@ngrx/store';
-
 import {EventDetails, EventSummary} from "../../pages/events/model/interfaces";
 
-export const loadEvents = createAction('[Events] Load Events');
-export const loadEventsSuccess = createAction('[Events] Load Events Success', props<{ events: EventSummary[] }>());
-export const loadEventsFailure = createAction('[Events] Load Events Failure', props<{ error: string }>());
-export const addEvent = createAction('[Events] Add Event', props<{ event: EventDetails }>());
+export class LoadEvents {
+  static readonly type = '[Events] Load Events';
+}
 
-export const loadEvent = createAction('[Events] Load Event', props<{ eventId: string }>());
-export const loadEventSuccess = createAction('[Events] Load Event Success', props<{ event: EventDetails | null }>());
-export const loadEventFailure = createAction('[Events] Load Event Failure', props<{ error: string }>());
+export class LoadEventsSuccess {
+  static readonly type = '[Events] Load Events Success';
+  constructor(public payload: { events: EventSummary[] }) {}
+}
+
+export class LoadEventsFailure {
+  static readonly type = '[Events] Load Events Failure';
+  constructor(public payload: { error: string }) {}
+}
+
+export class AddEvent {
+  static readonly type = '[Events] Add Event';
+  constructor(public payload: { event: EventDetails }) {}
+}
+
+export class LoadEvent {
+  static readonly type = '[Events] Load Event';
+  constructor(public payload: { eventId: string }) {}
+}
+
+export class LoadEventSuccess {
+  static readonly type = '[Events] Load Event Success';
+  constructor(public payload: { event: EventDetails | null }) {}
+}
+
+export class LoadEventFailure {
+  static readonly type = '[Events] Load Event Failure';
+  constructor(public payload: { error: string }) {}
+}

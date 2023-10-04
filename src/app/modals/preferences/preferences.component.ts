@@ -2,10 +2,10 @@ import {CommonModule} from "@angular/common";
 import {Component} from '@angular/core';
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {IonicModule, ModalController} from "@ionic/angular";
-import {Store} from "@ngrx/store";
+import {Store} from "@ngxs/store";
 
 import {registerFields} from "../../shared/helpers/preference-fields";
-import * as fromAuth from '../../state/auth'
+import {RegisterUser} from '../../state/auth';
 import {UserPreferences} from "../model/interfaces";
 
 @Component({
@@ -43,7 +43,7 @@ export class PreferencesComponent {
   }
 
   private register(email: string, password: string, preferences: UserPreferences): void {
-    this.store.dispatch(fromAuth.register({email, password, preferences}))
+    this.store.dispatch(new RegisterUser({email, password, preferences}));
   }
 
   dismissModal() {

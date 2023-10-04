@@ -1,49 +1,70 @@
-import {createAction, props} from '@ngrx/store';
-
 import {UserPreferences} from "../../modals/model/interfaces";
 import {User} from "../../shared/models/interfaces/user";
 
-export const login = createAction(
-  '[Auth] Login',
-  props<{ email: string; password: string }>()
-);
+export class Login {
+  static readonly type = '[Auth] Login';
+  constructor(public payload: { email: string; password: string }) {}
+}
 
-export const loginSuccess = createAction(
-  '[Auth] Login Success',
-  props<{ user: User | null }>()
-);
+export class LoginSuccess {
+  static readonly type = '[Auth] Login Success';
+  constructor(public payload: { user: User | null }) {}
+}
 
-export const loginFailure = createAction(
-  '[Auth] Login Failure',
-  props<{ error: any }>()
-);
+export class LoginFailure {
+  static readonly type = '[Auth] Login Failure';
+  constructor(public payload: { error: any }) {}
+}
 
-export const logout = createAction(
-  '[Auth] Logout'
-);
+export class Logout {
+  static readonly type = '[Auth] Logout';
+}
 
-export const setCurrentUser = createAction(
-  '[Auth] Set Current User',
-  props<{ user: User | null }>()
-);
+export class LogoutSuccess {
+  static readonly type = '[Auth] Logout Success';
+}
 
-export const logoutSuccess = createAction('[Auth] Logout Success');
-export const logoutFailure = createAction('[Auth] Logout Failure', props<{ error: any }>());
-export const register = createAction('[Auth] Register', props<{ email: string, password: string, preferences?: UserPreferences }>())
-
-export const registerSuccess = createAction(
-  '[Auth] Register Success'
-);
-export const registerFailure = createAction(
-  '[Auth] Register Failure',
-  props<{ error: any }>()
-);
-export const preferencesUpload = createAction('[Auth] Preferences Upload Start', props<{ user: any, preferences: UserPreferences }>());
-export const preferencesUploadSuccess = createAction('[Auth] Preferences Upload Success', props<{preferences: UserPreferences}>());
-export const setUserPreferences = createAction('[Auth] Set Preferences', props<{preferences: UserPreferences}>());
-export const preferencesUploadFailure = createAction(
-  '[Auth] Preferences Upload Failure',
-  props<{ error: any }>()
-);
+export class LogoutFailure {
+  static readonly type = '[Auth] Logout Failure';
+  constructor(public payload: { error: any }) {}
+}
 
 
+export class SetCurrentUser {
+  static readonly type = '[Auth] Set Current User';
+  constructor(public payload: { user: User | null }) {}
+}
+
+export class RegisterUser {
+  static readonly type = '[Auth] Register';
+  constructor(public payload: { email: string; password: string; preferences: UserPreferences }) {}
+}
+
+export class RegisterSuccess {
+  static readonly type = '[Auth] Register Success';
+}
+
+export class RegisterFailure {
+  static readonly type = '[Auth] Register Failure';
+  constructor(public payload: { error: any }) {}
+}
+
+export class PreferencesUpload {
+  static readonly type = '[Auth] Preferences Upload Start';
+  constructor(public payload: { user: any; preferences: UserPreferences }) {}
+}
+
+export class PreferencesUploadSuccess {
+  static readonly type = '[Auth] Preferences Upload Success';
+  constructor(public payload: { preferences: UserPreferences }) {}
+}
+
+export class PreferencesUploadFailure {
+  static readonly type = '[Auth] Preferences Upload Failure';
+  constructor(public payload: { error: any }) {}
+}
+
+export class SetUserPreferences {
+  static readonly type = '[Auth] Set Preferences';
+  constructor(public payload: { preferences: UserPreferences }) {}
+}

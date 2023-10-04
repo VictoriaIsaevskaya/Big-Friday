@@ -1,13 +1,13 @@
-import {Component, OnDestroy} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Router} from "@angular/router";
 import {ModalController, ToastController} from '@ionic/angular';
-import {select, Store} from "@ngrx/store";
+import {Store} from '@ngxs/store';
 import {combineLatest, Subject, takeUntil, tap} from "rxjs";
 
 import {AuthService} from "../../../services/auth.service";
-import * as fromAuthState from '../../../state/auth';
+import {AuthState, Login, LoginSuccess} from "../../../state/auth";
 
 
 
@@ -16,7 +16,7 @@ import * as fromAuthState from '../../../state/auth';
   templateUrl: './auth-prompt-modal.component.html',
   styleUrls: ['./auth-prompt-modal.component.scss'],
 })
-export class AuthPromptModalComponent implements OnDestroy {
+export class AuthPromptModalComponent implements OnInit, OnDestroy {
   loginForm: FormGroup;
   showLoginForm: boolean = false;
   private destroy$ = new Subject<void>();
@@ -36,15 +36,16 @@ export class AuthPromptModalComponent implements OnDestroy {
 
   continueAsGuest() {
     this.modalCtrl.dismiss({ continueAsGuest: true });
-    this.store.dispatch(fromAuthState.loginSuccess({user: { uid: '', displayName: 'guest', email: '' }}))
-    this.router.navigate(['/events'])
+    this.store.dispatch(new LoginSuccess( { user: { uid: '', displayName: 'guest', email: '' }}));
+    this.router.navigate(['/events']);
   }
 
   ngOnInit() {
     combineLatest([
-      this.store.pipe(select(fromAuthState.selectIsLoggedIn), takeUntil(this.destroy$)),
-      this.store.pipe(select(fromAuthState.selectAuthError), takeUntil(this.destroy$))
+      this.store.select(AuthState.isLoggedIn),
+      this.store.select(AuthState.hasError)
     ]).pipe(
+      takeUntil(this.destroy$),
       tap(([isLoggedIn, error]) => {
         if (isLoggedIn) {
           this.modalCtrl.dismiss({ loggedIn: true });
@@ -59,7 +60,7 @@ export class AuthPromptModalComponent implements OnDestroy {
     if (this.loginForm.valid) {
       const email = this.loginForm.get('email')?.value;
       const password = this.loginForm.get('password')?.value;
-      this.store.dispatch(fromAuthState.login({email, password}))
+      this.store.dispatch(new Login({email, password}))
     }
   }
 

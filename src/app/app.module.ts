@@ -1,21 +1,25 @@
-import {isDevMode, NgModule} from '@angular/core';
+import {APP_INITIALIZER, NgModule} from '@angular/core';
 import { AngularFireModule } from "@angular/fire/compat";
+import { AngularFireAuthModule } from "@angular/fire/compat/auth";
+import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
+import { AngularFirestoreModule } from "@angular/fire/compat/firestore";
+import { AngularFireStorageModule } from "@angular/fire/compat/storage";
 import { BrowserModule } from '@angular/platform-browser';
 import { RouteReuseStrategy } from '@angular/router';
 import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 import { IonicStorageModule } from "@ionic/storage-angular";
-import { EffectsModule } from '@ngrx/effects';
-import { StoreModule } from "@ngrx/store";
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { NgxsReduxDevtoolsPluginModule } from "@ngxs/devtools-plugin";
+import { NgxsModule } from '@ngxs/store';
+import { take } from "rxjs";
 
 import { environment } from '../environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {AuthModule} from "./features/auth/auth.module";
-import * as authState from "./state/auth";
-import * as eventsState from "./state/events";
-
+import { AuthModule } from "./features/auth/auth.module";
+import {AuthService} from "./services/auth.service";
+import {AuthState} from "./state/auth";
+import {EventsState} from "./state/events";
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,21 +28,26 @@ import * as eventsState from "./state/events";
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(),
     AppRoutingModule,
-    EffectsModule.forRoot([eventsState.EventsEffects, authState.AuthEffects]),
-    StoreModule.forRoot({ events: eventsState.eventsReducer, auth: authState.authReducer}),
-    StoreDevtoolsModule.instrument({
-    maxAge: 25,
-    logOnly: !isDevMode(),
-    autoPause: true,
-    trace: false,
-    traceLimit: 75,
+    NgxsModule.forRoot([AuthState, EventsState]),
+    NgxsReduxDevtoolsPluginModule.forRoot({
+      disabled: environment.production
     }),
-    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireAuthModule,
+    AngularFirestoreModule,
+    AngularFireStorageModule,
+    AngularFireDatabaseModule,
     IonicStorageModule.forRoot(),
     AuthModule,
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (authService: AuthService) => () => () => authService.authState$.pipe(take(1)),
+      deps: [AuthService],
+      multi: true
+    }
   ],
   bootstrap: [AppComponent],
 })

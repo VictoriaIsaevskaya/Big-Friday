@@ -2,10 +2,10 @@ import { CommonModule } from "@angular/common";
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonicModule, IonInput, ModalController } from "@ionic/angular";
-import { Store } from "@ngrx/store";
+import { Store } from "@ngxs/store";
 
 import {EventDetails} from "../../pages/events/model/interfaces";
-import * as EventsState from '../../state/events';
+import {AddEvent} from "../../state/events";
 
 
 @Component({
@@ -52,7 +52,7 @@ export class CreateEventComponent {
           avatar: 'assets/images/avatar.jpg'
         }
       };
-      this.store.dispatch(EventsState.addEvent({ event }) )
+      this.store.dispatch(new AddEvent({ event }) )
       this.dismissModal();
     }
   }

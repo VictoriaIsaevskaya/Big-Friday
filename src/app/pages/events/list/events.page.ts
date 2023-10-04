@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {ModalController} from "@ionic/angular";
-import {Store} from "@ngrx/store";
+import {Select, Store} from "@ngxs/store";
 import {Observable} from "rxjs";
 
 import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
-import * as EventsState from '../../../state/events';
+import {EventsState, LoadEvents} from '../../../state/events';
 import {eventCategories} from "../model/helpers/event-categories";
 import {EventSummary} from "../model/interfaces";
 
@@ -17,7 +17,8 @@ import {EventSummary} from "../model/interfaces";
 export class EventsPage implements OnInit {
   pageTitle?: string;
   activityType?: string | null;
-  events$?: Observable<EventSummary[]>;
+
+  @Select(EventsState.allEvents) events$!: Observable<EventSummary[]>;
 
   constructor(private route: ActivatedRoute, private modalController: ModalController, private store: Store) {
     this.activityType = this.route.snapshot.paramMap.get('activityType');
@@ -25,12 +26,10 @@ export class EventsPage implements OnInit {
       const decodedActivityType = decodeURIComponent(this.activityType);
       this.pageTitle = this.parseActivityType(decodedActivityType);
     }
-
   }
 
   ngOnInit() {
-    this.store.dispatch(EventsState.loadEvents())
-    this.events$ = this.store.select(EventsState.selectAllEvents);
+    this.store.dispatch(new LoadEvents());
   }
 
   private parseActivityType(activityType: string): string {
