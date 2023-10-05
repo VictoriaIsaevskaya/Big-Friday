@@ -28,7 +28,7 @@ export class PreferencesComponent {
       password: ['', [Validators.required]],
       confirmPassword: ['', [Validators.required]],
       about: [''],
-      preferredLanguage: [''],
+      preferredLanguages: [''],
       interests: [[]],
       ageGroup: ['']
     });

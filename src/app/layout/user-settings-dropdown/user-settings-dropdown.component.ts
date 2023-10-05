@@ -4,17 +4,18 @@ import { Router, RouterModule } from "@angular/router";
 import { IonicModule, PopoverController } from "@ionic/angular";
 import { Store } from '@ngxs/store';
 
-import { Logout } from '../../state/auth';
+import {LoginFormComponent} from "../../features/auth/login-form/login-form.component";
+import {AuthState, Logout} from '../../state/auth';
 
 @Component({
   selector: 'app-user-settings-dropdown',
   templateUrl: './user-settings-dropdown.component.html',
   styleUrls: ['./user-settings-dropdown.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, RouterModule]
+  imports: [IonicModule, CommonModule, RouterModule, LoginFormComponent]
 })
 export class UserSettingsDropdownComponent {
-
+  isUserLoggedIn = this.store.selectSnapshot(AuthState.isLoggedIn)
   constructor(
     private popoverController: PopoverController,
     private router: Router,
@@ -23,11 +24,17 @@ export class UserSettingsDropdownComponent {
 
   navigateToProfile() {
     this.router.navigate(['profile']);
-    this.popoverController.dismiss();
+    this.closePopover();
   }
 
   async signOut() {
     this.store.dispatch(new Logout());
+    this.closePopover();
+  }
+
+  closePopover() {
     this.popoverController.dismiss();
   }
+
+
 }

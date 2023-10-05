@@ -51,7 +51,7 @@ export class RegisterFailure {
 
 export class PreferencesUpload {
   static readonly type = '[Auth] Preferences Upload Start';
-  constructor(public payload: { user: any; preferences: UserPreferences }) {}
+  constructor(public payload: { preferences: UserPreferences }) {}
 }
 
 export class PreferencesUploadSuccess {

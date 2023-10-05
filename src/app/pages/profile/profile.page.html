@@ -6,14 +6,13 @@
       Update your profile information to get a personalized experience.
     </p>
 
-    <!-- Avatar section -->
     <div class="avatar-section">
       <ion-avatar>
         <img src="assets/images/avatar.jpg">
       </ion-avatar>
     </div>
 
-    <form [formGroup]="profileForm" (ngSubmit)="submitProfile()">
+    <form *ngIf="profileForm" [formGroup]="profileForm" (ngSubmit)="submitProfile()">
       <ion-list>
         <ng-container *ngFor="let field of formFieldsMap">
           <ion-item lines="none" class="form-item">
@@ -35,15 +34,15 @@
       Upcoming Events
     </ion-list-header>
     <ion-list>
-      <!-- Здесь будет список предстоящих событий. Можете использовать *ngFor для отображения событий. -->
+
     </ion-list>
 
-    <!-- Прошедшие события -->
+
     <ion-list-header>
       Past Events
     </ion-list-header>
     <ion-list>
-      <!-- Здесь будет история прошедших событий. -->
+
     </ion-list>
 
 

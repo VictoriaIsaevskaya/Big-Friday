@@ -5,7 +5,7 @@ export interface User {
   email: string | null;
   avatar?: string;
   about?: string;
-  preferredLanguage?: string;
+  preferredLanguages?: string;
   interests?: string[];
   ageGroup?: string;
   joinedEvents?: string[];

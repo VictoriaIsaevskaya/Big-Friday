@@ -1,7 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import { State, Action, StateContext, Selector } from '@ngxs/store';
-import {tap} from "rxjs";
+import {from, switchMap, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import { UserPreferences } from "../../modals/model/interfaces";
@@ -16,7 +16,7 @@ import {
   RegisterFailure,
   PreferencesUploadSuccess,
   SetUserPreferences,
-  PreferencesUploadFailure, Logout, LogoutFailure, LogoutSuccess, RegisterUser, Login
+  PreferencesUploadFailure, Logout, LogoutFailure, LogoutSuccess, RegisterUser, Login, PreferencesUpload
 } from './auth.actions';
 
 export interface AuthStateModel {
@@ -55,6 +55,23 @@ export class AuthState {
       })
     );
   }
+
+  @Action(PreferencesUpload)
+  preferencesUpload(ctx: StateContext<AuthStateModel>, action: PreferencesUpload) {
+    const { preferences} = action.payload;
+    const uid = ctx.getState().user.uid
+    return from(this.firestore.collection('users').doc(uid).set(preferences)).pipe(
+      switchMap(() => {
+        return ctx.dispatch(new PreferencesUploadSuccess({preferences}));
+      }),
+      catchError((error) => {
+        console.error('Error during preferences upload:', error);
+        ctx.dispatch(new RegisterFailure({ error }));
+        return throwError(error);
+      })
+    );
+  }
+
 
   @Action(Login)
   login(ctx: StateContext<AuthStateModel>, action: Login) {
@@ -146,6 +163,7 @@ export class AuthState {
     const state = ctx.getState();
     ctx.setState({
       ...state,
+      preferences: null,
       user: null,
       error: null
     });
@@ -210,7 +228,7 @@ export class AuthState {
 
   @Selector()
   static isLoggedIn(state: AuthStateModel) {
-    return !!state.user;
+    return !!state.user.uid;
   }
 
   @Selector()

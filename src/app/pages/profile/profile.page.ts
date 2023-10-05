@@ -1,7 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {
+  FormBuilder,
+  FormGroup,
+  Validators
+} from "@angular/forms";
+import {Store} from "@ngxs/store";
 
 import {preferenceFields} from "../../shared/helpers/preference-fields";
+import {AuthState, PreferencesUpload} from "../../state/auth";
 
 @Component({
   selector: 'app-profile',
@@ -9,25 +15,25 @@ import {preferenceFields} from "../../shared/helpers/preference-fields";
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  profileForm!: FormGroup;
+  profileForm: FormGroup
   formFieldsMap = preferenceFields;
 
   isEditing = false;
 
-  constructor(private fb: FormBuilder) {}
+  constructor(private fb: FormBuilder, private store: Store) {}
 
   ngOnInit(): void {
     this.initializeProfileForm();
   }
 
   initializeProfileForm(): void {
+    const { username, about, preferredLanguages, interests, ageGroup} = this.store.selectSnapshot(AuthState.preferences);
     this.profileForm = this.fb.group({
-      username: ['', Validators.required],
-      email: ['', [Validators.required, Validators.email]],
-      about: [''],
-      preferredLanguage: [''],
-      interests: [[]],
-      ageGroup: ['']
+      username: [username, Validators.required],
+      about,
+      preferredLanguages: [preferredLanguages],
+      interests: [interests],
+      ageGroup
     });
   }
 
@@ -37,7 +43,7 @@ export class ProfilePage implements OnInit {
 
   saveProfile(): void {
     if (this.profileForm?.valid) {
-      // Save profile logic here ...
+      this.store.dispatch(new PreferencesUpload({preferences: this.profileForm.value}))
       this.toggleEdit();
     }
   }

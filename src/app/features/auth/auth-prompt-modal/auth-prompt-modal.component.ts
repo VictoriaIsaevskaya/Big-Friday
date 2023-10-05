@@ -7,7 +7,7 @@ import {Store} from '@ngxs/store';
 import {combineLatest, Subject, takeUntil, tap} from "rxjs";
 
 import {AuthService} from "../../../services/auth.service";
-import {AuthState, Login, LoginSuccess} from "../../../state/auth";
+import {AuthState, LoginSuccess} from "../../../state/auth";
 
 
 
@@ -54,14 +54,6 @@ export class AuthPromptModalComponent implements OnInit, OnDestroy {
         }
       })
     ).subscribe();
-  }
-
-  onLoginSubmit() {
-    if (this.loginForm.valid) {
-      const email = this.loginForm.get('email')?.value;
-      const password = this.loginForm.get('password')?.value;
-      this.store.dispatch(new Login({email, password}))
-    }
   }
 
   async showToast(message: string) {

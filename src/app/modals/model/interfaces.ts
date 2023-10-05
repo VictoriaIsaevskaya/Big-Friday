@@ -1,7 +1,8 @@
 export interface UserPreferences {
+  username?: string;
   avatar?: string;
   about?: string;
-  preferredLanguage?: string;
+  preferredLanguages?: string[];
   interests?: string[];
   ageGroup?: string;
 }

@@ -1,8 +1,11 @@
 <ion-list>
-  <ion-item (click)="navigateToProfile()">
-    Profile
-  </ion-item>
-  <ion-item (click)="signOut()">
-    Sign Out
-  </ion-item>
+  <div *ngIf="isUserLoggedIn">
+    <ion-item (click)="navigateToProfile()">
+      Profile
+    </ion-item>
+    <ion-item (click)="signOut()">
+      Sign Out
+    </ion-item>
+  </div>
+  <app-login-form *ngIf="!isUserLoggedIn"></app-login-form>
 </ion-list>

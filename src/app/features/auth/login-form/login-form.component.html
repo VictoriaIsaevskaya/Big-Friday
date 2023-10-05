@@ -1,0 +1,13 @@
+<form [formGroup]="loginForm" (ngSubmit)="onLoginSubmit()">
+  <ion-item lines="none" class="form-item">
+    <ion-icon name="mail-outline" slot="start" color="primary"></ion-icon>
+    <ion-input placeholder="Email" formControlName="email" type="input"></ion-input>
+  </ion-item>
+  <ion-item lines="none" class="form-item">
+    <ion-icon name="lock-closed-outline" slot="start" color="primary"></ion-icon>
+    <ion-input placeholder="Password" formControlName="password" type="password"></ion-input>
+  </ion-item>
+  <div>
+    <ion-button expand="block" type="submit" [disabled]="!loginForm.valid" class="single-btn align-block-center">Login</ion-button>
+  </div>
+</form>
