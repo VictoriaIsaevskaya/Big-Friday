@@ -1,4 +1,4 @@
-import {APP_INITIALIZER, NgModule} from '@angular/core';
+import { APP_INITIALIZER, NgModule } from '@angular/core';
 import { AngularFireModule } from "@angular/fire/compat";
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { AngularFireDatabaseModule } from "@angular/fire/compat/database";
@@ -20,6 +20,10 @@ import { AuthModule } from "./features/auth/auth.module";
 import {AuthService} from "./services/auth.service";
 import {AuthState} from "./state/auth";
 import {EventsState} from "./state/events";
+
+export function initApp(authService: AuthService) {
+  return () => authService.authState$.pipe(take(1)).toPromise();
+}
 
 @NgModule({
   declarations: [AppComponent],
@@ -44,7 +48,7 @@ import {EventsState} from "./state/events";
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     {
       provide: APP_INITIALIZER,
-      useFactory: (authService: AuthService) => () => () => authService.authState$.pipe(take(1)),
+      useFactory: initApp,
       deps: [AuthService],
       multi: true
     }

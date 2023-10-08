@@ -4,6 +4,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import {PageHeaderComponent} from "../../shared/components/page-header/page-header.component";
+import {OverflowCheckDirective} from "../../shared/directive/overflow-check.directive";
 
 import { ProfilePageRoutingModule } from './profile-routing.module';
 import { ProfilePage } from './profile.page';
@@ -16,6 +17,7 @@ import { ProfilePage } from './profile.page';
     ProfilePageRoutingModule,
     ReactiveFormsModule,
     PageHeaderComponent,
+    OverflowCheckDirective,
   ],
   declarations: [ProfilePage]
 })

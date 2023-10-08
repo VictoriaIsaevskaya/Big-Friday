@@ -59,7 +59,6 @@ export class EventsState {
 
   @Action(LoadEvents)
   loadEvents(ctx: StateContext<EventsStateModel>) {
-    console.log('loadEvents action works')
     ctx.patchState({ loadingStatus: 'loading' });
     return this.eventsService.getAll().pipe(
       tap((events) => {

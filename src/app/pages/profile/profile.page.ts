@@ -1,12 +1,22 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnInit,
+  QueryList,
+  ViewChild,
+  ViewChildren
+} from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
   Validators
 } from "@angular/forms";
+import {PopoverController} from "@ionic/angular";
 import {Store} from "@ngxs/store";
 
-import {preferenceFields} from "../../shared/helpers/preference-fields";
+import {ExpandableTextComponent} from "../../shared/components/expandable-text/expandable-text.component";
+import {OverflowCheckDirective} from "../../shared/directive/overflow-check.directive";
+import {PreferenceField, preferenceFields} from "../../shared/helpers/preference-fields";
 import {AuthState, PreferencesUpload} from "../../state/auth";
 
 @Component({
@@ -14,16 +24,58 @@ import {AuthState, PreferencesUpload} from "../../state/auth";
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit {
+export class ProfilePage implements OnInit, AfterViewInit {
   profileForm: FormGroup
-  formFieldsMap = preferenceFields;
+  formFieldsMap: PreferenceField[] = preferenceFields;
 
   isEditing = false;
+  @ViewChild('popover') popover;
 
-  constructor(private fb: FormBuilder, private store: Store) {}
+  @ViewChildren('fieldInput', { read: OverflowCheckDirective }) fieldInputs: QueryList<OverflowCheckDirective>;
+
+  ngAfterViewInit() {
+    setTimeout(() => {
+      this.checkOverflow();
+    }, 500);
+  }
+
+  checkOverflow() {
+    this.fieldInputs.toArray().forEach((directive, index) => {
+      const ionInputElement = directive.el.nativeElement;
+      const actualInputElement = ionInputElement.querySelector('input');
+
+      if (actualInputElement) {
+        const isFieldOverflowing = actualInputElement.scrollWidth > actualInputElement.clientWidth;
+
+        if (this.formFieldsMap[index].isEditing) {
+          this.formFieldsMap[index].isOverflowing = false;
+        } else {
+          this.formFieldsMap[index].isOverflowing = isFieldOverflowing;
+        }
+      }
+    });
+  }
+
+
+
+  constructor(private fb: FormBuilder, private store: Store, private popoverController: PopoverController) {}
 
   ngOnInit(): void {
     this.initializeProfileForm();
+  }
+
+  async showFullText(ev: any, textToDisplay: string) {
+    const popover = await this.popoverController.create({
+      component: ExpandableTextComponent,
+      event: ev,
+      translucent: true,
+      componentProps: {
+        text: Array.isArray(textToDisplay) ? textToDisplay.join(' ') : textToDisplay,
+      },
+      side: 'left',
+      alignment: 'start',
+    });
+    return await popover.present();
   }
 
   initializeProfileForm(): void {
@@ -50,10 +102,18 @@ export class ProfilePage implements OnInit {
 
   toggleFieldEdit(field: any) {
     field.isEditing = !field.isEditing;
+    this.checkOverflow();
   }
 
+  navigateToEditProfile() {
 
-  submitProfile() {}
+  }
 
-  // ... other methods ...
+  navigateToUpcomingEvents() {
+
+  }
+
+  navigateToPastEvents() {
+
+  }
 }
