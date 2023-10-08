@@ -1,6 +1,6 @@
 import {
   AfterViewInit,
-  Component,
+  Component, OnDestroy,
   OnInit,
   QueryList,
   ViewChild,
@@ -13,21 +13,23 @@ import {
 } from "@angular/forms";
 import {PopoverController} from "@ionic/angular";
 import {Store} from "@ngxs/store";
+import {Subject, takeUntil, tap} from "rxjs";
 
-import {ExpandableTextComponent} from "../../shared/components/expandable-text/expandable-text.component";
-import {OverflowCheckDirective} from "../../shared/directive/overflow-check.directive";
-import {PreferenceField, preferenceFields} from "../../shared/helpers/preference-fields";
-import {AuthState, PreferencesUpload} from "../../state/auth";
+import {ExpandableTextComponent} from "../../../shared/components/expandable-text/expandable-text.component";
+import {OverflowCheckDirective} from "../../../shared/directive/overflow-check.directive";
+import {PreferenceField, preferenceFields} from "../../../shared/helpers/preference-fields";
+import {AuthState, PreferencesUpload} from "../../../state/auth";
 
 @Component({
-  selector: 'app-profile',
+  selector: 'app-dashboard',
   templateUrl: './profile.page.html',
   styleUrls: ['./profile.page.scss'],
 })
-export class ProfilePage implements OnInit, AfterViewInit {
+export class ProfilePage implements OnInit, AfterViewInit, OnDestroy {
+  destroy$ = new Subject<void>()
   profileForm: FormGroup
   formFieldsMap: PreferenceField[] = preferenceFields;
-
+  formEdited = false;
   isEditing = false;
   @ViewChild('popover') popover;
 
@@ -46,22 +48,19 @@ export class ProfilePage implements OnInit, AfterViewInit {
 
       if (actualInputElement) {
         const isFieldOverflowing = actualInputElement.scrollWidth > actualInputElement.clientWidth;
-
-        if (this.formFieldsMap[index].isEditing) {
-          this.formFieldsMap[index].isOverflowing = false;
-        } else {
-          this.formFieldsMap[index].isOverflowing = isFieldOverflowing;
-        }
+        this.formFieldsMap[index].isOverflowing = this.formFieldsMap[index].isEditing ? false : isFieldOverflowing
       }
     });
   }
-
-
 
   constructor(private fb: FormBuilder, private store: Store, private popoverController: PopoverController) {}
 
   ngOnInit(): void {
     this.initializeProfileForm();
+    this.profileForm.valueChanges.pipe(
+      takeUntil(this.destroy$),
+      tap(() => this.formEdited = true),
+    ).subscribe();
   }
 
   async showFullText(ev: any, textToDisplay: string) {
@@ -81,11 +80,11 @@ export class ProfilePage implements OnInit, AfterViewInit {
   initializeProfileForm(): void {
     const { username, about, preferredLanguages, interests, ageGroup} = this.store.selectSnapshot(AuthState.preferences);
     this.profileForm = this.fb.group({
-      username: [username, Validators.required],
       about,
+      ageGroup,
+      username: [username, Validators.required],
       preferredLanguages: [preferredLanguages],
       interests: [interests],
-      ageGroup
     });
   }
 
@@ -105,15 +104,8 @@ export class ProfilePage implements OnInit, AfterViewInit {
     this.checkOverflow();
   }
 
-  navigateToEditProfile() {
-
-  }
-
-  navigateToUpcomingEvents() {
-
-  }
-
-  navigateToPastEvents() {
-
+  ngOnDestroy() {
+    this.destroy$.next()
+    this.destroy$.complete()
   }
 }

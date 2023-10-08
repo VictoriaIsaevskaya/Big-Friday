@@ -23,7 +23,7 @@ export class UserSettingsDropdownComponent {
   ) { }
 
   navigateToProfile() {
-    this.router.navigate(['profile']);
+    this.router.navigate(['dashboard']);
     this.closePopover();
   }
 

@@ -1,0 +1,10 @@
+<ion-content [fullscreen]="true">
+  <app-page-header pageTitle="Dashboard" backRedirectionLink="/home"></app-page-header>
+  <ion-card *ngFor="let card of dashboardCards" class="activity-card" (click)="goToActivity(card.link)">
+    <ion-icon [name]="card.icon" class="activity-icon"></ion-icon>
+    <ion-card-content>
+      <ion-card-title>{{ card.title }}</ion-card-title>
+      {{ card.description }}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

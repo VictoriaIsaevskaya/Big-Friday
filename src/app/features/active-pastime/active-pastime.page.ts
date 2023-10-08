@@ -45,8 +45,4 @@ export class ActivePastimePage {
     this.router.navigate(['/events', activity]);
   }
 
-  goBack() {
-    this.navCtrl.back();
-  }
-
 }
