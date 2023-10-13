@@ -7,5 +7,12 @@
       Sign Out
     </ion-item>
   </div>
-  <app-login-form *ngIf="!isUserLoggedIn"></app-login-form>
+  <div *ngIf="!isUserLoggedIn" (click)="closePopover()" >
+    <ion-item routerLink="auth/login">
+      Login
+    </ion-item>
+    <ion-item routerLink="auth/signup">
+      Sign Up
+    </ion-item>
+  </div>
 </ion-list>

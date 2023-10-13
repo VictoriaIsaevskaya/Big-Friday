@@ -7,7 +7,7 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import { UserPreferences } from "../modals/model/interfaces";
 import {
-  LoginSuccess,
+  LoginSuccess, SetCurrentUser,
   SetUserPreferences
 } from '../state/auth/';
 
@@ -50,11 +50,11 @@ export class AuthService {
             }),
             catchError(err => {
               console.error('Error fetching user preferences:', err);
-              return EMPTY;
+              return this.store.dispatch(new SetCurrentUser({ user: null }));
             })
           );
         } else {
-          return EMPTY;
+          return this.store.dispatch(new SetCurrentUser({ user: null }));
         }
       })
     );

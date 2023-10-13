@@ -20,7 +20,7 @@ export class LoginFormComponent {
     password: FormControl<string>,
   }>;
 
-  constructor(private store: Store, private fb: FormBuilder, private popoverCtrl: PopoverController) {
+  constructor(private store: Store, private fb: FormBuilder) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -32,10 +32,6 @@ export class LoginFormComponent {
       const email = this.loginForm.get('email')?.value;
       const password = this.loginForm.get('password')?.value;
       this.store.dispatch(new Login({email, password}))
-      if (this.popoverCtrl) {
-        this.popoverCtrl.dismiss();
-      }
-
     }
   }
 

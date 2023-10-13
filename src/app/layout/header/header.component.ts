@@ -19,7 +19,6 @@ export class HeaderComponent   {
       component: UserSettingsDropdownComponent,
       event: ev,
       translucent: true,
-      cssClass: 'settings-dropdown-popover-width',
     });
     return await popover.present();
   }

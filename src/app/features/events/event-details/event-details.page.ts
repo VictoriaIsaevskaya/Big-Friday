@@ -3,8 +3,9 @@ import { ModalController } from "@ionic/angular";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
 
-import { PreferencesComponent } from "../../../modals/preferences/preferences.component";
-import { LoadEvent, EventsState } from '../../../state/events/';
+import {AuthState} from "../../../state/auth";
+import { LoadEvent, EventsState } from '../../../state/events';
+import {ShouldAuthModalComponent} from "../../auth/modal/should-auth-modal/should-auth-modal.component";
 import { EventDetails } from "../model/interfaces";
 
 @Component({
@@ -21,10 +22,14 @@ export class EventDetailsPage {
   }
 
   async joinEvent(eventId: number) {
-    const modal = await this.modalController.create({
-      component: PreferencesComponent
-    });
-    return await modal.present();
+    console.log(eventId);
+    if (!this.store.selectSnapshot(AuthState.isLoggedIn)) {
+      const modal = await this.modalController.create({
+        component: ShouldAuthModalComponent
+      });
+      return await modal.present();
+    }
+
   }
 
   leaveEvent(eventId: number) {

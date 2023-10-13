@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 
-import {EventDetails, EventSummary} from "../pages/events/model/interfaces";
+import {EventDetails, EventSummary} from "../features/events/model/interfaces";
 
 @Injectable({
   providedIn: 'root'

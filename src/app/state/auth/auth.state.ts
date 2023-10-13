@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
+import {Router} from "@angular/router";
 import { State, Action, StateContext, Selector } from '@ngxs/store';
 import {from, switchMap, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
@@ -36,7 +37,7 @@ export interface AuthStateModel {
 })
 @Injectable()
 export class AuthState {
-  constructor(private authService: AuthService, private firestore: AngularFirestore) {
+  constructor(private authService: AuthService, private firestore: AngularFirestore, private router: Router) {
   }
 
   @Action(RegisterUser)
@@ -80,6 +81,7 @@ export class AuthState {
     return this.authService.login(email, password).pipe(
       tap((userCredential) => {
         ctx.dispatch(new LoginSuccess({ user: userCredential.user }));
+        this.router.navigateByUrl('home');
       }),
       catchError((error) => {
         console.error('Error during login:', error);
@@ -181,6 +183,8 @@ export class AuthState {
 
   @Action(PreferencesUploadSuccess)
   preferencesUploadSuccess(ctx: StateContext<AuthStateModel>, action: PreferencesUploadSuccess) {
+    this.router.navigateByUrl('home');
+
     const state = ctx.getState();
     const {preferences} = action.payload
     ctx.setState({

@@ -1,0 +1,20 @@
+<ion-content class="form-content">
+  <ion-header no-border>
+    <ion-toolbar class="custom-toolbar">
+      <ion-buttons slot="start">
+        <ion-button fill="clear" (click)="modalCtrl.dismiss()">
+          <ion-icon name="close-outline" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-title>Authentication Needed</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content class="auth-modal-container">
+    <p class="intro-text">
+      To join the event, you need to be authenticated.
+    </p>
+    <ion-button expand="block" class="single-btn align-block-center" (click)="modalCtrl.dismiss()" routerLink="/auth/login">Login</ion-button>
+    <ion-button expand="block" class="single-btn align-block-center" (click)="modalCtrl.dismiss()" fill="outline" color="primary" routerLink="/auth/signup">Sign Up</ion-button>
+  </ion-content>
+</ion-content>

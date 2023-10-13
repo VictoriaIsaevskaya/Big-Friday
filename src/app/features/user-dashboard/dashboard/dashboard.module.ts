@@ -4,7 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from "@angular/router";
 import { IonicModule } from '@ionic/angular';
 
-import { PageHeaderComponent } from "../../../shared/components/page-header/page-header.component";
+import { PageHeaderComponent } from "../../../layout/page-header/page-header.component";
 import { ProfilePageModule } from "../profile/profile.module";
 
 import { DashboardRoutingModule} from './dashboard-routing.module';

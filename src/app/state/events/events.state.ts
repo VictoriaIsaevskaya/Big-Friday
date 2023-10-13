@@ -3,7 +3,7 @@ import {State, Action, StateContext, Selector} from '@ngxs/store';
 import {tap} from "rxjs";
 import {catchError} from "rxjs/operators";
 
-import {EventDetails, EventSummary} from "../../pages/events/model/interfaces";
+import {EventDetails, EventSummary} from "../../features/events/model/interfaces";
 import {EventsService} from "../../services/events.service";
 
 import {

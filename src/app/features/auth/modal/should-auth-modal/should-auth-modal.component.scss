@@ -1,0 +1,17 @@
+.auth-modal-toolbar {
+  --background: transparent;
+}
+
+.auth-modal-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+.intro-text {
+  color: var(--ion-color-light);
+  text-align: center;
+  margin-bottom: 20px;
+}

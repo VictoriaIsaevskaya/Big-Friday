@@ -5,8 +5,8 @@ import {ModalController} from "@ionic/angular";
 import {Store} from "@ngxs/store";
 import {Subject, takeUntil, tap} from "rxjs";
 
-import {AuthPromptModalComponent} from "../../features/auth/auth-prompt-modal/auth-prompt-modal.component";
 import {AuthState} from "../../state/auth";
+import {AuthPromptComponent} from "../auth/auth-prompt/auth-prompt.component";
 
 
 @Component({
@@ -25,7 +25,7 @@ export class HomePage implements OnDestroy {
     if (this.isModalOpen) return;
 
     const modal = await this.modalController.create({
-      component: AuthPromptModalComponent
+      component: AuthPromptComponent
     });
 
     this.isModalOpen = true;
@@ -40,7 +40,7 @@ export class HomePage implements OnDestroy {
   checkLoginAndNavigate() {
     this.store.select(AuthState.isLoggedIn).pipe(
       takeUntil(this.destroy$),
-      tap(isLoggedIn => !isLoggedIn ? this.openAuthPromptModal() : this.router.navigate(['/events']))
+      tap(isLoggedIn => !isLoggedIn ? this.router.navigate(['auth/prompt']) : this.router.navigate(['/events']))
     ).subscribe();
   }
 

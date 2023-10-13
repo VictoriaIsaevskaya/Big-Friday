@@ -1,0 +1,15 @@
+<ion-content class="form-content">
+  <app-page-header pageTitle="Authorization options" backRedirectionLink="/home"></app-page-header>
+
+  <ion-content class="form-container">
+    <p class="intro-text">
+      Are you already registered? Proceed with your credentials or explore as a guest.
+    </p>
+
+    <div>
+      <ion-button expand="block" routerLink="../login" class="single-btn align-block-center">Enter email and password</ion-button>
+      <ion-button expand="block" fill="outline" (click)="continueAsGuest()" class="single-btn align-block-center">Continue as Guest</ion-button>
+    </div>
+
+  </ion-content>
+</ion-content>

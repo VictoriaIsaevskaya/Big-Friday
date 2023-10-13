@@ -1,4 +1,4 @@
-import {EventDetails, EventSummary} from "../../pages/events/model/interfaces";
+import {EventDetails, EventSummary} from "../../features/events/model/interfaces";
 
 export class LoadEvents {
   static readonly type = '[Events] Load Events';

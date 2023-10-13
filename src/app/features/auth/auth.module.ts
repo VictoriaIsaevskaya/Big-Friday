@@ -3,19 +3,21 @@ import { NgModule } from '@angular/core';
 import {ReactiveFormsModule} from "@angular/forms";
 import {IonicModule} from "@ionic/angular";
 
-import {AuthPromptModalComponent} from "./auth-prompt-modal/auth-prompt-modal.component";
+import {PageHeaderComponent} from "../../layout/page-header/page-header.component";
+
+import {AuthPromptComponent} from "./auth-prompt/auth-prompt.component";
+import {AuthRoutingModule} from "./auth-routing.module";
 import {LoginFormComponent} from "./login-form/login-form.component";
 
-
-
 @NgModule({
-  declarations: [AuthPromptModalComponent],
   imports: [
-      CommonModule,
-      IonicModule,
-      ReactiveFormsModule,
-      LoginFormComponent,
+    CommonModule,
+    IonicModule,
+    ReactiveFormsModule,
+    LoginFormComponent,
+    AuthRoutingModule,
+    PageHeaderComponent,
+    AuthPromptComponent
   ],
-  // exports: [LoginFormComponent]
 })
 export class AuthModule { }
