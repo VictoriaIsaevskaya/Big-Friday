@@ -26,6 +26,10 @@ const routes: Routes = [
     path: 'auth',
     loadChildren: () => import('./features/auth/auth.module').then( m => m.AuthModule)
   },
+  {
+    path: 'chats',
+    loadChildren: () => import('./features/chats/chats/chats.module').then(m => m.ChatPageModule)
+  },
 ];
 @NgModule({
   imports: [

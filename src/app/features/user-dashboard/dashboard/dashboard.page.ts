@@ -15,6 +15,6 @@ export class DashboardPage {
   }
 
   goToActivity(link: string) {
-    this.router.navigate(['/dashboard', link]);
+    this.router.navigate(link === 'chats' ? ['chats'] : ['/dashboard', link]);
   }
 }

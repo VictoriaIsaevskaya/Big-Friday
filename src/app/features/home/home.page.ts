@@ -15,27 +15,10 @@ import {AuthPromptComponent} from "../auth/auth-prompt/auth-prompt.component";
   styleUrls: ['home.page.scss']
 })
 export class HomePage implements OnDestroy {
-  isModalOpen = false;
   private destroy$ = new Subject<void>();
 
   constructor(private store: Store, private afAuth: AngularFireAuth, private modalController: ModalController,
               private router: Router) {}
-
-  private async openAuthPromptModal() {
-    if (this.isModalOpen) return;
-
-    const modal = await this.modalController.create({
-      component: AuthPromptComponent
-    });
-
-    this.isModalOpen = true;
-
-    await modal.present();
-
-    modal.onDidDismiss().then(() => {
-      this.isModalOpen = false;
-    });
-  }
 
   checkLoginAndNavigate() {
     this.store.select(AuthState.isLoggedIn).pipe(

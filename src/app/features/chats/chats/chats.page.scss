@@ -1,0 +1,47 @@
+@import 'src/theme/variables.scss';
+
+ion-segment {
+  --background: #d7d8da;
+}
+
+.chat-content {
+  &__list-header {
+    font-weight: 600;
+    font-size: 1rem;
+  }
+  &__list-item {
+    --background: var(--ion-color-dark);
+    border: 1px solid var(--ion-color-medium);
+    border-radius: 6px;
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+    align-items: center;
+    margin: 5px;
+    &__label {
+      font-size: 1.1rem;
+      p {
+        margin-top: 3px;
+        color: var(--ion-color-primary);
+      }
+    }
+  }
+  &__list-text {
+    font-size: 0.7rem;
+  }
+}
+
+ion-footer {
+  ion-toolbar {
+    --background: #d7d8da;
+    --border-top: 1px solid var(--ion-color-dark);
+    --color: var(--ion-color-primary);
+    --padding-end: 5px;
+    --padding-start: 5px;
+  }
+
+  ion-input {
+    --color: var(--ion-color-dark);
+    border-radius: 20px;
+    padding: 5px 10px;
+  }
+}

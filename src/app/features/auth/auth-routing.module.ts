@@ -18,11 +18,6 @@ const routes: Routes = [
     path: 'prompt',
     component: AuthPromptComponent,
   },
-  {
-    path: '**',
-    component: LoginPage,
-    pathMatch: 'full'
-  }
 ];
 
 @NgModule({

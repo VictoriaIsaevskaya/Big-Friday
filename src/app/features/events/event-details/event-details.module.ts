@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
 import {PageHeaderComponent} from "../../../layout/page-header/page-header.component";
-import {ShouldAuthModalComponent} from "../../auth/modal/should-auth-modal/should-auth-modal.component";
+import {ShouldAuthModalComponent} from "../../auth/should-auth-modal/should-auth-modal.component";
 
 import { EventDetailsPageRoutingModule } from './event-details-routing.module';
 import { EventDetailsPage } from './event-details.page';
