@@ -6,7 +6,7 @@
           <ion-icon name="close-outline" color="light"></ion-icon>
         </ion-button>
       </ion-buttons>
-      <ion-title>Create Event</ion-title>
+      <ion-title>Create {{category | titlecase}} Event</ion-title>
     </ion-toolbar>
   </ion-header>
 
@@ -24,17 +24,17 @@
           <ng-container *ngIf="field.type === 'datetime'">
             <ion-datetime-button datetime="datetime"></ion-datetime-button>
           </ng-container>
-          <ng-container *ngIf="field.type === 'select' && field.controlName === 'recommendedAgeGroup'">
+          <ng-container *ngIf="field.type === 'select'">
             <ion-select [formControlName]="field.controlName" [placeholder]="field.placeholder">
               <ion-select-option *ngFor="let option of field.options" [value]="option">{{ option }}</ion-select-option>
             </ion-select>
           </ng-container>
         </ion-item>
       </ng-container>
-      <ion-item *ngIf="eventForm.get('recommendedAgeGroup')?.value === 'Custom'" lines="none" class="form-item">
-        <ion-label position="stacked">Custom Age Group</ion-label>
-        <ion-input formControlName="customAgeGroup" placeholder="e.g. 30-40"></ion-input>
-      </ion-item>
+<!--      <ion-item *ngIf="eventForm.get('recommendedAgeGroup')?.value === 'Custom'" lines="none" class="form-item">-->
+<!--        <ion-label position="stacked">Custom Age Group</ion-label>-->
+<!--        <ion-input formControlName="customAgeGroup" placeholder="e.g. 30-40"></ion-input>-->
+<!--      </ion-item>-->
       <div>
         <ion-button expand="block" type="submit" [disabled]="!eventForm.valid" class="single-btn align-block-center">Create</ion-button>
       </div>

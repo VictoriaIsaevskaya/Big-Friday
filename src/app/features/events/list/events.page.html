@@ -1,17 +1,11 @@
 <ion-content [fullscreen]="true">
-  <ion-header>
-    <ion-toolbar class="secondary-color">
-      <ion-buttons slot="start">
-        <ion-back-button [defaultHref]="getActivityCategory()"></ion-back-button>
-      </ion-buttons>
-      <ion-buttons slot="end">
-        <ion-button (click)="openCreateEventModal()">
-          <ion-icon slot="icon-only" name="add-outline"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      <ion-title>{{ pageTitle }}</ion-title>
-    </ion-toolbar>
-  </ion-header>
+  <app-page-header [pageTitle]="pageTitle" [backRedirectionLink]="getActivityCategory()">
+    <ion-buttons slot="end">
+      <ion-button (click)="openCreateEventModal()">
+        <ion-icon slot="icon-only" name="add-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </app-page-header>
   <ng-container *ngFor="let event of events$ | async">
     <app-event-card [event]="event"></app-event-card>
   </ng-container>

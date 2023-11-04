@@ -14,9 +14,10 @@ export interface EventDetails extends EventSummary {
     name: string;
     avatar: string;
   };
+  category: string;
   ageGroup: string;
   language: string;
-  cost: number | string;
+  eventCost: number | string;
   rules: string[],
   additionalInfo: string
 }

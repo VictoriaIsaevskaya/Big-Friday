@@ -2,9 +2,9 @@ import {Injectable} from "@angular/core";
 import {Store} from "@ngxs/store";
 import {Observable} from "rxjs";
 
+import {FirestoreApiService} from "../../services/firestore-api.service";
 import {AuthState} from "../../state/auth";
 
-import {FirestoreApiService} from "./firestore-api.service";
 
 @Injectable({
   providedIn: 'root'

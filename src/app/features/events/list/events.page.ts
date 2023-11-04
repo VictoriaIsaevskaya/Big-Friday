@@ -51,7 +51,10 @@ export class EventsPage implements OnInit {
 
   async openCreateEventModal() {
     const modal = await this.modalController.create({
-      component: CreateEventComponent
+      component: CreateEventComponent,
+      componentProps: {
+        'category': this.activityType
+      }
     });
     return await modal.present();
   }

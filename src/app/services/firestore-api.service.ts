@@ -38,4 +38,20 @@ export class FirestoreApiService {
   whereQuery(fieldPath: string, condition: firebase.firestore.WhereFilterOp, value: any): QueryFn {
     return ref => ref.where(fieldPath, condition, value);
   }
+
+  createEvent(eventDetails: any): Promise<any> {
+    return this.firestore.collection('events').add(eventDetails);
+  }
+
+  createChatForEvent(eventId: string): Promise<any> {
+    const chatData = {
+      eventId: eventId,
+      messages: []
+    };
+    return this.firestore.collection('chats').add(chatData);
+  }
+
+  linkEventWithChat(eventId: string, chatId: string): Promise<void> {
+    return this.firestore.doc(`events/${eventId}`).update({chatId: chatId});
+  }
 }

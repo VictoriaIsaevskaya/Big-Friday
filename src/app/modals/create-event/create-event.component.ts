@@ -1,5 +1,5 @@
 import { CommonModule } from "@angular/common";
-import { Component, ViewChild } from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angular/forms";
 import { IonicModule, IonInput, ModalController } from "@ionic/angular";
 import { Store } from "@ngxs/store";
@@ -17,6 +17,7 @@ import {AddEvent} from "../../state/events";
 })
 export class CreateEventComponent {
   @ViewChild('input', { read: IonInput }) input?: IonInput;
+  @Input() category: string;
   eventForm: FormGroup;
   formFieldsMap = [
     { controlName: 'title', placeholder: 'Event Title', icon: 'create-outline', type: 'input' },
@@ -26,7 +27,10 @@ export class CreateEventComponent {
     { controlName: 'attendees', placeholder: 'Attendees', icon: 'people-outline', type: 'input' },
     { controlName: 'maxAttendees', placeholder: 'Max Attendees', icon: 'people-circle-outline', type: 'input' },
     { controlName: 'eventCost', placeholder: 'Event Cost', icon: 'cash-outline', type: 'input' },
-    { controlName: 'recommendedAgeGroup', placeholder: 'Recommended Age Group', icon: 'people-outline', type: 'select', options: ['2+', '4-6', '7-9', '10-13', '14-17', '18-25', '26-35', '36-45', '46-55', '56+', 'Custom'] }
+    { controlName: 'language', placeholder: 'Language', icon: 'language-outline', type: 'select', options: ['English', 'Russian', 'French', 'Spanish', 'German', 'Polish', 'See additional info'] },
+    { controlName: 'recommendedAgeGroup', placeholder: 'Recommended Age Group', icon: 'people-outline', type: 'select', options: ['2+', '4-6', '7-9', '10-13', '14-17', '18-25', '26-35', '36-45', '46-55', '56+', 'See additional info'] },
+    { controlName: 'rules', placeholder: 'Rules', icon: 'reader-outline', type: 'textarea' },
+    { controlName: 'additionalInfo', placeholder: 'Additional Info', icon: 'information-circle-outline', type: 'textarea' },
   ];
 
   constructor(private formBuilder: FormBuilder, private modalController: ModalController, private store: Store) {
@@ -37,9 +41,12 @@ export class CreateEventComponent {
       location: ['', [Validators.required, Validators.maxLength(200)]],
       attendees: ['', [Validators.required]],
       maxAttendees: ['', [Validators.required]],
-      eventCost: ['', Validators.required],
+      eventCost: [''],
       recommendedAgeGroup: [''],
-      customAgeGroup: ['']
+      customAgeGroup: [''],
+      language: [''],
+      rules: [''],
+      additionalInfo: []
     });
   }
 
@@ -50,7 +57,8 @@ export class CreateEventComponent {
         organizer: {
           name: 'Ray Clay ',
           avatar: 'assets/images/avatar.jpg'
-        }
+        },
+        category: this.category,
       };
       this.store.dispatch(new AddEvent({ event }) )
       this.dismissModal();
