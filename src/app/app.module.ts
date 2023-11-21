@@ -18,6 +18,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from "./features/auth/auth.module";
 import {AuthService} from "./services/auth.service";
+import {CarouselComponent} from "./shared/components/carousel/carousel.component";
 import {AuthState} from "./state/auth";
 import {EventsState} from "./state/events";
 
@@ -43,6 +44,7 @@ export function initApp(authService: AuthService) {
     AngularFireDatabaseModule,
     IonicStorageModule.forRoot(),
     AuthModule,
+    CarouselComponent
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

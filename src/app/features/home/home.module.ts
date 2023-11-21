@@ -5,6 +5,7 @@ import { IonicModule } from '@ionic/angular';
 
 import {ExploreContainerComponentModule} from "../../explore-container/explore-container.module";
 import {HeaderComponent} from "../../layout/header/header.component";
+import {CarouselComponent} from "../../shared/components/carousel/carousel.component";
 
 import { HomeRoutingModule } from './home-routing.module';
 import { HomePage } from './home.page';
@@ -17,6 +18,7 @@ import { HomePage } from './home.page';
     RouterModule,
     ExploreContainerComponentModule,
     HeaderComponent,
+    CarouselComponent,
   ],
   declarations: [HomePage]
 })

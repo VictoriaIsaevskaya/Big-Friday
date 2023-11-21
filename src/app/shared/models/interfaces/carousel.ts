@@ -1,3 +1,4 @@
 export interface CarouselItem {
-  item: string;
+  title: string;
+  date: string;
 }

@@ -1,21 +1,24 @@
 <app-header></app-header>
 
 <ion-content [fullscreen]="true" class="home-content">
-  <div class="home-content__main-message">
-    <img class="" src="../../../assets/images/concert.jpg" alt="Concert">
-    <h2></h2>
+  <div class="home-content__screen">
+    <img class="" src="../../../assets/images/friends.jpg" alt="Concert">
+    <ion-searchbar placeholder="Find Specific Event" class="home-content__screen_searchbar"></ion-searchbar>
   </div>
 
   <div class="home-content__mission-statement">
-    <h2>Make Every Friday Big!</h2>
+    <h2>make every friday big!</h2>
     <p class="home-content__mission-statement_text">Find friends, join events, and enjoy.</p>
-    <p>Big Friday is all about organizing your free time...</p>
-
   </div>
 
+  <div>
+    <app-carousel></app-carousel>
+  </div>
+
+
   <div class="home-content__button-container">
-    <ion-button class="home-content__button" expand="block" (click)="checkLoginAndNavigate()">Active</ion-button>
-    <ion-button class="home-content__button home-content__button--hover" expand="block" routerLink="/passive-pastime">Passive</ion-button>
+    <ion-button class="home-content__button button-active" expand="block" (click)="checkLoginAndNavigate()">Active</ion-button>
+    <ion-button class="home-content__button button-passive home-content__button--hover" expand="block" routerLink="/passive-pastime">Passive</ion-button>
   </div>
 
 </ion-content>

@@ -13,8 +13,29 @@ import {CarouselItem} from "../../models/interfaces/carousel";
   imports: [CommonModule],
 })
 export class CarouselComponent {
-  @Input() slides?: CarouselItem[]
-  swiperModules = [IonicSlides];
-  constructor() { }
+  activeSlideIndex = 0;
+  swiper: any;
 
+  @Input() slides: CarouselItem[] = [
+    {
+      title: 'Open Air',
+      date: 'Today 20:00'
+    },
+    {
+      title: 'Food Fest',
+      date: 'Tomorrow 18:00'
+    },
+    {
+      title: 'Art Ex',
+      date: 'After tomorrow 10:00'
+    }
+  ];
+  swiperModules = [IonicSlides];
+
+  constructor() {
+  }
+
+  updateActiveSlide(event: CustomEvent) {
+    this.activeSlideIndex = event.detail[0].activeIndex
+  }
 }

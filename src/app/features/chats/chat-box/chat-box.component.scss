@@ -1,7 +1,5 @@
-@import 'src/theme/variables.scss';
-
 .message-item {
-  --background: var(--ion-color-dark);
+  --background: lightslategrey;
   border: 1px solid var(--ion-color-medium);
   border-radius: 6px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
@@ -15,7 +13,7 @@
 }
 
 .their-message {
-  --background: #5d58e0;
+  --background: indianred;
   border-radius: 0 10px 10px 10px;
   margin: 5px 50px 5px 10px;
 }
@@ -25,10 +23,12 @@
   flex-direction: column;
   p {
     margin: 0;
+    color: var(--ion-color-primary-contrast);
   }
 
   span {
     font-size: 12px;
     opacity: 0.7;
+    color: var(--ion-color-primary-contrast);
   }
 }

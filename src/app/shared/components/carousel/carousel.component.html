@@ -1,9 +1,22 @@
-<div class="carousel-container">
-  <div class="carousel-gradient"></div>
-  <swiper-container [modules]="swiperModules" [slidesPerView]="1" [centeredSlides]="true" [autoplay]="true" [spaceBetween]="20"
-                    [pagination]="{clickable: true, dynamicBullets: true}" [initialSlide]="2">
-    <swiper-slide class="slide-card" *ngFor="let slide of slides">
-      <img [src]="slide.item">
-    </swiper-slide>
-  </swiper-container>
+<div class="last-minute-events-section">
+  <div class="carousel-container">
+    <p class="last-minute-events-title">Last Minute Events</p>
+
+    <swiper-container
+      [modules]="swiperModules"
+      [slidesPerView]="2"
+      [centeredSlides]="true"
+      [autoplay]="false"
+      [spaceBetween]="20"
+      [pagination]="{clickable: true, dynamicBullets: true}"
+      (slidechangetransitionend)="updateActiveSlide($event)"
+      >
+      <swiper-slide *ngFor="let slide of slides; let i = index" [ngClass]="{'active-slide': i === activeSlideIndex}" class="slide-card">
+        <div class="event-info">
+          <p class="event-title">{{ slide.title }}</p>
+          <p class="event-time">{{ slide.date }}</p>
+        </div>
+      </swiper-slide>
+    </swiper-container>
+  </div>
 </div>

@@ -24,12 +24,24 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
-h1, h2, p, span, ion-card-title {
-  color: var(--ion-color-secondary-contrast);
+body {
+  font-family: 'Cabin', sans-serif;
+}
+
+h1, h2, h3, h4, p, span, ion-title, ion-icon {
+  font-family: 'Cabin', sans-serif;
+  color: var(--ion-text-color-secondary);
+}
+
+ion-card-title {
+  font-family: 'Cabin', sans-serif;
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--ion-color-primary);
 }
 
 ion-tab-button {
-  --color: var(--ion-color-secondary-contrast);
+  --color: var(--ion-color-secondary);
   --color-selected: var(--ion-color-primary);
 }
 
@@ -49,6 +61,27 @@ ion-tab-button {
   align-items: center;
 }
 
+.p-0 {
+  padding: 0;
+}
+
+.m-0 {
+  margin: 0;
+}
+
+.p-s {
+  padding: 5px;
+}
+
+.p-m {
+  padding: 10px;
+}
+
+.py-l {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+
 .ml-s {
   margin-left: 5px;
 }
@@ -59,22 +92,6 @@ ion-tab-button {
 
 .mr-s {
   margin-right: 5px;
-}
-
-.secondary-color {
-  color: var(--ion-color-light);
-}
-
-.activity-icon, {
-  font-size: 26px;
-  color: var(--ion-color-primary);
-  margin-right: 20px;
-}
-
-ion-card-title {
-  font-size: 20px;
-  font-weight: 500;
-  color: var(--ion-color-light);
 }
 
 .single-btn {
@@ -95,14 +112,10 @@ ion-card-title {
 }
 
 .form-item {
-  --background: transparent;
-  --color: #fff;
   --border-color: var(--ion-color-primary);
-  --placeholder-color: #888;
   width: 100%;
 
   ion-icon {
-    color: var(--ion-color-primary);
     margin-right: 10px;
   }
 
@@ -136,7 +149,7 @@ ion-avatar {
 }
 
 .activity-card {
-  background-color: var(--ion-color-dark);
+  background-color: var(--ion-color-primary-contrast);
   border: 1px solid var(--ion-color-medium);
   border-radius: 6px;
   box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
@@ -162,8 +175,19 @@ ion-avatar {
   }
 }
 
-.form-content {
-  --ion-background-color: #1a1a1a;
+.activity-icon {
+  color: var(--ion-text-color-secondary);
+  font-size: 25px;
+  --ionicon-stroke-width: 48px;
+  border-radius: 30%;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  padding: 8px;
+  background: linear-gradient(to top right, #e6e6e6, #ffffff); /* Градиент для создания эффекта глубины */
+}
+
+.activity-title {
+  font-size: 18px;
+  font-weight: 500;
 }
 
 .intro-text {
@@ -172,12 +196,6 @@ ion-avatar {
   color: var(--ion-color-light);
   text-align: center;
   line-height: 1.4;
-}
-
-.custom-toolbar {
-  --background: rgba(255, 255, 255, 0.05);
-  --color: var(--ion-color-light);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .form-container {
@@ -189,10 +207,4 @@ ion-popover {
     box-shadow: none !important;
     background-color: transparent !important;
   }
-}
-
-input:-webkit-autofill {
-  -webkit-box-shadow: 0 0 0px 1000px var(--ion-background-color) inset;
-  box-shadow: 0 0 0 1000px var(--ion-background-color) inset;
-  -webkit-text-fill-color: var(--ion-color-light) !important;
 }

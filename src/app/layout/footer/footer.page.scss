@@ -1,6 +1,6 @@
 ion-tab-bar {
-  box-shadow: 0 -4px 10px rgba(255, 255, 255, 0.1);
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -4px 10px var(--ion-color-primary);
+  border-top: 1px solid var(--ion-color-primary);
 }
 
 ion-tab-button {

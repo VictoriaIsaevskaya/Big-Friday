@@ -1,15 +1,5 @@
 @import 'src/theme/variables.scss';
 
-.form-content {
-  --ion-background-color: #000;
-}
-
-.custom-toolbar {
-  --background: rgba(255, 255, 255, 0.05);
-  --color: #fff;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 .form-container {
   padding: 20px;
 }
@@ -18,19 +8,13 @@ input {
   width: 100%;
   border: none;
   background-color: transparent;
-  color: #fff;
   font-size: inherit;
   outline: none;
   padding: 0;
 }
 
-.date-label {
-  color: var(--ion-color-medium);
-}
-
 .date-input {
   background-color: transparent;
-  color: #fff;
   border-bottom: 2px solid #888;
   width: 50%;
   font-size: 16px;

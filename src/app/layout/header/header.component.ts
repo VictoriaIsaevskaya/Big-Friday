@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import { Component } from '@angular/core';
+import {Component} from '@angular/core';
 import {IonicModule, PopoverController} from "@ionic/angular";
 
 import {UserSettingsDropdownComponent} from "../user-settings-dropdown/user-settings-dropdown.component";
@@ -9,7 +9,7 @@ import {UserSettingsDropdownComponent} from "../user-settings-dropdown/user-sett
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule,]
+  imports: [IonicModule, CommonModule]
 })
 export class HeaderComponent   {
   constructor(private popoverController: PopoverController) { }

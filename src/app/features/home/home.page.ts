@@ -6,7 +6,6 @@ import {Store} from "@ngxs/store";
 import {Subject, takeUntil, tap} from "rxjs";
 
 import {AuthState} from "../../state/auth";
-import {AuthPromptComponent} from "../auth/auth-prompt/auth-prompt.component";
 
 
 @Component({

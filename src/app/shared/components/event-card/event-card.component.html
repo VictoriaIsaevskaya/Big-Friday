@@ -1,6 +1,6 @@
 <ion-card *ngIf="event" (click)="openEventDetails(event.id)" class="activity-card">
   <ion-card-content>
-    <ion-card-title class="title primary-color">{{ event.title }}</ion-card-title>
+    <ion-card-title class="title">{{ event.title }}</ion-card-title>
     <p class="description">{{ event.description | slice:0:100 }}...</p>
     <div class="secondary-color">
       <div><ion-icon name="calendar-outline"></ion-icon> {{ event.date | date:'mediumDate' }} {{ event.date | date:'shortTime' }}</div>
