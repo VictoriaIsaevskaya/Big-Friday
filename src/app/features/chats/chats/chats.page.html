@@ -25,7 +25,7 @@
     <ion-list-header class="chat-content__list-header">
       <p>Recent Chats</p>
     </ion-list-header>
-    <ion-item *ngFor="let item of chatRooms" (click)="getChat(item.id)" detail="true" class="chat-content__list-item" color="dark">
+    <ion-item *ngFor="let item of chatRooms" (click)="getChat(item.id)" detail="true" class="chat-content__list-item">
       <ion-avatar slot="start">
         <img [src]="item.photo" alt="">
       </ion-avatar>

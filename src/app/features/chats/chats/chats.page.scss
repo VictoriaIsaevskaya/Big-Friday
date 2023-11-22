@@ -6,11 +6,11 @@ ion-segment {
 
 .chat-content {
   &__list-header {
-    font-weight: 600;
-    font-size: 1rem;
+    font-weight: 500;
+    font-size: 1.1rem;
   }
   &__list-item {
-    --background: var(--ion-color-dark);
+    --background: var(--ion-color-primary-contrast);
     border: 1px solid var(--ion-color-medium);
     border-radius: 6px;
     box-shadow: 0 6px 10px rgba(0, 0, 0, 0.08);
@@ -18,10 +18,12 @@ ion-segment {
     align-items: center;
     margin: 5px;
     &__label {
-      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--ion-color-primary);
+
       p {
         margin-top: 3px;
-        color: var(--ion-color-primary);
+        color: var(--ion-color-text-secondary);
       }
     }
   }
@@ -40,7 +42,7 @@ ion-footer {
   }
 
   ion-input {
-    --color: var(--ion-color-dark);
+    //--color: var(--ion-color-dark);
     border-radius: 20px;
     padding: 5px 10px;
   }

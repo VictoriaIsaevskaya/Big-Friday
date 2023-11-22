@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import { Select, Store } from "@ngxs/store";
 import { Observable } from "rxjs";
@@ -15,11 +15,11 @@ import { EventDetails } from "../model/interfaces";
   styleUrls: ['./event-details.page.scss'],
 })
 export class EventDetailsPage {
-
   @Select(EventsState.eventDetails) event$!: Observable<EventDetails | null>;
 
-  constructor(private store: Store, private modalController: ModalController, private router: Router) {
-    this.store.dispatch(new LoadEvent({eventId: '2'}));
+  constructor(private route: ActivatedRoute, private store: Store, private modalController: ModalController, private router: Router) {
+    this.store.dispatch(new LoadEvent({eventId: this.route.snapshot.paramMap.get('eventId')}));
+    this.event$.subscribe(data => console.log(data))
   }
 
   joinEvent(eventId: number) {

@@ -74,8 +74,9 @@ export class EventsState {
   @Action(LoadEvent)
   loadEvent(ctx: StateContext<EventsStateModel>, action: LoadEvent) {
     ctx.patchState({ loadingStatus: 'loading' });
+    const filteredEvent = ctx.getState().events.find(event => event.id === action.payload.eventId);
 
-    return this.eventsService.getEvent(action.payload.eventId).pipe(
+    return filteredEvent || this.eventsService.getEvent(action.payload.eventId).pipe(
       tap((event) => {
         ctx.dispatch(new LoadEventSuccess({ event }));
       }),

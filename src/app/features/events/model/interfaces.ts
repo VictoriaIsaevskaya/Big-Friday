@@ -1,5 +1,5 @@
 export interface EventSummary {
-  id: number;
+  id: string;
   title: string;
   description: string;
   date: Date;
@@ -7,6 +7,13 @@ export interface EventSummary {
   attendees: number;
   maxAttendees: number;
   isJoined: boolean;
+}
+
+export interface Participant {
+  userId: string;
+  name: string;
+  avatar: string;
+  interests?: string[];
 }
 
 export interface EventDetails extends EventSummary {
@@ -19,13 +26,7 @@ export interface EventDetails extends EventSummary {
   language: string;
   eventCost: number | string;
   rules: string[],
-  additionalInfo: string
-}
-
-export interface EventsState {
-  events: EventSummary[];
-  loadingStatus: 'idle' | 'loading' | 'loaded' | 'error';
-  error: string | null;
-  selectedEvent: EventDetails | null;
-  createdEvent: EventDetails| null;
+  additionalInfo: string;
+  recommendedAgeGroup: string;
+  participants: Participant[];
 }

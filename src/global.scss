@@ -126,22 +126,6 @@ ion-tab-button {
   }
 }
 
-.alert-wrapper {
-  --background: #616568;
-}
-
-.alert-radio-label, .alert-checkbox-label {
-  color: var(--ion-color-light) !important;
-}
-
-.alert-radio-button[aria-checked="true"] .alert-radio-inner {
-  --border-color: var(--ion-color-primary) !important;
-}
-
-.alert-checkbox-inner {
-  border-color: var(--ion-color-light) !important;
-}
-
 ion-avatar {
   width: 40px;
   height: 40px;
