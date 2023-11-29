@@ -54,4 +54,12 @@ export class FirestoreApiService {
   linkEventWithChat(eventId: string, chatId: string): Promise<void> {
     return this.firestore.doc(`events/${eventId}`).update({chatId: chatId});
   }
+
+  updateEvent(eventId: string, eventData: any): Promise<void> {
+    return this.firestore.collection('events').doc(eventId).update(eventData);
+  }
+
+  joinUserToEvent(uid: string, events: string[]) {
+    return this.firestore.collection('users').doc(uid).update({ joinedEvents: events });
+  }
 }

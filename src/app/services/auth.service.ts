@@ -2,14 +2,14 @@ import { Injectable } from '@angular/core';
 import { AngularFireAuth } from "@angular/fire/compat/auth";
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import { Store } from '@ngxs/store';
-import { EMPTY, from, Observable } from 'rxjs';
+import { from, Observable } from 'rxjs';
 import { catchError, switchMap, tap } from 'rxjs/operators';
 
-import { UserPreferences } from "../modals/model/interfaces";
+import {User} from "../shared/models/interfaces/user";
 import {
-  LoginSuccess, SetCurrentUser,
-  SetUserPreferences
+  LoginSuccess, SetCurrentUser
 } from '../state/auth/';
+import {SetUserPreferences} from "../state/user";
 
 @Injectable({
   providedIn: 'root'
@@ -20,8 +20,8 @@ export class AuthService {
     this.authState$.subscribe();
   }
 
-  private getUserPreferences(uid: string): Observable<UserPreferences> {
-    return this.firestore.collection('users').doc<UserPreferences>(uid).valueChanges();
+  private getUserPreferences(uid: string): Observable<User> {
+    return this.firestore.collection('users').doc<User>(uid).valueChanges();
   }
 
   login(email: string, password: string): Observable<any> {

@@ -3,8 +3,9 @@ import {State, Action, StateContext, Selector} from '@ngxs/store';
 import {tap} from "rxjs";
 import {catchError} from "rxjs/operators";
 
-import {EventDetails, EventSummary} from "../../features/events/model/interfaces";
+import {EventDetails} from "../../features/events/model/interfaces";
 import {EventsService} from "../../services/events.service";
+import {FirestoreApiService} from "../../services/firestore-api.service";
 
 import {
   AddEvent,
@@ -13,11 +14,11 @@ import {
   LoadEvents,
   LoadEventsFailure,
   LoadEventsSuccess,
-  LoadEventSuccess
+  LoadEventSuccess, UpdateEvent
 } from "./events.actions";
 
 export interface EventsStateModel {
-  events: EventSummary[];
+  events: EventDetails[];
   loadingStatus: string;
   error: string | null;
   selectedEvent: EventDetails | null;
@@ -35,7 +36,7 @@ export interface EventsStateModel {
   }
 })
 export class EventsState {
-  constructor(private eventsService: EventsService) {
+  constructor(private eventsService: EventsService, private firestoreApiService: FirestoreApiService) {
   }
   @Selector()
   static allEvents(state: EventsStateModel) {
@@ -43,7 +44,7 @@ export class EventsState {
   }
 
   @Selector()
-  static eventDetails(state: EventsStateModel) {
+  static selectedEventDetails(state: EventsStateModel) {
     return state.selectedEvent;
   }
 
@@ -75,10 +76,9 @@ export class EventsState {
   loadEvent(ctx: StateContext<EventsStateModel>, action: LoadEvent) {
     ctx.patchState({ loadingStatus: 'loading' });
     const filteredEvent = ctx.getState().events.find(event => event.id === action.payload.eventId);
-
-    return filteredEvent || this.eventsService.getEvent(action.payload.eventId).pipe(
+    return filteredEvent ? ctx.dispatch(new LoadEventSuccess({ event: filteredEvent })) : this.eventsService.getEvent(action.payload.eventId).pipe(
       tap((event) => {
-        ctx.dispatch(new LoadEventSuccess({ event }));
+        ctx.dispatch(new LoadEventSuccess({ event: {...event, id: action.payload.eventId }}));
       }),
       catchError((error) => {
         ctx.dispatch(new LoadEventFailure({ error: error.message }));
@@ -135,6 +135,20 @@ export class EventsState {
       ...state,
       events: [...state.events, action.payload.event],
       createdEvent: action.payload.event
+    });
+  }
+
+  @Action(UpdateEvent)
+  updateEvent(ctx: StateContext<EventsStateModel>, action: UpdateEvent) {
+    return this.firestoreApiService.updateEvent(action.payload.eventId, action.payload.eventData).then(() => {
+      const state = ctx.getState();
+      const updatedEvents = state.events.map(event =>
+        event.id === action.payload.eventId ? { ...event, ...action.payload.eventData } : event
+      );
+      ctx.setState({
+        ...state,
+        events: updatedEvents
+      });
     });
   }
 

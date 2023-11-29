@@ -25,7 +25,7 @@
             <ion-datetime-button datetime="datetime"></ion-datetime-button>
           </ng-container>
           <ng-container *ngIf="field.type === 'select'">
-            <ion-select [formControlName]="field.controlName" [placeholder]="field.placeholder">
+            <ion-select [formControlName]="field.controlName" [placeholder]="field.placeholder" [multiple]="field.multiple">
               <ion-select-option *ngFor="let option of field.options" [value]="option">{{ option }}</ion-select-option>
             </ion-select>
           </ng-container>

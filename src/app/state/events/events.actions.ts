@@ -1,4 +1,4 @@
-import {EventDetails, EventSummary} from "../../features/events/model/interfaces";
+import {EventDetails} from "../../features/events/model/interfaces";
 
 export class LoadEvents {
   static readonly type = '[Events] Load Events';
@@ -6,7 +6,7 @@ export class LoadEvents {
 
 export class LoadEventsSuccess {
   static readonly type = '[Events] Load Events Success';
-  constructor(public payload: { events: EventSummary[] }) {}
+  constructor(public payload: { events: EventDetails[] }) {}
 }
 
 export class LoadEventsFailure {
@@ -32,4 +32,9 @@ export class LoadEventSuccess {
 export class LoadEventFailure {
   static readonly type = '[Events] Load Event Failure';
   constructor(public payload: { error: string }) {}
+}
+
+export class UpdateEvent {
+  static readonly type = '[Events] Update';
+  constructor(public payload: { eventId: string, eventData: any }) {}
 }

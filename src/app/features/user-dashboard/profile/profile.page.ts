@@ -18,7 +18,7 @@ import {Subject, takeUntil, tap} from "rxjs";
 import {ExpandableTextComponent} from "../../../shared/components/expandable-text/expandable-text.component";
 import {OverflowCheckDirective} from "../../../shared/directive/overflow-check.directive";
 import {PreferenceField, preferenceFields} from "../../../shared/helpers/preference-fields";
-import {AuthState, PreferencesUpload} from "../../../state/auth";
+import {PreferencesUpload, UserState} from "../../../state/user";
 
 @Component({
   selector: 'app-dashboard',
@@ -78,7 +78,7 @@ export class ProfilePage implements OnInit, AfterViewInit, OnDestroy {
   }
 
   initializeProfileForm(): void {
-    const { username, about, preferredLanguages, interests, ageGroup} = this.store.selectSnapshot(AuthState.preferences);
+    const { username, about, preferredLanguages, interests, ageGroup} = this.store.selectSnapshot(UserState.userPreferences);
     this.profileForm = this.fb.group({
       about,
       ageGroup,

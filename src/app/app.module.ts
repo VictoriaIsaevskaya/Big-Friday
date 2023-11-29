@@ -21,6 +21,7 @@ import {AuthService} from "./services/auth.service";
 import {CarouselComponent} from "./shared/components/carousel/carousel.component";
 import {AuthState} from "./state/auth";
 import {EventsState} from "./state/events";
+import {UserState} from "./state/user";
 
 export function initApp(authService: AuthService) {
   return () => authService.authState$.pipe(take(1)).toPromise();
@@ -33,7 +34,7 @@ export function initApp(authService: AuthService) {
     IonicStorageModule.forRoot(),
     IonicModule.forRoot(),
     AppRoutingModule,
-    NgxsModule.forRoot([AuthState, EventsState]),
+    NgxsModule.forRoot([AuthState, EventsState, UserState]),
     NgxsReduxDevtoolsPluginModule.forRoot({
       disabled: environment.production
     }),

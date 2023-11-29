@@ -1,35 +1,34 @@
-<ng-container *ngIf="event$ | async as eventDetails">
-  <app-page-header [pageTitle]="eventDetails.title" backRedirectionLink="/events"></app-page-header>
-  <div> {{event$ | json}}</div>
+<ng-container *ngIf="event$ | async as event">
+  <app-page-header [pageTitle]="event.title" backRedirectionLink="/events"></app-page-header>
   <ion-content class="event-details-content">
     <ion-card class="activity-card">
       <ion-card-content>
-        <ion-card-title class="title">{{ eventDetails.title }}</ion-card-title>
-        <p class="description">{{ eventDetails.description }}</p>
+        <ion-card-title class="title">{{ event.title }}</ion-card-title>
+        <p class="description">{{ event.description }}</p>
         <div class="secondary-color">
-          <div><ion-icon name="calendar-outline"></ion-icon> {{ eventDetails.date | date:'mediumDate' }} {{ eventDetails.date | date:'shortTime' }}</div>
-          <div><ion-icon name="location-outline"></ion-icon> {{ eventDetails.location }}</div>
-          <div><ion-icon name="people-outline"></ion-icon> {{ eventDetails.attendees }}/{{ eventDetails.maxAttendees }} participants</div>
-          <div><ion-icon name="wallet-outline"></ion-icon> {{ eventDetails.eventCost }}</div>
-          <div><ion-icon name="language-outline"></ion-icon> {{ eventDetails.language }}</div>
-          <div><ion-icon name="person-outline"></ion-icon> {{ eventDetails.recommendedAgeGroup }}</div>
+          <div><ion-icon name="calendar-outline"></ion-icon> {{ event.date | date:'mediumDate' }} {{ event.date | date:'shortTime' }}</div>
+          <div><ion-icon name="location-outline"></ion-icon> {{ event.location }}</div>
+          <div><ion-icon name="people-outline"></ion-icon> {{ event.attendees }}/{{ event.maxAttendees }} participants</div>
+          <div><ion-icon name="wallet-outline"></ion-icon> {{ event.eventCost }}</div>
+          <div><ion-icon name="language-outline"></ion-icon> {{ event.language }}</div>
+          <div><ion-icon name="person-outline"></ion-icon> {{ event.recommendedAgeGroup }}</div>
           <div class="rules-section">
             <h4>Event Rules:</h4>
-            {{ eventDetails.rules }}
+            {{ event.rules }}
           </div>
           <div class="additional-info-section">
             <h4>Additional Information:</h4>
-            <p>{{ eventDetails.additionalInfo }}</p>
+            <p>{{ event.additionalInfo }}</p>
           </div>
         </div>
         <div class="organizer-section">
-          <p><strong>Organized by:</strong> {{ eventDetails.organizer.name }}</p>
+          <p><strong>Organized by:</strong> {{ event.organizer.name }}</p>
           <ion-avatar>
-            <img [src]="eventDetails.organizer.avatar" alt="Organizer's avatar">
+            <img [src]="event.organizer.avatar" alt="Organizer's avatar">
           </ion-avatar>
         </div>
-        <ion-button *ngIf="!eventDetails.isJoined" (click)="joinEvent(eventDetails.id)">Join</ion-button>
-        <ion-button *ngIf="eventDetails.isJoined" color="danger" (click)="leaveEvent(eventDetails.id)">Leave</ion-button>
+        <ion-button *ngIf="!isCurrentUserJoined(event.id)" (click)="joinEvent(event.id)">Join</ion-button>
+        <ion-button *ngIf="isCurrentUserJoined(event.id)" color="danger" (click)="leaveEvent(event.id)">Leave</ion-button>
       </ion-card-content>
     </ion-card>
 

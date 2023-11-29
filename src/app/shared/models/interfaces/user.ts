@@ -1,14 +1,13 @@
-export interface User {
-  uid: string;
-  username?: string;
-  displayName: string | null;
-  email: string | null;
-  avatar?: string;
-  about?: string;
-  preferredLanguages?: string;
-  interests?: string[];
-  ageGroup?: string;
-  joinedEvents?: string[];
-  pastEvents?: string[];
-  notifications?: any;
+import {UserPreferences} from "../../../modals/model/interfaces";
+
+export interface UserAuthInfo {
+  uid?: string;
+  displayName?: string | null;
+  email?: string | null;
+}
+
+export interface User extends UserPreferences {
+  joinedEvents: string[];
+  pastEvents: string[];
+  notifications: any;
 }

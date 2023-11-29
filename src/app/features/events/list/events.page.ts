@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
 import {EventsState, LoadEvents} from '../../../state/events';
 import {eventCategories} from "../model/helpers/event-categories";
-import {EventSummary} from "../model/interfaces";
+import {EventDetails} from "../model/interfaces";
 
 @Component({
   selector: 'app-events',
@@ -18,7 +18,7 @@ export class EventsPage implements OnInit {
   pageTitle?: string;
   activityType?: string | null;
 
-  @Select(EventsState.allEvents) events$!: Observable<EventSummary[]>;
+  @Select(EventsState.allEvents) events$!: Observable<EventDetails[]>;
 
   constructor(private route: ActivatedRoute, private modalController: ModalController, private store: Store) {
     this.activityType = this.route.snapshot.paramMap.get('activityType');

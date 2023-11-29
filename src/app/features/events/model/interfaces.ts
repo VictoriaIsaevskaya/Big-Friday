@@ -1,22 +1,13 @@
-export interface EventSummary {
-  id: string;
-  title: string;
-  description: string;
-  date: Date;
-  location: string;
-  attendees: number;
-  maxAttendees: number;
-  isJoined: boolean;
-}
-
 export interface Participant {
   userId: string;
-  name: string;
-  avatar: string;
+  username: string;
+  avatar?: string;
   interests?: string[];
+  about?: string,
+  ageGroup: string
 }
 
-export interface EventDetails extends EventSummary {
+export interface EventDetails {
   organizer: {
     name: string;
     avatar: string;
@@ -29,4 +20,12 @@ export interface EventDetails extends EventSummary {
   additionalInfo: string;
   recommendedAgeGroup: string;
   participants: Participant[];
+  id: string;
+  title: string;
+  description: string;
+  date: Date;
+  location: string;
+  attendees: number;
+  maxAttendees: number;
+  isJoined: boolean;
 }

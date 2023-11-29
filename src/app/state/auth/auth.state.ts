@@ -1,13 +1,15 @@
 import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
-import { State, Action, StateContext, Selector } from '@ngxs/store';
-import {from, switchMap, tap, throwError} from "rxjs";
+import {State, Action, StateContext, Selector} from '@ngxs/store';
+import {tap} from "rxjs";
 import {catchError} from "rxjs/operators";
 
-import { UserPreferences } from "../../modals/model/interfaces";
 import {AuthService} from "../../services/auth.service";
-import { User } from "../../shared/models/interfaces/user";
+import {UserAuthInfo} from "../../shared/models/interfaces/user";
+import {
+  PreferencesUploadSuccess,
+} from '../user';
 
 import {
   LoginSuccess,
@@ -15,15 +17,13 @@ import {
   SetCurrentUser,
   RegisterSuccess,
   RegisterFailure,
-  PreferencesUploadSuccess,
-  SetUserPreferences,
-  PreferencesUploadFailure, Logout, LogoutFailure, LogoutSuccess, RegisterUser, Login, PreferencesUpload
+  Logout, LogoutFailure, LogoutSuccess, RegisterUser, Login,
 } from './auth.actions';
 
+
 export interface AuthStateModel {
-  user: User | null;
+  user: UserAuthInfo | null;
   error: any | null;
-  preferences: UserPreferences | null;
 }
 
 @Injectable()
@@ -32,7 +32,6 @@ export interface AuthStateModel {
   defaults: {
     user: null,
     error: null,
-    preferences: null
   }
 })
 @Injectable()
@@ -53,22 +52,6 @@ export class AuthState {
         console.error('Error during registration:', error);
         ctx.dispatch(new RegisterFailure({ error }));
         throw error;
-      })
-    );
-  }
-
-  @Action(PreferencesUpload)
-  preferencesUpload(ctx: StateContext<AuthStateModel>, action: PreferencesUpload) {
-    const { preferences} = action.payload;
-    const uid = ctx.getState().user.uid
-    return from(this.firestore.collection('users').doc(uid).set(preferences)).pipe(
-      switchMap(() => {
-        return ctx.dispatch(new PreferencesUploadSuccess({preferences}));
-      }),
-      catchError((error) => {
-        console.error('Error during preferences upload:', error);
-        ctx.dispatch(new RegisterFailure({ error }));
-        return throwError(error);
       })
     );
   }
@@ -165,7 +148,6 @@ export class AuthState {
     const state = ctx.getState();
     ctx.setState({
       ...state,
-      preferences: null,
       user: null,
       error: null
     });
@@ -180,41 +162,6 @@ export class AuthState {
     });
   }
 
-
-  @Action(PreferencesUploadSuccess)
-  preferencesUploadSuccess(ctx: StateContext<AuthStateModel>, action: PreferencesUploadSuccess) {
-    this.router.navigateByUrl('home');
-
-    const state = ctx.getState();
-    const {preferences} = action.payload
-    ctx.setState({
-      ...state,
-      preferences
-    });
-  }
-
-  @Action(SetUserPreferences)
-  setUserPreferences(ctx: StateContext<AuthStateModel>, action: SetUserPreferences) {
-    const state = ctx.getState();
-    const {preferences} = action.payload
-    ctx.setState({
-      ...state,
-      preferences
-    });
-  }
-
-  @Action(PreferencesUploadFailure)
-  preferencesUploadFailure(ctx: StateContext<AuthStateModel>, action: PreferencesUploadFailure) {
-    const state = ctx.getState();
-    const {error} = action.payload
-
-    ctx.setState({
-      ...state,
-      error: error,
-      preferences: null
-    });
-  }
-
   @Selector()
   static user(state: AuthStateModel) {
     return state.user;
@@ -223,11 +170,6 @@ export class AuthState {
   @Selector()
   static error(state: AuthStateModel) {
     return state.error;
-  }
-
-  @Selector()
-  static preferences(state: AuthStateModel) {
-    return state.preferences;
   }
 
   @Selector()

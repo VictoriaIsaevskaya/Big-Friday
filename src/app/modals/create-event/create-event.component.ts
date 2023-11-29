@@ -40,7 +40,6 @@ export class CreateEventComponent {
       description: ['', [Validators.required, Validators.maxLength(500)]],
       date: [null, Validators.required],
       location: ['', [Validators.required, Validators.maxLength(200)]],
-      // attendees: ['', [Validators.required]],
       maxAttendees: ['', [Validators.required]],
       eventCost: [''],
       recommendedAgeGroup: [''],
@@ -60,6 +59,7 @@ export class CreateEventComponent {
           avatar: 'assets/images/avatar.jpg'
         },
         category: this.category,
+        participants: []
       };
 
       try {

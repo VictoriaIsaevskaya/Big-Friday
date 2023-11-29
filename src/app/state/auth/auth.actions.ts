@@ -1,5 +1,5 @@
 import {UserPreferences} from "../../modals/model/interfaces";
-import {User} from "../../shared/models/interfaces/user";
+import {UserAuthInfo} from "../../shared/models/interfaces/user";
 
 export class Login {
   static readonly type = '[Auth] Login';
@@ -8,7 +8,7 @@ export class Login {
 
 export class LoginSuccess {
   static readonly type = '[Auth] Login Success';
-  constructor(public payload: { user: User | null }) {}
+  constructor(public payload: { user: UserAuthInfo | null }) {}
 }
 
 export class LoginFailure {
@@ -32,7 +32,7 @@ export class LogoutFailure {
 
 export class SetCurrentUser {
   static readonly type = '[Auth] Set Current User';
-  constructor(public payload: { user: User | null }) {}
+  constructor(public payload: { user: UserAuthInfo | null }) {}
 }
 
 export class RegisterUser {
@@ -47,24 +47,4 @@ export class RegisterSuccess {
 export class RegisterFailure {
   static readonly type = '[Auth] Register Failure';
   constructor(public payload: { error: any }) {}
-}
-
-export class PreferencesUpload {
-  static readonly type = '[Auth] Preferences Upload Start';
-  constructor(public payload: { preferences: UserPreferences }) {}
-}
-
-export class PreferencesUploadSuccess {
-  static readonly type = '[Auth] Preferences Upload Success';
-  constructor(public payload: { preferences: UserPreferences }) {}
-}
-
-export class PreferencesUploadFailure {
-  static readonly type = '[Auth] Preferences Upload Failure';
-  constructor(public payload: { error: any }) {}
-}
-
-export class SetUserPreferences {
-  static readonly type = '[Auth] Set Preferences';
-  constructor(public payload: { preferences: UserPreferences }) {}
 }
