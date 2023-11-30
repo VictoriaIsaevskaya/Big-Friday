@@ -24,6 +24,10 @@ export class LoadEvent {
   constructor(public payload: { eventId: string }) {}
 }
 
+export class UnselectEvent {
+  static readonly type = '[Events] Unselect Event'
+}
+
 export class LoadEventSuccess {
   static readonly type = '[Events] Load Event Success';
   constructor(public payload: { event: EventDetails | null }) {}

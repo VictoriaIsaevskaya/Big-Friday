@@ -14,7 +14,7 @@ import {
   LoadEvents,
   LoadEventsFailure,
   LoadEventsSuccess,
-  LoadEventSuccess, UpdateEvent
+  LoadEventSuccess, UnselectEvent, UpdateEvent
 } from "./events.actions";
 
 export interface EventsStateModel {
@@ -85,6 +85,11 @@ export class EventsState {
         throw error;
       })
     );
+  }
+
+  @Action(UnselectEvent)
+  onUnselectEvent(ctx: StateContext<EventsStateModel>) {
+    ctx.dispatch(new LoadEventSuccess({ event: null}));
   }
 
   @Action(LoadEventsSuccess)

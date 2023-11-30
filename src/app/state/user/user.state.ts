@@ -18,11 +18,13 @@ import {
 
 export interface UserStateModel {
   userPreferences: UserPreferences | null;
-  userActivities: {
-    joinedEvents: string[];
-    pastEvents: string[];
-  } | null;
+  userActivities: UserActivities | null;
   error: any | null;
+}
+
+export interface UserActivities {
+  joinedEvents: string[];
+  pastEvents: string[];
 }
 
 const userPreferences = {

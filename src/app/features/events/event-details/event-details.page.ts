@@ -1,12 +1,13 @@
-import { Component } from '@angular/core';
+import {ChangeDetectorRef, Component, DestroyRef, inject, OnDestroy} from '@angular/core';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ActivatedRoute, Router} from "@angular/router";
 import { ModalController } from "@ionic/angular";
 import { Select, Store } from "@ngxs/store";
-import { Observable } from "rxjs";
+import {Observable, tap} from "rxjs";
 
 import {AuthState} from "../../../state/auth";
-import {LoadEvent, EventsState, UpdateEvent} from '../../../state/events';
-import {JoinUserToEvent, UserState} from "../../../state/user";
+import {LoadEvent, EventsState, UpdateEvent, UnselectEvent} from '../../../state/events';
+import {JoinUserToEvent, UserActivities, UserState} from "../../../state/user";
 import {ShouldAuthModalComponent} from "../../auth/should-auth-modal/should-auth-modal.component";
 import {EventDetails, Participant} from "../model/interfaces";
 
@@ -15,14 +16,23 @@ import {EventDetails, Participant} from "../model/interfaces";
   templateUrl: './event-details.page.html',
   styleUrls: ['./event-details.page.scss'],
 })
-export class EventDetailsPage {
+export class EventDetailsPage implements OnDestroy {
   @Select(EventsState.selectedEventDetails) event$!: Observable<EventDetails | null>;
   public selectedEvent: EventDetails;
-  public currentUserActivities = this.store.selectSnapshot(UserState.userActivities)
+  @Select(UserState.userActivities) currentUserActivities$!: Observable<UserActivities | null>;
+  public currentUserActivities: UserActivities;
+  private destroyRef = inject(DestroyRef);
 
-
-  constructor(private route: ActivatedRoute, private store: Store, private modalController: ModalController, private router: Router) {
+  constructor(private route: ActivatedRoute, private store: Store, private modalController: ModalController, private router: Router, private cdr: ChangeDetectorRef) {
     this.store.dispatch(new LoadEvent({eventId: this.route.snapshot.paramMap.get('eventId')}));
+    this.event$.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((event) => this.selectedEvent = event)
+    ).subscribe()
+    this.currentUserActivities$.pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap((event) => this.currentUserActivities = event)
+    ).subscribe()
   }
 
   joinEvent(eventId: string) {
@@ -39,11 +49,10 @@ export class EventDetailsPage {
       ageGroup,
       interests
     };
-    this.selectedEvent = this.store.selectSnapshot(EventsState.selectedEventDetails)
 
     this.selectedEvent.participants ? this.selectedEvent.participants.push(participant) : [participant];
     this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants: this.selectedEvent.participants} }));
-    this.currentUserActivities.joinedEvents? this.currentUserActivities.joinedEvents.push(eventId) : (this.currentUserActivities.joinedEvents = [eventId])
+    this.currentUserActivities.joinedEvents ? this.currentUserActivities.joinedEvents.push(eventId) : (this.currentUserActivities.joinedEvents = [eventId])
     this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents }));
     this.router.navigate(['chats', eventId])
   }
@@ -56,10 +65,19 @@ export class EventDetailsPage {
   }
 
   leaveEvent(eventId: string) {
-    // Logic to leave the event
+
+    const currentUser = this.store.selectSnapshot(AuthState.user)
+    const participants = this.selectedEvent.participants.filter(participant => participant.userId !== currentUser.uid)
+    this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents.filter(id => eventId !== id) }));
+    this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants} }));
   }
 
-  isCurrentUserJoined(id: string): boolean {
-    return this.currentUserActivities.joinedEvents.includes(id)
+  get isCurrentUserJoined(): boolean {
+    return this.currentUserActivities.joinedEvents.includes(this.selectedEvent?.id)
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(new UnselectEvent())
+
   }
 }

@@ -27,8 +27,8 @@
             <img [src]="event.organizer.avatar" alt="Organizer's avatar">
           </ion-avatar>
         </div>
-        <ion-button *ngIf="!isCurrentUserJoined(event.id)" (click)="joinEvent(event.id)">Join</ion-button>
-        <ion-button *ngIf="isCurrentUserJoined(event.id)" color="danger" (click)="leaveEvent(event.id)">Leave</ion-button>
+        <ion-button *ngIf="!isCurrentUserJoined" (click)="joinEvent(event.id)">Join</ion-button>
+        <ion-button *ngIf="isCurrentUserJoined" color="danger" (click)="leaveEvent(event.id)">Leave</ion-button>
       </ion-card-content>
     </ion-card>
 
