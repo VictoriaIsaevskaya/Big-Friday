@@ -27,7 +27,7 @@
     </ion-list-header>
     <ion-item *ngFor="let item of chatRooms" (click)="getChat(item.id)" detail="true" class="chat-content__list-item">
       <ion-avatar slot="start">
-        <img [src]="item.photo" alt="">
+        <img [src]="item.image" alt="">
       </ion-avatar>
       <ion-label class="chat-content__list-item__label">
         {{item.name}}

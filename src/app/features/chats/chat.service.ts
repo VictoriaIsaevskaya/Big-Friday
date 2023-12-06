@@ -1,9 +1,12 @@
 import {Injectable} from "@angular/core";
 import {Store} from "@ngxs/store";
-import {Observable} from "rxjs";
+import {Observable, throwError} from "rxjs";
+import {catchError} from "rxjs/operators";
 
 import {FirestoreApiService} from "../../services/firestore-api.service";
 import {AuthState} from "../../state/auth";
+
+import {IChatRoom} from "./model/interfaces/chat.interface";
 
 
 @Injectable({
@@ -22,5 +25,21 @@ export class ChatService {
 
   getUsers() {
     return this.api.collectionDataQuery('users', this.api.whereQuery('uid', '!=', this.currentUserId));
+  }
+
+  loadAllChats(chatIds: string[]): Observable<IChatRoom[]> {
+    if (!chatIds.length) {
+      return throwError(() => new Error("No chat IDs provided"));
+    }
+
+    const queryFn = (ref) => ref.where('__name__', 'in', chatIds);
+
+    return this.api.collectionDataQuery('chats', queryFn)
+      .pipe(
+        catchError(error => {
+          console.error('Error loading chats:', error);
+          return throwError(() => new Error(error));
+        })
+      );
   }
 }

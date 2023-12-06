@@ -1,8 +1,11 @@
-export interface IChatRoom {
+export interface IChatRoom extends IChatDetails {
   id: string;
-  name: string;
-  photo: string;
   message: string;
+}
+
+export interface IChatDetails {
+  name: string;
+  image: string;
 }
 
 export interface IChatMessage {

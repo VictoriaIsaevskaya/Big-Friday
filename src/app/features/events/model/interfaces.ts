@@ -28,4 +28,5 @@ export interface EventDetails {
   attendees: number;
   maxAttendees: number;
   isJoined: boolean;
+  chatId: string;
 }

@@ -6,7 +6,8 @@ import {from, switchMap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import {UserPreferences} from "../../modals/model/interfaces";
-import { FirestoreApiService } from "../../services/firestore-api.service";
+import {FirestoreApiService} from "../../services/firestore-api.service";
+import {UserActivities} from "../../shared/models/interfaces/user";
 import {AuthStateModel, RegisterFailure} from "../auth";
 
 import {
@@ -22,10 +23,7 @@ export interface UserStateModel {
   error: any | null;
 }
 
-export interface UserActivities {
-  joinedEvents: string[];
-  pastEvents: string[];
-}
+
 
 const userPreferences = {
     username: '',
@@ -59,6 +57,7 @@ export class UserState {
   @Action(JoinUserToEvent)
   joinUserToEvent(ctx: StateContext<UserStateModel>, action: JoinUserToEvent) {
     const { userId, events } = action.payload;
+
     return this.firestoreApiService.joinUserToEvent(userId, events).then(() => {
       ctx.dispatch(new JoinUserToEventSuccess({events}));
     }).catch(error => {
@@ -68,7 +67,6 @@ export class UserState {
 
   @Action(JoinUserToEventSuccess)
   onJoinUserToEventSuccess(ctx: StateContext<UserStateModel>, action: JoinUserToEventSuccess) {
-    console.log('You have joined successfully!')
     const state = ctx.getState();
     ctx.setState({
       ...state,

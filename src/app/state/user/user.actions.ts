@@ -1,10 +1,10 @@
 import {UserPreferences} from "../../modals/model/interfaces";
-import {User} from "../../shared/models/interfaces/user";
+import {JoinedEvent, User} from "../../shared/models/interfaces/user";
 
 
 export class JoinUserToEvent {
   static readonly type = '[User] Join User To Event';
-  constructor(public payload: { userId: string, events: string[] }) {}
+  constructor(public payload: { userId: string, events: JoinedEvent[] }) {}
 }
 
 export class PreferencesUpload {
@@ -30,7 +30,7 @@ export class SetUserPreferences {
 
 export class JoinUserToEventSuccess {
   static readonly type = '[User] Join User To Event Success';
-  constructor(public payload: { events: string[] }) {}
+  constructor(public payload: { events: JoinedEvent[] }) {}
 
 }
 

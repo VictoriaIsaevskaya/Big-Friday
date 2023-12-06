@@ -5,9 +5,10 @@ import { ModalController } from "@ionic/angular";
 import { Select, Store } from "@ngxs/store";
 import {Observable, tap} from "rxjs";
 
+import {UserActivities} from "../../../shared/models/interfaces/user";
 import {AuthState} from "../../../state/auth";
 import {LoadEvent, EventsState, UpdateEvent, UnselectEvent} from '../../../state/events';
-import {JoinUserToEvent, UserActivities, UserState} from "../../../state/user";
+import {JoinUserToEvent, UserState} from "../../../state/user";
 import {ShouldAuthModalComponent} from "../../auth/should-auth-modal/should-auth-modal.component";
 import {EventDetails, Participant} from "../model/interfaces";
 
@@ -35,11 +36,11 @@ export class EventDetailsPage implements OnDestroy {
     ).subscribe()
   }
 
-  joinEvent(eventId: string) {
-    this.store.selectSnapshot(AuthState.isLoggedIn) ? this.addUserToEvent(eventId) : this.openShouldAuthModal;
+  joinEvent(eventId: string, chatId: string) {
+    this.store.selectSnapshot(AuthState.isLoggedIn) ? this.addUserToEvent(eventId, chatId) : this.openShouldAuthModal;
   }
 
-  addUserToEvent(eventId: string) {
+  addUserToEvent(eventId: string, chatId: string) {
     const currentUser = this.store.selectSnapshot(AuthState.user)
     const { username, about, ageGroup, interests } = this.store.selectSnapshot(UserState.userPreferences)
     let participant: Participant = {
@@ -52,9 +53,9 @@ export class EventDetailsPage implements OnDestroy {
 
     this.selectedEvent.participants ? this.selectedEvent.participants.push(participant) : [participant];
     this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants: this.selectedEvent.participants} }));
-    this.currentUserActivities.joinedEvents ? this.currentUserActivities.joinedEvents.push(eventId) : (this.currentUserActivities.joinedEvents = [eventId])
+    this.currentUserActivities.joinedEvents ? this.currentUserActivities.joinedEvents.push({eventId, chatId}) : (this.currentUserActivities.joinedEvents = [{eventId, chatId}])
     this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents }));
-    this.router.navigate(['chats', eventId])
+    this.router.navigate(['chats', chatId])
   }
 
   async openShouldAuthModal() {
@@ -67,13 +68,13 @@ export class EventDetailsPage implements OnDestroy {
   leaveEvent(eventId: string) {
 
     const currentUser = this.store.selectSnapshot(AuthState.user)
-    const participants = this.selectedEvent.participants.filter(participant => participant.userId !== currentUser.uid)
-    this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents.filter(id => eventId !== id) }));
+    const participants = this.selectedEvent.participants?.filter(participant => participant.userId !== currentUser.uid)
+    this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents.filter(event => eventId !== event.eventId) }));
     this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants} }));
   }
 
   get isCurrentUserJoined(): boolean {
-    return this.currentUserActivities.joinedEvents.includes(this.selectedEvent?.id)
+    return !!this.currentUserActivities?.joinedEvents.find(event => event.eventId === this.selectedEvent?.id)
   }
 
   ngOnDestroy() {

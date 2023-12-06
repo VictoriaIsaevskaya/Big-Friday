@@ -3,6 +3,9 @@ import {AngularFirestore, QueryFn} from "@angular/fire/compat/firestore";
 import firebase from "firebase/compat";
 import {map, Observable} from "rxjs";
 
+import {IChatDetails} from "../features/chats/model/interfaces/chat.interface";
+import {JoinedEvent} from "../shared/models/interfaces/user";
+
 
 @Injectable({
   providedIn: 'root'
@@ -43,11 +46,9 @@ export class FirestoreApiService {
     return this.firestore.collection('events').add(eventDetails);
   }
 
-  createChatForEvent(eventId: string): Promise<any> {
-    const chatData = {
-      eventId: eventId,
-      messages: []
-    };
+  createChatForEvent(eventId: string, chatDetails: IChatDetails): Promise<any> {
+    const { name, image } = chatDetails
+    const chatData = { eventId, name, image, messages: [] };
     return this.firestore.collection('chats').add(chatData);
   }
 
@@ -59,7 +60,7 @@ export class FirestoreApiService {
     return this.firestore.collection('events').doc(eventId).update(eventData);
   }
 
-  joinUserToEvent(uid: string, events: string[]) {
+  joinUserToEvent(uid: string, events: JoinedEvent[]) {
     return this.firestore.collection('users').doc(uid).update({ joinedEvents: events });
   }
 }
