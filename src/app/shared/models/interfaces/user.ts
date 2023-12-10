@@ -1,3 +1,4 @@
+import {ChatRoom} from "../../../features/chats/model/interfaces/chat.interface";
 import {UserPreferences} from "../../../modals/model/interfaces";
 
 export interface UserAuthInfo {
@@ -15,6 +16,7 @@ export interface JoinedEvent {
 }
 
 export interface UserActivities {
+  chats: ChatRoom[],
   joinedEvents: JoinedEvent[];
   pastEvents: string[];
   notifications: any;

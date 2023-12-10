@@ -1,7 +1,7 @@
-<ion-item class="message-item" [ngClass]="message.sender === currentUserId ? 'my-message' : 'their-message'">
+<ion-item class="message-item" [ngClass]="message.senderId === currentUserId ? 'my-message' : 'their-message'">
   <div class="message-content">
     <p>{{ message.text }}</p>
-    <span>{{ message.time | date:'shortTime' }}</span>
+    <span>{{ message.timestamp | date:'shortTime' }}</span>
   </div>
 </ion-item>
 

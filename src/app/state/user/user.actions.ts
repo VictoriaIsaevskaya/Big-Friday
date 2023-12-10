@@ -1,3 +1,4 @@
+import {ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
 import {UserPreferences} from "../../modals/model/interfaces";
 import {JoinedEvent, User} from "../../shared/models/interfaces/user";
 
@@ -37,4 +38,15 @@ export class JoinUserToEventSuccess {
 export class JoinUserToEventFailure {
   static readonly type = '[User] Join User To Event Failure';
   constructor(public payload: { error: any }) {}
+}
+
+export class LoadUserChats {
+  static readonly type = '[User] Load User Chats'
+  constructor(public payload: { chatIds: string[]}) {}
+}
+
+export class LoadUserChatsSuccess {
+  static readonly type = '[User] Load User Chats Success'
+  constructor(public payload: { chats: ChatRoom[]}) {
+  }
 }

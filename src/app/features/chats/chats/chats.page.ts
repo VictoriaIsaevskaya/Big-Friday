@@ -5,9 +5,8 @@ import {Store} from "@ngxs/store";
 import {Observable, tap} from "rxjs";
 
 import {AuthState} from "../../../state/auth";
-import {UserState} from "../../../state/user";
+import {LoadUserChats, UserState} from "../../../state/user";
 import {ChatService} from "../chat.service";
-import {IChatRoom} from "../model/interfaces/chat.interface";
 
 @Component({
   selector: 'app-chats',
@@ -15,12 +14,11 @@ import {IChatRoom} from "../model/interfaces/chat.interface";
   styleUrls: ['./chats.page.scss'],
 })
 export class ChatsPage implements OnInit {
-  private destroyRef = inject(DestroyRef);
 
   segment = 'chats';
   users: Observable<any>
   currentUserId = this.store.selectSnapshot(AuthState.user).uid;
-  chatRooms: IChatRoom[];
+  // chatRooms: ChatRoom[];
   // chatRooms: IChatRoom[] = [
   //   {id: '1', name: 'Bowling night', image: 'https://i.pravatar.cc/385', message: 'message'},
   //   {id: '2', name: 'Sea fishing', image: 'https://i.pravatar.cc/386', message: 'message'},
@@ -37,14 +35,15 @@ export class ChatsPage implements OnInit {
   loadUserChats() {
     const joinedEvents = this.store.selectSnapshot(UserState.userActivities).joinedEvents;
     const chatIds = joinedEvents.map(event => event.chatId);
-    this.chatService.loadAllChats(chatIds).pipe(
-      tap(chats => this.chatRooms = chats),
-      takeUntilDestroyed(this.destroyRef)
-    ).subscribe();
+    this.store.dispatch(new LoadUserChats({chatIds}))
   }
 
   getChat(id: string) {
     this.router.navigate([id], { relativeTo: this.route})
+  }
+
+  get chatRooms() {
+    return this.store.selectSnapshot(UserState.userActivities).chats;
   }
 
   getUsers() {

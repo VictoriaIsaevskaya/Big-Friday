@@ -3,7 +3,7 @@ import {AngularFirestore, QueryFn} from "@angular/fire/compat/firestore";
 import firebase from "firebase/compat";
 import {map, Observable} from "rxjs";
 
-import {IChatDetails} from "../features/chats/model/interfaces/chat.interface";
+import {ChatDetails} from "../features/chats/model/interfaces/chat.interface";
 import {JoinedEvent} from "../shared/models/interfaces/user";
 
 
@@ -46,7 +46,7 @@ export class FirestoreApiService {
     return this.firestore.collection('events').add(eventDetails);
   }
 
-  createChatForEvent(eventId: string, chatDetails: IChatDetails): Promise<any> {
+  createChatForEvent(eventId: string, chatDetails: ChatDetails): Promise<any> {
     const { name, image } = chatDetails
     const chatData = { eventId, name, image, messages: [] };
     return this.firestore.collection('chats').add(chatData);

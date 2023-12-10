@@ -1,16 +1,23 @@
-export interface IChatRoom extends IChatDetails {
+export interface ChatRoom {
   id: string;
-  message: string;
+  details: ChatDetails;
+  messages: ChatMessage[];
+  loadingMessages?: boolean;
+  hasError?: boolean;
+  lastMessage?: string;
 }
 
-export interface IChatDetails {
+export interface ChatDetails {
   name: string;
   image: string;
+  eventId?: string;
 }
 
-export interface IChatMessage {
+export interface ChatMessage {
   id: string;
-  sender: string;
+  senderId: string;
+  senderName?: string;
   text: string;
-  time: Date;
+  timestamp: Date;
+  isRead?: boolean;
 }

@@ -8,7 +8,7 @@
         <div class="secondary-color">
           <div><ion-icon name="calendar-outline"></ion-icon> {{ event.date | date:'mediumDate' }} {{ event.date | date:'shortTime' }}</div>
           <div><ion-icon name="location-outline"></ion-icon> {{ event.location }}</div>
-          <div><ion-icon name="people-outline"></ion-icon> {{ event.participants.length }}/{{ event.maxAttendees }} participants</div>
+          <div><ion-icon name="people-outline"></ion-icon> {{ event.participants?.length ?? 0 }}/{{ event.maxAttendees }} participants</div>
           <div><ion-icon name="wallet-outline"></ion-icon> {{ event.eventCost }}</div>
           <div><ion-icon name="language-outline"></ion-icon> {{ event.language }}</div>
           <div><ion-icon name="person-outline"></ion-icon> {{ event.recommendedAgeGroup }}</div>

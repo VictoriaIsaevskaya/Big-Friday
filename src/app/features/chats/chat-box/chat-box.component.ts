@@ -2,7 +2,7 @@ import {CommonModule} from "@angular/common";
 import {Component, Input, OnInit} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 
-import {IChatMessage} from "../model/interfaces/chat.interface";
+import {ChatMessage} from "../model/interfaces/chat.interface";
 
 @Component({
   selector: 'app-chat-box',
@@ -12,7 +12,7 @@ import {IChatMessage} from "../model/interfaces/chat.interface";
   imports: [IonicModule, CommonModule]
 })
 export class ChatBoxComponent implements OnInit {
-  @Input() message: IChatMessage;
+  @Input() message: ChatMessage;
   @Input() currentUserId: string;
 
   constructor() { }

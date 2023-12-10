@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from "@angula
 import { IonicModule, IonInput, ModalController } from "@ionic/angular";
 import { Store } from "@ngxs/store";
 
-import {IChatDetails} from "../../features/chats/model/interfaces/chat.interface";
+import {ChatDetails} from "../../features/chats/model/interfaces/chat.interface";
 import {EventDetails} from "../../features/events/model/interfaces";
 import {FirestoreApiService} from "../../services/firestore-api.service";
 import {AddEvent} from "../../state/events";
@@ -69,7 +69,7 @@ export class CreateEventComponent {
       try {
         const eventDocRef = await this.firestoreApiService.createEvent(eventDetails);
         const {chatName: name, chatImage: image } = this.eventForm.value;
-        const chatDetails: IChatDetails = { name, image };
+        const chatDetails: ChatDetails = { name, image };
         const chatDocRef = await this.firestoreApiService.createChatForEvent(eventDocRef.id, chatDetails);
         await this.firestoreApiService.linkEventWithChat(eventDocRef.id, chatDocRef.id);
         this.store.dispatch(new AddEvent({ event: eventDetails }));

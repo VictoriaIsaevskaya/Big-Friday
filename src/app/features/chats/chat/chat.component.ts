@@ -5,7 +5,7 @@ import {IonicModule} from "@ionic/angular";
 
 import {PageHeaderComponent} from "../../../layout/page-header/page-header.component";
 import {ChatBoxComponent} from "../chat-box/chat-box.component";
-import {IChatMessage} from "../model/interfaces/chat.interface";
+import {ChatMessage} from "../model/interfaces/chat.interface";
 
 
 @Component({
@@ -20,18 +20,18 @@ export class ChatComponent  implements OnInit {
   message: string = '';
   isLoading = false;
   currentUserId = '1'
-  messages: IChatMessage[] = [
+  messages: ChatMessage[] = [
     {
       id: '1',
-      sender: '1',
+      senderId: '1',
       text: 'Hello!',
-      time: new Date()
+      timestamp: new Date()
     },
     {
       id: '2',
-      sender: '2',
+      senderId: '2',
       text: 'Hi there!',
-      time: new Date()
+      timestamp: new Date()
     }
   ];
   constructor() { }
@@ -41,9 +41,9 @@ export class ChatComponent  implements OnInit {
     if (this.message.trim() !== '') {
       this.messages.push({
         id: '1',
-        sender: '1',
+        senderId: '1',
         text: this.message,
-        time: new Date()
+        timestamp: new Date()
       });
 
       this.message = '';
