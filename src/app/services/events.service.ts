@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import {map, Observable, of} from 'rxjs';
+import {map, Observable, throwError} from 'rxjs';
+import {catchError} from "rxjs/operators";
 
 import {EventDetails} from "../features/events/model/interfaces";
 
@@ -16,8 +17,12 @@ export class EventsService {
     return this.firestoreApiService.collectionDataQuery('events');
   }
 
-  addEvent(event: EventDetails): Promise<void> {
-    return this.firestoreApiService.createEvent(event);
+  getEventsByCategory(category: string) {
+    const queryFn = (ref) => ref.where('category', '==', category);
+    return this.firestoreApiService.collectionDataQuery('events', queryFn)
+      .pipe(
+        catchError(error => throwError(() => new Error(error)))
+      );
   }
 
   getEvent(id: string): Observable<EventDetails | null> {

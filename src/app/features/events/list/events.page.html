@@ -6,7 +6,15 @@
       </ion-button>
     </ion-buttons>
   </app-page-header>
-  <ng-container *ngFor="let event of events$ | async">
-    <app-event-card [event]="event"></app-event-card>
-  </ng-container>
+  <div *ngIf="(events$ | async) as events; else noItems">
+    <div *ngIf="events.length; else noItems">
+      <ng-container *ngFor="let event of events$ | async">
+        <app-event-card [event]="event"></app-event-card>
+      </ng-container>
+    </div>
+  </div>
 </ion-content>
+
+<ng-template #noItems>
+  <p>No events in this category yet</p>
+</ng-template>

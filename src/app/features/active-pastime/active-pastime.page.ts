@@ -1,12 +1,18 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import { Router } from "@angular/router";
 import { NavController } from '@ionic/angular';
+import {Select, Store} from "@ngxs/store";
+import {Observable} from "rxjs";
+
+import {EventsState, LoadAllEvents} from "../../state/events";
+import {EventDetails} from "../events/model/interfaces";
 @Component({
   selector: 'app-active-pastime',
   templateUrl: './active-pastime.page.html',
   styleUrls: ['./active-pastime.page.scss'],
 })
-export class ActivePastimePage {
+export class ActivePastimePage implements OnInit {
+  @Select(EventsState.eventCountsByCategory) eventCounts$: Observable<{ [category: string]: number }>;
   path = '../../../assets/images/';
   activities = [
     {
@@ -39,7 +45,11 @@ export class ActivePastimePage {
     },
   ]
 
-  constructor(private navCtrl: NavController, private router: Router) { }
+  constructor(private navCtrl: NavController, private router: Router, private store: Store) { }
+
+  ngOnInit() {
+    this.store.dispatch(new LoadAllEvents())
+  }
 
   goToActivity(activity: string) {
     this.router.navigate(['/events', activity]);

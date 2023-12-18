@@ -7,7 +7,7 @@ import {Observable, tap} from "rxjs";
 
 import {UserActivities} from "../../../shared/models/interfaces/user";
 import {AuthState} from "../../../state/auth";
-import {LoadEvent, EventsState, UpdateEvent, UnselectEvent} from '../../../state/events';
+import {LoadEvent, EventsState, UpdateEvent, UnselectEvent, DeleteEvent} from '../../../state/events';
 import {JoinUserToEvent, UserState} from "../../../state/user";
 import {ShouldAuthModalComponent} from "../../auth/should-auth-modal/should-auth-modal.component";
 import {EventDetails, Participant} from "../model/interfaces";
@@ -40,11 +40,15 @@ export class EventDetailsPage implements OnDestroy {
     this.store.selectSnapshot(AuthState.isLoggedIn) ? this.addUserToEvent(eventId, chatId) : this.openShouldAuthModal;
   }
 
+  get currentUserUid(): string | null {
+    const user = this.store.selectSnapshot(AuthState.user)
+    return user ? user.uid : null
+  }
+
   addUserToEvent(eventId: string, chatId: string) {
-    const currentUser = this.store.selectSnapshot(AuthState.user)
     const { username, about, ageGroup, interests } = this.store.selectSnapshot(UserState.userPreferences)
     let participant: Participant = {
-      userId: currentUser.uid,
+      userId: this.currentUserUid,
       username,
       about,
       ageGroup,
@@ -54,7 +58,7 @@ export class EventDetailsPage implements OnDestroy {
     this.selectedEvent.participants ? this.selectedEvent.participants.push(participant) : [participant];
     this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants: this.selectedEvent.participants} }));
     this.currentUserActivities.joinedEvents ? this.currentUserActivities.joinedEvents.push({eventId, chatId}) : (this.currentUserActivities.joinedEvents = [{eventId, chatId}])
-    this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents }));
+    this.store.dispatch(new JoinUserToEvent({ userId: this.currentUserUid, events: this.currentUserActivities.joinedEvents }));
     this.router.navigate(['chats', chatId])
   }
 
@@ -66,15 +70,21 @@ export class EventDetailsPage implements OnDestroy {
   }
 
   leaveEvent(eventId: string) {
-
-    const currentUser = this.store.selectSnapshot(AuthState.user)
-    const participants = this.selectedEvent.participants?.filter(participant => participant.userId !== currentUser.uid)
-    this.store.dispatch(new JoinUserToEvent({ userId: currentUser.uid, events: this.currentUserActivities.joinedEvents.filter(event => eventId !== event.eventId) }));
+    const participants = this.selectedEvent.participants?.filter(participant => participant.userId !== this.currentUserUid)
+    this.store.dispatch(new JoinUserToEvent({ userId: this.currentUserUid, events: this.currentUserActivities.joinedEvents.filter(event => eventId !== event.eventId) }));
     this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants} }));
   }
 
+  deleteEvent(eventId: string) {
+    this.store.dispatch(new DeleteEvent({eventId}))
+  }
+
   get isCurrentUserJoined(): boolean {
-    return !!this.currentUserActivities?.joinedEvents.find(event => event.eventId === this.selectedEvent?.id)
+    return !!this.currentUserActivities?.joinedEvents?.find(event => event.eventId === this.selectedEvent?.id)
+  }
+
+  isCurrentUserOrganizer(): boolean {
+    return this.currentUserUid === this.selectedEvent.organizer.uid
   }
 
   ngOnDestroy() {

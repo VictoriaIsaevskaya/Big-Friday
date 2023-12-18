@@ -1,0 +1,28 @@
+.activity-card {
+  position: relative;
+}
+
+.event-count {
+  font-size: 0.8em;
+  color: var(--ion-text-color-secondary);
+  padding-top: 8px;
+  display: flex;
+  align-items: center;
+}
+
+.create-event {
+  font-size: 0.8em;
+  padding-top: 8px;
+  font-style: italic;
+}
+
+ion-badge {
+  background: var(--ion-background-color);
+  color: var(--ion-text-color-secondary);
+  border: 1px solid var(--ion-text-color-secondary);
+  position: absolute;
+  top: 5px;
+  right: -5px;
+  font-size: 0.8em;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}

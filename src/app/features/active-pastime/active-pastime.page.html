@@ -5,10 +5,18 @@
     <h3 class="m-0">Active Events</h3>
     <ion-icon slot="icon-only" name="add-outline" class="activity-icon mr-s"></ion-icon>
   </div>
-    <ion-card *ngFor="let act of activities" (click)="goToActivity(act.activity)" class="activity-card">
-      <ion-icon  [name]="act.icon" class="activity-icon"></ion-icon>
-      <ion-card-content>
-        <div class="activity-title">{{ act.activity | titlecase }}</div>
-      </ion-card-content>
-    </ion-card>
+  <ion-card *ngFor="let act of activities" (click)="goToActivity(act.activity)" class="activity-card">
+    <ion-icon [name]="act.icon" class="activity-icon"></ion-icon>
+    <ion-card-content>
+      <div class="activity-title">{{ act.activity | titlecase }}</div>
+      <div *ngIf="eventCounts$ | async as eventCounts">
+        <div *ngIf="eventCounts[act.activity] > 0">
+          <ion-badge>{{ eventCounts[act.activity] }}</ion-badge>
+        </div>
+        <div *ngIf="!eventCounts[act.activity] || eventCounts[act.activity] === 0">
+          No events yet. Start the fun by creating one!
+        </div>
+      </div>
+    </ion-card-content>
+  </ion-card>
 </ion-content>

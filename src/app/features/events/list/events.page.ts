@@ -5,7 +5,7 @@ import {Select, Store} from "@ngxs/store";
 import {Observable} from "rxjs";
 
 import {CreateEventComponent} from "../../../modals/create-event/create-event.component";
-import {EventsState, LoadEvents} from '../../../state/events';
+import {EventsState, LoadEventsByCategory} from '../../../state/events';
 import {eventCategories} from "../model/helpers/event-categories";
 import {EventDetails} from "../model/interfaces";
 
@@ -18,7 +18,7 @@ export class EventsPage implements OnInit {
   pageTitle?: string;
   activityType?: string | null;
 
-  @Select(EventsState.allEvents) events$!: Observable<EventDetails[]>;
+  @Select(EventsState.categoryEvents) events$!: Observable<EventDetails[]>;
 
   constructor(private route: ActivatedRoute, private modalController: ModalController, private store: Store) {
     this.activityType = this.route.snapshot.paramMap.get('activityType');
@@ -29,7 +29,7 @@ export class EventsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.store.dispatch(new LoadEvents());
+    this.store.dispatch(new LoadEventsByCategory({category: this.activityType}));
   }
 
   private parseActivityType(activityType: string): string {

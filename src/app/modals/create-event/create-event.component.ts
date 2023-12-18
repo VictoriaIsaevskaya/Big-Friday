@@ -7,7 +7,9 @@ import { Store } from "@ngxs/store";
 import {ChatDetails} from "../../features/chats/model/interfaces/chat.interface";
 import {EventDetails} from "../../features/events/model/interfaces";
 import {FirestoreApiService} from "../../services/firestore-api.service";
+import {AuthState} from "../../state/auth";
 import {AddEvent} from "../../state/events";
+import {UserState} from "../../state/user";
 
 
 @Component({
@@ -56,19 +58,22 @@ export class CreateEventComponent {
 
   async createEvent() {
     if (this.eventForm.valid) {
+
       const eventDetails: EventDetails = {
         ...this.eventForm.value,
         organizer: {
-          name: 'Ray Clay',
-          avatar: 'assets/images/avatar.jpg'
+          name: this.store.selectSnapshot(UserState.userPreferences).username,
+          avatar: 'assets/images/avatar.jpg',
+          uid: this.store.selectSnapshot(AuthState.user).uid
         },
         category: this.category,
         participants: []
       };
 
       try {
+        const {chatName, chatImage: image, title } = this.eventForm.value;
+        const name = chatName ? chatName : title;
         const eventDocRef = await this.firestoreApiService.createEvent(eventDetails);
-        const {chatName: name, chatImage: image } = this.eventForm.value;
         const chatDetails: ChatDetails = { name, image };
         const chatDocRef = await this.firestoreApiService.createChatForEvent(eventDocRef.id, chatDetails);
         await this.firestoreApiService.linkEventWithChat(eventDocRef.id, chatDocRef.id);

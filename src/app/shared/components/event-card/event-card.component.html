@@ -5,7 +5,7 @@
     <div class="secondary-color">
       <div><ion-icon name="calendar-outline"></ion-icon> {{ event.date | date:'mediumDate' }} {{ event.date | date:'shortTime' }}</div>
       <div><ion-icon name="location-outline"></ion-icon> {{ event.location }}</div>
-      <div><ion-icon name="people-outline"></ion-icon> {{ event.attendees }}/{{ event.maxAttendees }} participants</div>
+      <div><ion-icon name="people-outline"></ion-icon> {{ event.attendees ?? 0 }}/{{ event.maxAttendees }} participants</div>
     </div>
   </ion-card-content>
 </ion-card>

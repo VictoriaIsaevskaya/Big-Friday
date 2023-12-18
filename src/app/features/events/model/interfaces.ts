@@ -11,6 +11,7 @@ export interface EventDetails {
   organizer: {
     name: string;
     avatar: string;
+    uid: string;
   };
   category: string;
   ageGroup: string;

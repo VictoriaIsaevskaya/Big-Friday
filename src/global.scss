@@ -95,8 +95,6 @@ ion-tab-button {
 }
 
 .single-btn {
-  --background: var(--ion-color-secondary);
-  --color: #fff;
   border-radius: 8px;
   margin: 20px auto;
   height: 50px;
@@ -107,7 +105,6 @@ ion-tab-button {
 
   &:hover {
     transform: scale(1.05);
-    --background: var(--ion-color-secondary-shade);
   }
 }
 
@@ -177,7 +174,6 @@ ion-avatar {
 .intro-text {
   font-weight: 500;
   margin: 20px;
-  color: var(--ion-color-light);
   text-align: center;
   line-height: 1.4;
 }

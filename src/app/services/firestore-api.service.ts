@@ -4,7 +4,7 @@ import firebase from "firebase/compat";
 import {map, Observable} from "rxjs";
 
 import {ChatDetails} from "../features/chats/model/interfaces/chat.interface";
-import {JoinedEvent} from "../shared/models/interfaces/user";
+import {JoinedEvent, User} from "../shared/models/interfaces/user";
 
 
 @Injectable({
@@ -48,7 +48,8 @@ export class FirestoreApiService {
 
   createChatForEvent(eventId: string, chatDetails: ChatDetails): Promise<any> {
     const { name, image } = chatDetails
-    const chatData = { eventId, name, image, messages: [] };
+    const details = { name, image, eventId }
+    const chatData = { details, messages: [], loadingMessages: false, hasError: false, lastMessage: false };
     return this.firestore.collection('chats').add(chatData);
   }
 
@@ -62,5 +63,22 @@ export class FirestoreApiService {
 
   joinUserToEvent(uid: string, events: JoinedEvent[]) {
     return this.firestore.collection('users').doc(uid).update({ joinedEvents: events });
+  }
+
+  removeFromUserJoinedEvents(userId: string, eventId: string): Promise<void> {
+    const userRef = this.firestore.collection('users').doc(userId);
+    return this.firestore.firestore.runTransaction(async (transaction) => {
+      const userDoc = await transaction.get(userRef.ref);
+      const user = userDoc.data() as User;
+
+      if (user && user.joinedEvents) {
+        const updatedJoinedEvents = user.joinedEvents.filter((joinedEvent) => joinedEvent.eventId !== eventId);
+        transaction.update(userRef.ref, { joinedEvents: updatedJoinedEvents });
+      }
+    });
+  }
+
+  deleteEvent(eventId: string): Promise<void> {
+    return this.firestore.collection('events').doc(eventId).delete();
   }
 }
