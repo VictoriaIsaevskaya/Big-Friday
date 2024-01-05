@@ -1,17 +1,16 @@
 <app-page-header [pageTitle]="chatName" backRedirectionLink="/chats"></app-page-header>
-
 <ion-content [fullscreen]="true" class="chat-content">
-  <ion-list *ngFor="let message of messages">
-    <app-chat-box [message]="message" [currentUserId]="currentUserId"></app-chat-box>
+  <ion-list>
+    <ng-container *ngFor="let item of processedMessages">
+      <div *ngIf="isString(item)" class="date-separator">{{ item }}</div>
+      <app-chat-box [message]="item" [currentUserId]="currentUserId"></app-chat-box>
+    </ng-container>
   </ion-list>
 </ion-content>
 
 <ion-footer>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button class="icon-btn">
-        <ion-icon slot="icon-only" name="attach-outline"></ion-icon>
-      </ion-button>
     </ion-buttons>
     <ion-textarea autoGrow="true" rows="1" placeholder="Type your message" [(ngModel)]="message">
     </ion-textarea>

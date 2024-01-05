@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Store} from "@ngxs/store";
-import {Observable, throwError} from "rxjs";
+import {map, Observable, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import {FirestoreApiService} from "../../services/firestore-api.service";
@@ -26,6 +26,16 @@ export class ChatService {
   getUsers() {
     return this.api.collectionDataQuery('users', this.api.whereQuery('uid', '!=', this.currentUserId));
   }
+
+  loadChatById(chatId: string): Observable<ChatRoom> {
+    if (!chatId) {
+      return throwError(() => new Error("Chat ID is required"));
+    }
+    return this.api.getDocById(`chats/${chatId}`).pipe(
+      map(data => data as ChatRoom)
+    );
+  }
+
 
   loadAllChats(chatIds: string[]): Observable<ChatRoom[]> {
     if (!chatIds.length) {

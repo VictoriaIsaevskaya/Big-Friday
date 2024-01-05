@@ -1,9 +1,9 @@
 import {Injectable} from "@angular/core";
-import {AngularFirestore, QueryFn} from "@angular/fire/compat/firestore";
+import {AngularFirestore, DocumentReference, QueryFn} from "@angular/fire/compat/firestore";
 import firebase from "firebase/compat";
 import {map, Observable} from "rxjs";
 
-import {ChatDetails} from "../features/chats/model/interfaces/chat.interface";
+import {ChatDetails, ChatMessage} from "../features/chats/model/interfaces/chat.interface";
 import {JoinedEvent, User} from "../shared/models/interfaces/user";
 
 
@@ -18,8 +18,16 @@ export class FirestoreApiService {
     return this.firestore.doc(path).set(data);
   }
 
+  addMessageToChat(chatId: string, message: any): Promise<DocumentReference<unknown>> {
+    return this.firestore.collection(`chats/${chatId}/messages`).add(message);
+  }
+
   getDocById(path: string) {
     return this.firestore.doc(path).valueChanges();
+  }
+
+  updateChatLastMessage(chatId: string, lastMessage: any): Promise<void> {
+    return this.firestore.doc(`chats/${chatId}`).update({ lastMessage });
   }
 
   collectionRef(path) {
@@ -76,6 +84,10 @@ export class FirestoreApiService {
         transaction.update(userRef.ref, { joinedEvents: updatedJoinedEvents });
       }
     });
+  }
+
+  getChatMessages(chatId: string): Observable<ChatMessage[]> {
+    return this.firestore.collection<ChatMessage>(`chats/${chatId}/messages`, ref => ref.orderBy('timestamp')).valueChanges();
   }
 
   deleteEvent(eventId: string): Promise<void> {

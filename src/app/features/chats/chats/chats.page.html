@@ -7,33 +7,19 @@
     <ion-buttons slot="end">
     </ion-buttons>
   </ion-toolbar>
-  <ion-segment [value]="segment" (ionChange)="onSegmentChanged($event)">
-    <ion-segment-button value="status">
-      <ion-label>Status</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="chats">
-      <ion-label>Chats</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="calls">
-      <ion-label>Calls</ion-label>
-    </ion-segment-button>
-  </ion-segment>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="chat-content">
-  <ion-list *ngIf="segment === 'chats'">
-    <ion-list-header class="chat-content__list-header">
-      <p>Recent Chats</p>
-    </ion-list-header>
+  <ion-list>
     <ion-item *ngFor="let item of chatRooms" (click)="getChat(item.id)" detail="true" class="chat-content__list-item">
       <ion-avatar slot="start">
         <img [src]="item.details?.image || '../../../assets/images/bowling.jpg'" alt="">
       </ion-avatar>
       <ion-label class="chat-content__list-item__label">
         {{item.details?.name}}
-        <p class="message">
-          <ion-text >
-            message
+        <p *ngIf="item.lastMessage" class="message">
+          <ion-text>
+            {{item.lastMessage.senderName}}: {{item.lastMessage.text}}
           </ion-text>
         </p>
       </ion-label>

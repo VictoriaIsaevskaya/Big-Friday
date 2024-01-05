@@ -14,16 +14,8 @@ import {ChatService} from "../chat.service";
   styleUrls: ['./chats.page.scss'],
 })
 export class ChatsPage implements OnInit {
-
-  segment = 'chats';
   users: Observable<any>
   currentUserId = this.store.selectSnapshot(AuthState.user).uid;
-  // chatRooms: ChatRoom[];
-  // chatRooms: IChatRoom[] = [
-  //   {id: '1', name: 'Bowling night', image: 'https://i.pravatar.cc/385', message: 'message'},
-  //   {id: '2', name: 'Sea fishing', image: 'https://i.pravatar.cc/386', message: 'message'},
-  //   {id: '3', name: 'Beach volleyball', image: 'https://i.pravatar.cc/387', message: 'message'}
-  // ]
 
   constructor(private router: Router, private route: ActivatedRoute, private store: Store, private chatService: ChatService
               ) {}
@@ -48,9 +40,5 @@ export class ChatsPage implements OnInit {
 
   getUsers() {
     this.users = this.chatService.getUsers();
-  }
-
-  onSegmentChanged(event: HTMLElement) {
-    console.log(event)
   }
 }

@@ -4,7 +4,7 @@ export interface ChatRoom {
   messages: ChatMessage[];
   loadingMessages?: boolean;
   hasError?: boolean;
-  lastMessage?: string;
+  lastMessage?: ChatMessage;
 }
 
 export interface ChatDetails {
@@ -14,10 +14,10 @@ export interface ChatDetails {
 }
 
 export interface ChatMessage {
-  id: string;
+  id?: string;
   senderId: string;
   senderName?: string;
   text: string;
-  timestamp: Date;
+  timestamp: Date | any;
   isRead?: boolean;
 }

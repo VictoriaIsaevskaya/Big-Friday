@@ -1,6 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
+import {ToastController} from "@ionic/angular";
 import {State, Action, StateContext, Selector} from '@ngxs/store';
 import {tap} from "rxjs";
 import {catchError} from "rxjs/operators";
@@ -36,7 +37,7 @@ export interface AuthStateModel {
 })
 @Injectable()
 export class AuthState {
-  constructor(private authService: AuthService, private firestore: AngularFirestore, private router: Router) {
+  constructor(private authService: AuthService, private firestore: AngularFirestore, private router: Router, private toastController: ToastController) {
   }
 
   @Action(RegisterUser)
@@ -90,6 +91,7 @@ export class AuthState {
   loginFailure(ctx: StateContext<AuthStateModel>, action: LoginFailure) {
     const state = ctx.getState();
     const {error} = action.payload
+    this.presentToast()
 
     ctx.setState({
       ...state,
@@ -180,5 +182,15 @@ export class AuthState {
   @Selector()
   static hasError(state: AuthStateModel) {
     return !!state.error;
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Email or/and password are incorrect!',
+      duration: 2000,
+      position: 'top',
+    });
+
+    await toast.present();
   }
 }

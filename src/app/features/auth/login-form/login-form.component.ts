@@ -1,12 +1,10 @@
 import {CommonModule} from "@angular/common";
 import {Component} from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {IonicModule, PopoverController} from '@ionic/angular';
+import {IonicModule, ToastController} from '@ionic/angular';
 import {Store} from '@ngxs/store';
 
 import {Login} from "../../../state/auth";
-
-
 
 @Component({
   selector: 'app-login-form',
@@ -20,7 +18,7 @@ export class LoginFormComponent {
     password: FormControl<string>,
   }>;
 
-  constructor(private store: Store, private fb: FormBuilder) {
+  constructor(private store: Store, private fb: FormBuilder, private toastController: ToastController) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
@@ -33,6 +31,16 @@ export class LoginFormComponent {
       const password = this.loginForm.get('password')?.value;
       this.store.dispatch(new Login({email, password}))
     }
+  }
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Hello World!',
+      duration: 1500,
+      position: 'top',
+    });
+
+    await toast.present();
   }
 
 }

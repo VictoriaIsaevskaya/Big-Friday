@@ -73,6 +73,10 @@ ion-tab-button {
   padding: 5px;
 }
 
+.pt-s {
+  padding-top: 5px;
+}
+
 .p-m {
   padding: 10px;
 }
@@ -92,6 +96,10 @@ ion-tab-button {
 
 .mr-s {
   margin-right: 5px;
+}
+
+.w-100 {
+  width: 100%
 }
 
 .single-btn {
@@ -187,4 +195,8 @@ ion-popover {
     box-shadow: none !important;
     background-color: transparent !important;
   }
+}
+
+ion-textarea {
+  --highlight-color-valid: var(--ion-background-color) !important;
 }

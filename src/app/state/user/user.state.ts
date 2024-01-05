@@ -6,6 +6,7 @@ import {EMPTY, from, switchMap, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import {ChatService} from "../../features/chats/chat.service";
+import {ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
 import {UserPreferences} from "../../modals/model/interfaces";
 import {FirestoreApiService} from "../../services/firestore-api.service";
 import {UserActivities} from "../../shared/models/interfaces/user";
@@ -58,12 +59,9 @@ export class UserState {
   @Action(JoinUserToEvent)
   joinUserToEvent(ctx: StateContext<UserStateModel>, action: JoinUserToEvent) {
     const { userId, events } = action.payload;
-
     return this.firestoreApiService.joinUserToEvent(userId, events).then(() => {
       ctx.dispatch(new JoinUserToEventSuccess({events}));
-    }).catch(error => {
-      ctx.dispatch(new JoinUserToEventFailure({ error }));
-    });
+    }).catch(error => ctx.dispatch(new JoinUserToEventFailure({ error })));
   }
 
   @Action(JoinUserToEventSuccess)
@@ -104,10 +102,10 @@ export class UserState {
     this.router.navigateByUrl('home');
 
     const state = ctx.getState();
-    const {preferences: userPreferences} = action.payload
+    const {preferences: { username, preferredLanguages, about, ageGroup, interests, avatar }} = action.payload
     ctx.setState({
       ...state,
-      userPreferences
+      userPreferences: { username, about, ageGroup, interests, avatar, preferredLanguages}
     });
   }
 
@@ -138,7 +136,7 @@ export class UserState {
   @Action(LoadUserChats)
   loadUserChats(ctx: StateContext<UserStateModel>, action: LoadUserChats) {
     return this.chatService.loadAllChats(action.payload.chatIds).pipe(
-      tap((chats) => {
+      tap((chats: ChatRoom[]) => {
         ctx.dispatch(new LoadUserChatsSuccess({chats}))
       }),
       catchError(err => {

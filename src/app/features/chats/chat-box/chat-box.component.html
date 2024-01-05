@@ -1,7 +1,10 @@
-<ion-item class="message-item" [ngClass]="message.senderId === currentUserId ? 'my-message' : 'their-message'">
-  <div class="message-content">
+<ion-item *ngIf="isChatMessage(message)"  class="message-item" [ngClass]="message.senderId === currentUserId ? 'my-message' : 'their-message'">
+  <div class="message-content w-100 pt-s">
+    <span>{{ message.senderName }}</span>
     <p>{{ message.text }}</p>
-    <span>{{ message.timestamp | date:'shortTime' }}</span>
+    <div class="ion-text-end">
+      <span>{{ message.timestamp | date:'shortTime' }}</span>
+    </div>
   </div>
 </ion-item>
 

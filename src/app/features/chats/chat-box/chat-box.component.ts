@@ -1,5 +1,5 @@
 import {CommonModule} from "@angular/common";
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input} from '@angular/core';
 import {IonicModule} from "@ionic/angular";
 
 import {ChatMessage} from "../model/interfaces/chat.interface";
@@ -11,12 +11,12 @@ import {ChatMessage} from "../model/interfaces/chat.interface";
   standalone: true,
   imports: [IonicModule, CommonModule]
 })
-export class ChatBoxComponent implements OnInit {
-  @Input() message: ChatMessage;
+export class ChatBoxComponent {
+  @Input() message: ChatMessage | string;
   @Input() currentUserId: string;
 
-  constructor() { }
-
-  ngOnInit() {}
+  isChatMessage(item: any): item is ChatMessage {
+    return item.hasOwnProperty('text');
+  }
 
 }
