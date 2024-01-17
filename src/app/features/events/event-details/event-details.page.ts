@@ -37,7 +37,7 @@ export class EventDetailsPage implements OnDestroy {
   }
 
   joinEvent(eventId: string, chatId: string) {
-    this.store.selectSnapshot(AuthState.isLoggedIn) ? this.addUserToEvent(eventId, chatId) : this.openShouldAuthModal;
+    this.store.selectSnapshot(AuthState.isLoggedIn) ? this.joinUserToEvent(eventId, chatId) : this.openShouldAuthModal;
   }
 
   get currentUserUid(): string | null {
@@ -45,7 +45,7 @@ export class EventDetailsPage implements OnDestroy {
     return user ? user.uid : null
   }
 
-  addUserToEvent(eventId: string, chatId: string) {
+  joinUserToEvent(eventId: string, chatId: string) {
     const { username, about, ageGroup, interests } = this.store.selectSnapshot(UserState.userPreferences)
     let participant: Participant = {
       userId: this.currentUserUid,

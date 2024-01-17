@@ -9,6 +9,7 @@ import {ChatService} from "../../features/chats/chat.service";
 import {ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
 import {UserPreferences} from "../../modals/model/interfaces";
 import {FirestoreApiService} from "../../services/firestore-api.service";
+import {MessagingService} from "../../services/messaging.service";
 import {UserActivities} from "../../shared/models/interfaces/user";
 import {AuthStateModel, RegisterFailure} from "../auth";
 
@@ -53,7 +54,7 @@ const userActivities = {
 @Injectable()
 export class UserState {
   constructor(private firestore: AngularFirestore, private firestoreApiService: FirestoreApiService, private router: Router,
-    private chatService: ChatService) {
+    private chatService: ChatService, private messagingService: MessagingService) {
   }
 
   @Action(JoinUserToEvent)
@@ -74,6 +75,7 @@ export class UserState {
         joinedEvents: action.payload.events
       }
     });
+    this.messagingService.requestPermission();
   }
 
   @Action(JoinUserToEventFailure)

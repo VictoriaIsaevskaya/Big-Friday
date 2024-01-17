@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "663869675591",
+    "project_id": "big-friday",
+    "storage_bucket": "big-friday.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:663869675591:android:794c8e1d9cf20dc693f962",
+        "android_client_info": {
+          "package_name": "io.ionic.starter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBv55cUrHST2NeS9JA2Rev2LmIG3nO4htI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

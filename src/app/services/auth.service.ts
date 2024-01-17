@@ -7,6 +7,7 @@ import { catchError, switchMap, tap } from 'rxjs/operators';
 
 import {User} from "../shared/models/interfaces/user";
 import {
+  AuthState,
   LoginSuccess, SetCurrentUser
 } from '../state/auth/';
 import {SetUserPreferences} from "../state/user";
@@ -34,6 +35,10 @@ export class AuthService {
 
   register(email: string, password: string): Observable<any> {
     return from(this.afAuth.createUserWithEmailAndPassword(email, password));
+  }
+
+  public getCurrentUserId(): string {
+    return this.store.selectSnapshot(AuthState.user).uid
   }
 
   get authState$(): Observable<any> {

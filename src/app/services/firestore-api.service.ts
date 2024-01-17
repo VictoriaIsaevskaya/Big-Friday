@@ -73,6 +73,13 @@ export class FirestoreApiService {
     return this.firestore.collection('users').doc(uid).update({ joinedEvents: events });
   }
 
+  updateUserFcmToken(userId: string, fcmToken: string): Promise<void> {
+    if (!userId) {
+      return Promise.reject(new Error("No user ID provided"));
+    }
+    return this.firestore.doc(`users/${userId}`).update({ fcmToken });
+  }
+
   removeFromUserJoinedEvents(userId: string, eventId: string): Promise<void> {
     const userRef = this.firestore.collection('users').doc(userId);
     return this.firestore.firestore.runTransaction(async (transaction) => {
