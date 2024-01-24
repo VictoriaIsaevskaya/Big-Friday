@@ -19,3 +19,17 @@ export class UpdateLastMessage {
   static readonly type = '[Chat] Update Last Message';
   constructor(public payload: {chatId: string, lastMessage: ChatMessage}) {}
 }
+
+export class ResetUnreadMessages {
+  static readonly type = '[Chat] Reset Unread Messages';
+}
+
+export class UpdateUnreadMessagesCount {
+  static readonly type = '[Chat] Update Unread Messages Count';
+  constructor(public payload: { unreadMessagesCount: number }) {}
+}
+
+export class FetchUnreadMessagesCount {
+  static readonly type = '[Chat] Fetch Unread Messages Count';
+}
+

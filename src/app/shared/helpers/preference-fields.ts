@@ -20,5 +20,5 @@ export const preferenceFields: PreferenceField[] = [
 export const registerFields: PreferenceField[] = preferenceFields.concat([
   { controlName: 'email', placeholder: 'Email', type: 'input', icon: 'mail-outline', isEditing: false },
   { controlName: 'password', placeholder: 'Password', type: 'password', icon: 'lock-closed-outline', isEditing: false },
-  { controlName: 'confirmPassword', placeholder: 'Confirm Password', type: 'password', icon: 'lock-closed-outline', isEditing: false },
+  // { controlName: 'confirmPassword', placeholder: 'Confirm Password', type: 'password', icon: 'lock-closed-outline', isEditing: false },
 ])

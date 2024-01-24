@@ -26,7 +26,7 @@ export class PreferencesComponent {
       username: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      confirmPassword: ['', [Validators.required]],
+      // confirmPassword: ['', [Validators.required]],
       about: [''],
       preferredLanguages: [''],
       interests: [[]],

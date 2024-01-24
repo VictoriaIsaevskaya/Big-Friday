@@ -24,7 +24,7 @@ export class ChatComponent  implements OnInit {
   chatName: string = '';
   message: string = '';
   isLoading = false;
-  currentUserId = this.store.selectSnapshot(AuthState.user).uid;
+  currentUserId = this.store.selectSnapshot(AuthState.user)?.uid;
   messages: ChatMessage[] = [];
   processedMessages: (ChatMessage | string)[] = [];
   senderName = this.store.selectSnapshot(UserState.userPreferences).username

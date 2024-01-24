@@ -38,7 +38,7 @@ export class AuthService {
   }
 
   public getCurrentUserId(): string {
-    return this.store.selectSnapshot(AuthState.user).uid
+    return this.store.selectSnapshot(AuthState.user)?.uid
   }
 
   get authState$(): Observable<any> {

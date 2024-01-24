@@ -28,9 +28,9 @@
               <div *ngIf="field.controlName === 'password' && preferencesForm.controls[field.controlName].errors?.['minLength']">
                 Password should be at least 6 characters.
               </div>
-              <div *ngIf="field.controlName === 'confirmPassword' && preferencesForm.errors?.['mismatch']">
-                Passwords do not match.
-              </div>
+<!--              <div *ngIf="field.controlName === 'confirmPassword' && preferencesForm.errors?.['mismatch']">-->
+<!--                Passwords do not match.-->
+<!--              </div>-->
               <div *ngIf="preferencesForm.controls[field.controlName].errors?.['required']">
                 {{ field.placeholder }} is required.
               </div>

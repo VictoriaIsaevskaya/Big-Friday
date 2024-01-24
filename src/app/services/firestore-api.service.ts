@@ -6,7 +6,6 @@ import {map, Observable} from "rxjs";
 import {ChatDetails, ChatMessage} from "../features/chats/model/interfaces/chat.interface";
 import {JoinedEvent, User} from "../shared/models/interfaces/user";
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -100,4 +99,15 @@ export class FirestoreApiService {
   deleteEvent(eventId: string): Promise<void> {
     return this.firestore.collection('events').doc(eventId).delete();
   }
+
+  resetUnreadMessagesCount(userId: string): Promise<void> {
+    return this.firestore.doc(`users/${userId}`).update({ unreadMessagesCount: 0 });
+  }
+
+  getUnreadMessagesCount(userId: string): Observable<number> {
+    return this.firestore.doc<{unreadMessagesCount: number}>(`users/${userId}`)
+      .valueChanges()
+      .pipe(map(data => data ? data.unreadMessagesCount : 0));
+  }
+
 }

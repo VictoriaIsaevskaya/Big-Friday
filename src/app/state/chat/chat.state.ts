@@ -5,12 +5,14 @@ import {catchError} from "rxjs/operators";
 
 import {ChatService} from "../../features/chats/chat.service";
 import {ChatMessage, ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
+import {AuthService} from "../../services/auth.service";
 import {FirestoreApiService} from "../../services/firestore-api.service";
 
 import {
+  FetchUnreadMessagesCount,
   LoadChatMessages,
-  LoadCurrentChat,
-  SendMessage, UpdateLastMessage,
+  LoadCurrentChat, ResetUnreadMessages,
+  SendMessage, UpdateLastMessage, UpdateUnreadMessagesCount,
 } from "./chat.actions";
 
 
@@ -18,12 +20,14 @@ export interface ChatStateModel {
   chats: ChatRoom[];
   currentChat: ChatRoom | null;
   messages: ChatMessage[];
+  unreadMessagesCount: number;
 }
 
 const initialState: ChatStateModel = {
   chats: [],
   currentChat: null,
-  messages: []
+  messages: [],
+  unreadMessagesCount: 0
 };
 @Injectable()
 @State<ChatStateModel>({
@@ -31,7 +35,7 @@ const initialState: ChatStateModel = {
   defaults: initialState
 })
 export class ChatState {
-  constructor(private chatService: ChatService, private firestoreApiService: FirestoreApiService) {}
+  constructor(private chatService: ChatService, private firestoreApiService: FirestoreApiService, private authService: AuthService) {}
 
   @Selector()
   static messages(state: ChatStateModel): ChatMessage[] {
@@ -39,8 +43,31 @@ export class ChatState {
   }
 
   @Selector()
+  static unreadMessagesCount(state: ChatStateModel): number {
+    return state.unreadMessagesCount;
+  }
+
+  @Selector()
   static currentChatDetails(state: ChatStateModel): ChatRoom {
     return state.currentChat;
+  }
+
+  @Action(FetchUnreadMessagesCount)
+  fetchUnreadMessagesCount({patchState}: StateContext<ChatStateModel>) {
+    const currentUserId = this.authService.getCurrentUserId();
+
+    this.firestoreApiService.getUnreadMessagesCount(currentUserId).pipe(
+      tap(count => {
+        patchState({ unreadMessagesCount: count });
+      })).subscribe();
+  }
+
+  @Action(ResetUnreadMessages)
+  resetUnreadMessages({ patchState }: StateContext<ChatStateModel>) {
+    const currentUserId = this.authService.getCurrentUserId();
+
+    patchState({ unreadMessagesCount: 0 });
+    this.firestoreApiService.resetUnreadMessagesCount(currentUserId)
   }
 
   @Action(LoadCurrentChat)
@@ -92,6 +119,14 @@ export class ChatState {
     });
   }
 
+
+  @Action(UpdateUnreadMessagesCount)
+  updateUnreadMessagesCount({ patchState }: StateContext<ChatStateModel>, { payload }: UpdateUnreadMessagesCount) {
+    if (payload && payload.unreadMessagesCount !== undefined) {
+      patchState({ unreadMessagesCount: payload.unreadMessagesCount });
+
+    }
+  }
 
 
 
