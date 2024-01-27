@@ -1,4 +1,9 @@
 import { Component } from '@angular/core';
+import {Store} from "@ngxs/store";
+
+import {ChatState, FetchUnreadMessagesCount} from "../../state/chat";
+
+import {FOOTER_TABS} from "./constants";
 
 @Component({
   selector: 'app-footer',
@@ -6,7 +11,10 @@ import { Component } from '@angular/core';
   styleUrls: ['footer.page.scss']
 })
 export class FooterPage {
+  constructor(private store: Store) {
+    this.store.dispatch(new FetchUnreadMessagesCount())
+  }
+  unreadMessagesCount = this.store.select(ChatState.unreadMessagesCount)
 
-  constructor() {}
-
+  tabs = FOOTER_TABS;
 }

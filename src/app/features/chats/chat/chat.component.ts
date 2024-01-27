@@ -35,14 +35,13 @@ export class ChatComponent  implements OnInit {
   ngOnInit() {
     const chatId = this.route.snapshot.paramMap.get('chatId');
     this.store.dispatch(new LoadCurrentChat({ chatId }))
-    this.store.dispatch(new LoadChatMessages({ chatId }));
     this.subscribeToMessages();
     this.subscribeToChatDetails();
   }
 
   subscribeToMessages() {
     this.store.select(ChatState.messages).subscribe((messages) => {
-      this.messages = messages.map(message => ({
+      this.messages = messages?.map(message => ({
           ...message,
           timestamp: message.timestamp.seconds ? new Date(message.timestamp.seconds * 1000) : new Date()
         })
@@ -55,7 +54,7 @@ export class ChatComponent  implements OnInit {
   subscribeToChatDetails() {
     this.store.select(ChatState.currentChatDetails).subscribe((chatDetails) => {
       if (chatDetails) {
-        this.chatName = chatDetails.details.name;
+        this.chatName = chatDetails.details?.name;
         this.messages = chatDetails.messages || [];
       }
     });
@@ -88,7 +87,7 @@ export class ChatComponent  implements OnInit {
     const processedMessages: (ChatMessage | string)[] = [];
     let lastDate: string | null = null;
 
-    messages.forEach(message => {
+    messages?.forEach(message => {
       const messageDate = message.timestamp instanceof Date ? message.timestamp : new Date(message.timestamp.seconds * 1000);
       const formattedDate = messageDate.toLocaleDateString("en-GB").replace(/\//g, "-"); // Формат дд-мм-гггг
 

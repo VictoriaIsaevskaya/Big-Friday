@@ -120,3 +120,37 @@ async function incrementUnreadMessages(userId: string) {
     transaction.update(userRef, {unreadMessagesCount: unreadCount});
   });
 }
+
+exports.onMessageCreated = functions.firestore
+  .document("chats/{chatId}/messages/{messageId}")
+  .onCreate(async (snapshot, context) => {
+    const chatId = context.params.chatId;
+
+    const chatRef = admin.firestore().collection("chats").doc(chatId);
+    const chatSnapshot = await chatRef.get();
+    const chatData = chatSnapshot.data();
+
+    if (!chatData || !chatData.participants) return;
+
+    const messageSenderId = snapshot.data().senderId;
+    const participants = chatData.participants;
+
+    for (const participantId of participants) {
+      if (participantId !== messageSenderId) {
+        const participantRef =
+          chatRef.collection("participants").doc(participantId);
+        await admin.firestore().runTransaction(async (transaction) => {
+          const participantDoc = await transaction.get(participantRef);
+          if (!participantDoc.exists) {
+            transaction.set(participantRef, {unreadMessagesCount: 1});
+          } else {
+            const unreadCount =
+              (participantDoc.data()?.unreadMessagesCount || 0) + 1;
+            transaction
+              .update(participantRef, {unreadMessagesCount: unreadCount});
+          }
+        });
+      }
+    }
+  });
+

@@ -7,10 +7,6 @@ const routes: Routes = [
     loadChildren: () => import('./features/home/home.module').then(m => m.HomeModule),
   },
   {
-    path: 'events',
-    loadChildren: () => import('./layout/footer/footer.module').then(m => m.FooterModule)
-  },
-  {
     path: 'events/:activityType',
     loadChildren: () => import('./features/events/list/events.module').then(m => m.EventsPageModule)
   },
@@ -30,6 +26,23 @@ const routes: Routes = [
     path: 'chats',
     loadChildren: () => import('./features/chats/chats/chats.module').then(m => m.ChatPageModule)
   },
+  {
+    path: 'active',
+    loadChildren: () => import('./features/active-pastime/active-pastime.module').then(m => m.ActivePastimeModule)
+  },
+  {
+    path: 'passive',
+    loadChildren: () => import('./tab2/tab2.module').then(m => m.Tab2PageModule)
+  },
+  {
+    path: 'previous',
+    loadChildren: () => import('./tab3/tab3.module').then(m => m.Tab3PageModule)
+  },
+  {
+    path: '',
+    redirectTo: '/active',
+    pathMatch: 'full'
+  }
 ];
 @NgModule({
   imports: [

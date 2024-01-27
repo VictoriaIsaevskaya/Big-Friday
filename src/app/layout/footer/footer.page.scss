@@ -3,12 +3,17 @@ ion-tab-bar {
   border-top: 1px solid var(--ion-color-primary);
 }
 
-ion-tab-button {
-  --icon-size: 28px;
-  font-weight: 600;
+ion-label {
+  color: var(--ion-color-primary, #000);
 }
 
-ion-tab-button:active {
-  transform: scale(0.95);
-  transition: transform 0.2s;
+ion-tab-button.tab-selected ion-label {
+  text-decoration: underline;
 }
+
+ion-badge {
+  font-size: 11px;
+  position: absolute;
+  right: 6px;
+}
+

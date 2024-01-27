@@ -1,4 +1,4 @@
-import {ChatMessage} from "../../features/chats/model/interfaces/chat.interface";
+import {ChatMessage, ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
 
 export class SendMessage {
   static readonly type = '[Chat] Send Message';
@@ -10,9 +10,20 @@ export class LoadChatMessages {
   constructor(public payload: { chatId: string }) {}
 }
 
+export class LoadChatMessagesSuccess {
+  static readonly type = '[Chat] Load Chat Messages Success';
+  constructor(public payload: { messages: ChatMessage[] }) {}
+}
+
 export class LoadCurrentChat {
   static readonly type = '[Chat] Load Current Chat';
   constructor(public payload: { chatId: string }) {}
+}
+
+export class LoadCurrentChatSuccess {
+  static readonly type = '[Chat] Load Current Chat Success '
+  constructor(public payload: {currentChat: ChatRoom}) {
+  }
 }
 
 export class UpdateLastMessage {

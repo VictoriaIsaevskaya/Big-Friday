@@ -7,7 +7,6 @@
       <ion-avatar class="header-toolbar__user" (click)="openUserOptions($event)">
         <ion-icon name="person-circle-outline"></ion-icon>
       </ion-avatar>
-      <ion-badge color="danger" *ngIf="(unreadMessagesCount | async) as count">{{ count }}</ion-badge>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

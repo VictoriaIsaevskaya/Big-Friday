@@ -5,12 +5,19 @@ export interface ChatRoom {
   loadingMessages?: boolean;
   hasError?: boolean;
   lastMessage?: ChatMessage;
+  unreadMessagesCount?: number;
+}
+
+export interface ChatParticipant {
+  userId: string;
+  unreadMessagesCount: number;
 }
 
 export interface ChatDetails {
   name: string;
   image: string;
   eventId?: string;
+  participants: ChatParticipant[];
 }
 
 export interface ChatMessage {

@@ -1,20 +1,9 @@
 <ion-tabs class="footer-tabs">
-
   <ion-tab-bar slot="bottom">
-    <ion-tab-button tab="active">
-      <ion-icon name="bicycle-outline"></ion-icon>
-      <ion-label>Active</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="passive">
-      <ion-icon name="wine-outline"></ion-icon>
-      <ion-label>Passive</ion-label>
-    </ion-tab-button>
-
-    <ion-tab-button tab="previous">
-      <ion-icon name="play-skip-back-outline"></ion-icon>
-      <ion-label>Previous</ion-label>
+    <ion-tab-button *ngFor="let tabItem of tabs" [tab]="tabItem.tab">
+      <ion-badge color="danger" *ngIf="tabItem.tab === 'chats' && (unreadMessagesCount | async) as count">{{ count }}</ion-badge>
+      <ion-icon [name]="tabItem.icon"></ion-icon>
+      <ion-label>{{ tabItem.label }}</ion-label>
     </ion-tab-button>
   </ion-tab-bar>
-
 </ion-tabs>

@@ -2,11 +2,10 @@ import {Injectable} from "@angular/core";
 import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
 import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {EMPTY, from, switchMap, tap, throwError} from "rxjs";
+import {from, switchMap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import {ChatService} from "../../features/chats/chat.service";
-import {ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
 import {UserPreferences} from "../../modals/model/interfaces";
 import {FirestoreApiService} from "../../services/firestore-api.service";
 import {MessagingService} from "../../services/messaging.service";
@@ -16,7 +15,7 @@ import {AuthStateModel, RegisterFailure} from "../auth";
 import {
   JoinUserToEvent,
   JoinUserToEventFailure,
-  JoinUserToEventSuccess, LoadUserChats, LoadUserChatsSuccess, PreferencesUpload, PreferencesUploadFailure,
+  JoinUserToEventSuccess, PreferencesUpload, PreferencesUploadFailure,
   PreferencesUploadSuccess, SetUserPreferences
 } from './user.actions';
 
@@ -39,7 +38,6 @@ const userActivities = {
   joinedEvents: [],
   pastEvents: [],
   notifications: [],
-  chats: [],
 }
 
 @Injectable()
@@ -114,9 +112,11 @@ export class UserState {
   @Action(SetUserPreferences)
   setUserPreferences(ctx: StateContext<UserStateModel>, action: SetUserPreferences) {
     const state = ctx.getState();
-    const { avatar, preferredLanguages, username, about, ageGroup, interests, joinedEvents, pastEvents, notifications, chats} = action.payload.preferences
+    // const { avatar, preferredLanguages, username, about, ageGroup, interests, joinedEvents, pastEvents, notifications, chats} = action.payload.preferences
+    const { avatar, preferredLanguages, username, about, ageGroup, interests, joinedEvents, pastEvents, notifications} = action.payload.preferences
     const userPreferences = {avatar, preferredLanguages, username, about, ageGroup, interests}
-    const userActivities = {joinedEvents, pastEvents, notifications, chats}
+    // const userActivities = {joinedEvents, pastEvents, notifications, chats}
+    const userActivities = {joinedEvents, pastEvents, notifications}
     ctx.setState({
       ...state,
       userPreferences,
@@ -135,30 +135,30 @@ export class UserState {
     });
   }
 
-  @Action(LoadUserChats)
-  loadUserChats(ctx: StateContext<UserStateModel>, action: LoadUserChats) {
-    return this.chatService.loadAllChats(action.payload.chatIds).pipe(
-      tap((chats: ChatRoom[]) => {
-        ctx.dispatch(new LoadUserChatsSuccess({chats}))
-      }),
-      catchError(err => {
-        console.log(err);
-        return EMPTY
-      })
-    )
-  }
+  // @Action(LoadUserChats)
+  // loadUserChats(ctx: StateContext<UserStateModel>, action: LoadUserChats) {
+  //   return this.chatService.loadAllChats(action.payload.chatIds).pipe(
+  //     tap((chats: ChatRoom[]) => {
+  //       ctx.dispatch(new LoadUserChatsSuccess({chats}))
+  //     }),
+  //     catchError(err => {
+  //       console.log(err);
+  //       return EMPTY
+  //     })
+  //   )
+  // }
 
-  @Action(LoadUserChatsSuccess)
-  loadUserChatsSuccess(ctx: StateContext<UserStateModel>, action: LoadUserChatsSuccess) {
-    const state = ctx.getState();
-    ctx.setState({
-      ...state,
-      userActivities: {
-        ...state.userActivities,
-        chats: action.payload.chats
-      }
-    })
-  }
+  // @Action(LoadUserChatsSuccess)
+  // loadUserChatsSuccess(ctx: StateContext<UserStateModel>, action: LoadUserChatsSuccess) {
+  //   const state = ctx.getState();
+  //   ctx.setState({
+  //     ...state,
+  //     userActivities: {
+  //       ...state.userActivities,
+  //       chats: action.payload.chats
+  //     }
+  //   })
+  // }
 
   @Selector()
   static error(state: UserStateModel) {

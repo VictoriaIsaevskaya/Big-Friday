@@ -227,7 +227,7 @@ export class EventsState {
       categoryEvents: updatedEvents,
       selectedEvent: null
     });
-    this.router.navigate(['events'])
+    this.router.navigate(['home'])
   }
 
   @Action(DeleteEventFailure)

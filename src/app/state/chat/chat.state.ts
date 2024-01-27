@@ -1,17 +1,18 @@
 import {Injectable} from "@angular/core";
 import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {map, tap, throwError} from "rxjs";
+import {EMPTY, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import {ChatService} from "../../features/chats/chat.service";
 import {ChatMessage, ChatRoom} from "../../features/chats/model/interfaces/chat.interface";
 import {AuthService} from "../../services/auth.service";
 import {FirestoreApiService} from "../../services/firestore-api.service";
+import {LoadUserChats, LoadUserChatsSuccess} from "../user";
 
 import {
   FetchUnreadMessagesCount,
-  LoadChatMessages,
-  LoadCurrentChat, ResetUnreadMessages,
+  LoadChatMessages, LoadChatMessagesSuccess,
+  LoadCurrentChat, LoadCurrentChatSuccess, ResetUnreadMessages,
   SendMessage, UpdateLastMessage, UpdateUnreadMessagesCount,
 } from "./chat.actions";
 
@@ -19,14 +20,12 @@ import {
 export interface ChatStateModel {
   chats: ChatRoom[];
   currentChat: ChatRoom | null;
-  messages: ChatMessage[];
   unreadMessagesCount: number;
 }
 
 const initialState: ChatStateModel = {
   chats: [],
   currentChat: null,
-  messages: [],
   unreadMessagesCount: 0
 };
 @Injectable()
@@ -39,7 +38,12 @@ export class ChatState {
 
   @Selector()
   static messages(state: ChatStateModel): ChatMessage[] {
-    return state.messages;
+    return state.currentChat.messages;
+  }
+
+  @Selector()
+  static chats(state: ChatStateModel): ChatRoom[] {
+    return state.chats;
   }
 
   @Selector()
@@ -71,15 +75,23 @@ export class ChatState {
   }
 
   @Action(LoadCurrentChat)
-  loadCurrentChat(ctx: StateContext<ChatStateModel>, { payload: { chatId } }: LoadCurrentChat) {
-    this.chatService.loadChatById(chatId).pipe(
-      map(chat =>
-        ctx.patchState({
-          currentChat: {...chat, id: chatId}
-        })
+  loadCurrentChat({ patchState, dispatch, getState }: StateContext<ChatStateModel>, { payload: { chatId } }: LoadCurrentChat) {
+    return this.chatService.loadChatById(chatId).pipe(
+      tap(chat => {
+          const currentChat = {...chat, id: chatId}
+          dispatch(new LoadCurrentChatSuccess({currentChat}))
+        }
       ),
       catchError(error => throwError(() => new Error(error)))
-    ).subscribe()
+    )
+  }
+
+  @Action(LoadCurrentChatSuccess)
+  loadCurrentChatSuccess({ patchState, dispatch, getState }: StateContext<ChatStateModel>, { payload: { currentChat } }: LoadCurrentChatSuccess) {
+    patchState({
+      currentChat
+    });
+    dispatch(new LoadChatMessages({ chatId: currentChat.id }))
   }
 
   @Action(SendMessage)
@@ -89,7 +101,7 @@ export class ChatState {
       const state = ctx.getState();
       if (state.currentChat && state.currentChat.id === chatId) {
         ctx.patchState({
-          messages: [...state.messages, message]
+          currentChat: {...state.currentChat, messages: [...state.currentChat.messages, message]}
         });
         ctx.dispatch(new UpdateLastMessage({ chatId, lastMessage: message }));
       }
@@ -128,20 +140,44 @@ export class ChatState {
     }
   }
 
-
-
   @Action(LoadChatMessages)
-  loadChatMessages(ctx: StateContext<ChatStateModel>, { payload }: LoadChatMessages) {
-    const { chatId } = payload;
-
+  loadChatMessages({dispatch}: StateContext<ChatStateModel>, { payload: {chatId} }: LoadChatMessages) {
     return this.firestoreApiService.getChatMessages(chatId).pipe(
       tap((messages) => {
-        ctx.patchState({ messages });
+        dispatch(new LoadChatMessagesSuccess({messages}))
       }),
       catchError(error => {
         console.error('Error loading chat messages:', error);
         return throwError(error);
       })
     );
+  }
+
+  @Action(LoadChatMessagesSuccess)
+  loadChatMessagesSuccess({getState, patchState}: StateContext<ChatStateModel>, { payload: { messages } }: LoadChatMessagesSuccess) {
+    const state = getState();
+    patchState({ currentChat: {...state.currentChat, messages}});
+  }
+
+  @Action(LoadUserChats)
+  loadUserChats(ctx: StateContext<ChatStateModel>, action: LoadUserChats) {
+    return this.chatService.loadAllChats(action.payload.chatIds).pipe(
+      tap((chats: ChatRoom[]) => {
+        ctx.dispatch(new LoadUserChatsSuccess({chats}))
+      }),
+      catchError(err => {
+        console.log(err);
+        return EMPTY
+      })
+    )
+  }
+
+  @Action(LoadUserChatsSuccess)
+  loadUserChatsSuccess(ctx: StateContext<ChatStateModel>, action: LoadUserChatsSuccess) {
+    const state = ctx.getState();
+    ctx.setState({
+      ...state,
+      chats: action.payload.chats
+    })
   }
 }

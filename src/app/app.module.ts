@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { AuthModule } from "./features/auth/auth.module";
+import {FooterModule} from "./layout/footer/footer.module";
 import {AuthService} from "./services/auth.service";
 import {CarouselComponent} from "./shared/components/carousel/carousel.component";
 import {AuthState} from "./state/auth";
@@ -46,7 +47,8 @@ export function initApp(authService: AuthService) {
     AngularFireDatabaseModule,
     IonicStorageModule.forRoot(),
     AuthModule,
-    CarouselComponent
+    CarouselComponent,
+    FooterModule
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

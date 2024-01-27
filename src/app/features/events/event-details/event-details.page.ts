@@ -1,13 +1,20 @@
-import {ChangeDetectorRef, Component, DestroyRef, inject, OnDestroy} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  DestroyRef,
+  inject,
+  OnInit
+} from '@angular/core';
 import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ActivatedRoute, Router} from "@angular/router";
-import { ModalController } from "@ionic/angular";
-import { Select, Store } from "@ngxs/store";
+import {ModalController} from "@ionic/angular";
+import {Select, Store} from "@ngxs/store";
 import {Observable, tap} from "rxjs";
 
+import {AuthService} from "../../../services/auth.service";
 import {UserActivities} from "../../../shared/models/interfaces/user";
 import {AuthState} from "../../../state/auth";
-import {LoadEvent, EventsState, UpdateEvent, UnselectEvent, DeleteEvent} from '../../../state/events';
+import {DeleteEvent, EventsState, LoadEvent, UpdateEvent} from '../../../state/events';
 import {JoinUserToEvent, UserState} from "../../../state/user";
 import {ShouldAuthModalComponent} from "../../auth/should-auth-modal/should-auth-modal.component";
 import {EventDetails, Participant} from "../model/interfaces";
@@ -16,15 +23,19 @@ import {EventDetails, Participant} from "../model/interfaces";
   selector: 'app-event-details',
   templateUrl: './event-details.page.html',
   styleUrls: ['./event-details.page.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class EventDetailsPage implements OnDestroy {
-  @Select(EventsState.selectedEventDetails) event$!: Observable<EventDetails | null>;
+export class EventDetailsPage implements OnInit {
   public selectedEvent: EventDetails;
-  @Select(UserState.userActivities) currentUserActivities$!: Observable<UserActivities | null>;
   public currentUserActivities: UserActivities;
   private destroyRef = inject(DestroyRef);
+  public currentUserUid: string;
+  @Select(EventsState.selectedEventDetails) event$!: Observable<EventDetails | null>;
+  @Select(UserState.userActivities) currentUserActivities$!: Observable<UserActivities | null>;
 
-  constructor(private route: ActivatedRoute, private store: Store, private modalController: ModalController, private router: Router, private cdr: ChangeDetectorRef) {
+
+  constructor(private route: ActivatedRoute, private store: Store, private modalController: ModalController,
+              private router: Router, private authService: AuthService) {
     this.store.dispatch(new LoadEvent({eventId: this.route.snapshot.paramMap.get('eventId')}));
     this.event$.pipe(
       takeUntilDestroyed(this.destroyRef),
@@ -36,13 +47,12 @@ export class EventDetailsPage implements OnDestroy {
     ).subscribe()
   }
 
-  joinEvent(eventId: string, chatId: string) {
-    this.store.selectSnapshot(AuthState.isLoggedIn) ? this.joinUserToEvent(eventId, chatId) : this.openShouldAuthModal;
+  ngOnInit() {
+    this.currentUserUid = this.authService.getCurrentUserId();
   }
 
-  get currentUserUid(): string | null {
-    const user = this.store.selectSnapshot(AuthState.user)
-    return user ? user.uid : null
+  joinEvent(eventId: string, chatId: string) {
+    this.store.selectSnapshot(AuthState.isLoggedIn) ? this.joinUserToEvent(eventId, chatId) : this.openShouldAuthModal;
   }
 
   joinUserToEvent(eventId: string, chatId: string) {
@@ -84,11 +94,6 @@ export class EventDetailsPage implements OnDestroy {
   }
 
   isCurrentUserOrganizer(): boolean {
-    return this.currentUserUid === this.selectedEvent.organizer.uid
-  }
-
-  ngOnDestroy() {
-    this.store.dispatch(new UnselectEvent())
-
+    return this.currentUserUid === this.selectedEvent.organizer?.uid
   }
 }

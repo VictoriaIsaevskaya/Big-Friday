@@ -1,10 +1,10 @@
-import {Component, DestroyRef, inject, OnInit} from '@angular/core';
-import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
+import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngxs/store";
 import {Observable, tap} from "rxjs";
 
 import {AuthState} from "../../../state/auth";
+import {ChatState} from "../../../state/chat";
 import {LoadUserChats, UserState} from "../../../state/user";
 import {ChatService} from "../chat.service";
 
@@ -35,7 +35,7 @@ export class ChatsPage implements OnInit {
   }
 
   get chatRooms() {
-    return this.store.selectSnapshot(UserState.userActivities).chats;
+    return this.store.selectSnapshot(ChatState.chats);
   }
 
   getUsers() {
