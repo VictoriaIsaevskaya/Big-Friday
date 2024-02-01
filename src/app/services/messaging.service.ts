@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireMessaging } from '@angular/fire/compat/messaging';
-import { Platform, ToastController } from '@ionic/angular';
+import { ToastController } from '@ionic/angular';
 import { Store } from "@ngxs/store";
 import { tap } from 'rxjs/operators';
 
@@ -34,7 +34,6 @@ export class MessagingService {
   }
 
   requestPermission() {
-    console.log(Notification.permission)
     if (Notification.permission === 'granted') {
       console.log('Permission has already been granted');
       this.getToken();

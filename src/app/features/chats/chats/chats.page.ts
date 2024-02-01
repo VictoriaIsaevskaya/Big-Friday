@@ -4,7 +4,7 @@ import {Store} from "@ngxs/store";
 import {Observable, tap} from "rxjs";
 
 import {AuthState} from "../../../state/auth";
-import {ChatState} from "../../../state/chat";
+import {ChatState, ResetAllUnreadMessages, ResetChatUnreadMessages} from "../../../state/chat";
 import {LoadUserChats, UserState} from "../../../state/user";
 import {ChatService} from "../chat.service";
 
@@ -22,6 +22,7 @@ export class ChatsPage implements OnInit {
 
   ngOnInit() {
     this.loadUserChats();
+    this.store.dispatch(new ResetAllUnreadMessages())
   }
 
   loadUserChats() {
@@ -30,8 +31,9 @@ export class ChatsPage implements OnInit {
     this.store.dispatch(new LoadUserChats({chatIds}))
   }
 
-  getChat(id: string) {
-    this.router.navigate([id], { relativeTo: this.route})
+  getChat(chatId: string) {
+    this.store.dispatch(new ResetChatUnreadMessages({chatId, userId: this.currentUserId}))
+    this.router.navigate([chatId], { relativeTo: this.route})
   }
 
   get chatRooms() {

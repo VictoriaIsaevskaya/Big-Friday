@@ -59,7 +59,6 @@ export class AppComponent {
 
   async registerNotifications() {
     let permStatus = await PushNotifications.checkPermissions();
-
     if (permStatus.receive === 'prompt') {
       permStatus = await PushNotifications.requestPermissions();
     }

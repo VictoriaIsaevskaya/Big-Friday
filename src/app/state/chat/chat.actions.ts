@@ -31,7 +31,7 @@ export class UpdateLastMessage {
   constructor(public payload: {chatId: string, lastMessage: ChatMessage}) {}
 }
 
-export class ResetUnreadMessages {
+export class ResetAllUnreadMessages {
   static readonly type = '[Chat] Reset Unread Messages';
 }
 
@@ -43,4 +43,25 @@ export class UpdateUnreadMessagesCount {
 export class FetchUnreadMessagesCount {
   static readonly type = '[Chat] Fetch Unread Messages Count';
 }
+
+export class FetchChatsUnreadMessagesCount {
+  static readonly type = '[Chat] Fetch Chats Unread Messages Count';
+  constructor(public payload: { chatIds: string[] }) {}
+}
+
+export class UpdateChatsUnreadMessagesCountSuccess {
+  static readonly type = '[Chat] Update Chats Unread Messages Count Success';
+  constructor(public payload: { unreadMessagesCounts: { [chatId: string]: number } }) {}
+}
+
+export class ResetChatUnreadMessages {
+  static readonly type = '[Chat] Reset Unread Messages';
+  constructor(public payload: { chatId: string, userId: string}) {}
+}
+
+export class ResetChatUnreadMessagesSuccess {
+  static readonly type = '[Chat] Reset Unread Messages Success';
+  constructor(public payload: { chatId: string, userId: string}) {}
+}
+
 

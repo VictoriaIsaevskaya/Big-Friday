@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {EMPTY, tap, throwError} from "rxjs";
+import {EMPTY, take, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
 
 import {ChatService} from "../../features/chats/chat.service";
@@ -10,10 +10,19 @@ import {FirestoreApiService} from "../../services/firestore-api.service";
 import {LoadUserChats, LoadUserChatsSuccess} from "../user";
 
 import {
+  FetchChatsUnreadMessagesCount,
   FetchUnreadMessagesCount,
-  LoadChatMessages, LoadChatMessagesSuccess,
-  LoadCurrentChat, LoadCurrentChatSuccess, ResetUnreadMessages,
-  SendMessage, UpdateLastMessage, UpdateUnreadMessagesCount,
+  LoadChatMessages,
+  LoadChatMessagesSuccess,
+  LoadCurrentChat,
+  LoadCurrentChatSuccess,
+  ResetAllUnreadMessages,
+  ResetChatUnreadMessages,
+  ResetChatUnreadMessagesSuccess,
+  SendMessage,
+  UpdateChatsUnreadMessagesCountSuccess,
+  UpdateLastMessage,
+  UpdateUnreadMessagesCount,
 } from "./chat.actions";
 
 
@@ -66,12 +75,12 @@ export class ChatState {
       })).subscribe();
   }
 
-  @Action(ResetUnreadMessages)
-  resetUnreadMessages({ patchState }: StateContext<ChatStateModel>) {
+  @Action(ResetAllUnreadMessages)
+  resetAllUnreadMessages({ patchState }: StateContext<ChatStateModel>) {
     const currentUserId = this.authService.getCurrentUserId();
 
     patchState({ unreadMessagesCount: 0 });
-    this.firestoreApiService.resetUnreadMessagesCount(currentUserId)
+    this.firestoreApiService.resetAllUnreadMessagesCount(currentUserId)
   }
 
   @Action(LoadCurrentChat)
@@ -179,5 +188,64 @@ export class ChatState {
       ...state,
       chats: action.payload.chats
     })
+    const chatIds = action.payload.chats.map(chat => chat.id);
+    ctx.dispatch(new FetchChatsUnreadMessagesCount({ chatIds }));
   }
+
+  @Action(FetchChatsUnreadMessagesCount)
+  fetchChatsUnreadMessagesCount(
+    { getState, patchState, dispatch }: StateContext<ChatStateModel>,
+    { payload: {chatIds} }: FetchChatsUnreadMessagesCount
+  ) {
+    const currentUserId = this.authService.getCurrentUserId();
+
+    return this.firestoreApiService.getChatsUnreadMessagesCount(chatIds, currentUserId).pipe(
+      take(1),
+      tap(unreadMessagesCounts => dispatch(new UpdateChatsUnreadMessagesCountSuccess({ unreadMessagesCounts }))),
+      catchError(error => {
+        console.error('Error fetching unread messages count:', error);
+        return throwError(() => new Error(error));
+      })
+    );
+  }
+
+  @Action(UpdateChatsUnreadMessagesCountSuccess)
+  updateChatsUnreadMessagesCountSuccess(
+    { getState, patchState }: StateContext<ChatStateModel>,
+    { payload }: UpdateChatsUnreadMessagesCountSuccess
+  ) {
+    const state = getState();
+    const currentUserId = this.authService.getCurrentUserId();
+    const chatsWithUpdatedCounts = state.chats.map(chat => {
+      const chatUnreadCount = payload.unreadMessagesCounts[chat.id];
+      const isCurrentUserParticipant = chat.details.participants?.some(p => p.userId === currentUserId);
+      return {
+        ...chat,
+        unreadMessagesCount: isCurrentUserParticipant ? chatUnreadCount : chat.unreadMessagesCount
+      };
+    });
+
+    patchState({ chats: chatsWithUpdatedCounts });
+  }
+
+  @Action(ResetChatUnreadMessages)
+  resetChatUnreadMessages(ctx: StateContext<ChatStateModel>, { payload: { chatId, userId } }: ResetChatUnreadMessages) {
+    return this.firestoreApiService.resetChatUnreadMessages(chatId, userId).then(() => {
+      ctx.dispatch(new ResetChatUnreadMessagesSuccess({ chatId, userId }));
+    });
+  }
+
+  @Action(ResetChatUnreadMessagesSuccess)
+  resetChatUnreadMessagesSuccess(ctx: StateContext<ChatStateModel>, { payload: { chatId } }: ResetChatUnreadMessagesSuccess) {
+    const state = ctx.getState();
+    const updatedChats = state.chats.map(chat => {
+      if (chat.id === chatId) {
+        return { ...chat, unreadMessagesCount: 0 };
+      }
+      return chat;
+    });
+    ctx.patchState({ chats: updatedChats });
+  }
+
+
 }

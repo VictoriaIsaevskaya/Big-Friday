@@ -12,6 +12,7 @@ import {Select, Store} from "@ngxs/store";
 import {Observable, tap} from "rxjs";
 
 import {AuthService} from "../../../services/auth.service";
+import {FirestoreApiService} from "../../../services/firestore-api.service";
 import {UserActivities} from "../../../shared/models/interfaces/user";
 import {AuthState} from "../../../state/auth";
 import {DeleteEvent, EventsState, LoadEvent, UpdateEvent} from '../../../state/events';
@@ -35,7 +36,7 @@ export class EventDetailsPage implements OnInit {
 
 
   constructor(private route: ActivatedRoute, private store: Store, private modalController: ModalController,
-              private router: Router, private authService: AuthService) {
+              private router: Router, private authService: AuthService, private firestoreApiService: FirestoreApiService) {
     this.store.dispatch(new LoadEvent({eventId: this.route.snapshot.paramMap.get('eventId')}));
     this.event$.pipe(
       takeUntilDestroyed(this.destroyRef),
@@ -69,6 +70,7 @@ export class EventDetailsPage implements OnInit {
     this.store.dispatch(new UpdateEvent({ eventId, eventData: {participants: this.selectedEvent.participants} }));
     this.currentUserActivities.joinedEvents ? this.currentUserActivities.joinedEvents.push({eventId, chatId}) : (this.currentUserActivities.joinedEvents = [{eventId, chatId}])
     this.store.dispatch(new JoinUserToEvent({ userId: this.currentUserUid, events: this.currentUserActivities.joinedEvents }));
+    this.firestoreApiService.addParticipantToChat(chatId, { userId: this.currentUserUid, unreadMessagesCount: 0})
     this.router.navigate(['chats', chatId])
   }
 

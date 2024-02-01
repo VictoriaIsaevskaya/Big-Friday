@@ -24,6 +24,7 @@
         </p>
       </ion-label>
       <ion-text class="chat-content__list-text" slot="end" color="medium">10:00AM</ion-text>
+      <ion-badge *ngIf="item.unreadMessagesCount" color="danger">{{ item.unreadMessagesCount }}</ion-badge>
     </ion-item>
   </ion-list>
 </ion-content>

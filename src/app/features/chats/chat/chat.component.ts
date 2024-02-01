@@ -7,7 +7,7 @@ import {Store} from "@ngxs/store";
 
 import {PageHeaderComponent} from "../../../layout/page-header/page-header.component";
 import {AuthState} from "../../../state/auth";
-import {ChatState, LoadChatMessages, LoadCurrentChat, SendMessage} from "../../../state/chat";
+import {ChatState, LoadCurrentChat, SendMessage} from "../../../state/chat";
 import {UserState} from "../../../state/user";
 import {ChatBoxComponent} from "../chat-box/chat-box.component";
 import {ChatMessage} from "../model/interfaces/chat.interface";
@@ -34,7 +34,7 @@ export class ChatComponent  implements OnInit {
 
   ngOnInit() {
     const chatId = this.route.snapshot.paramMap.get('chatId');
-    this.store.dispatch(new LoadCurrentChat({ chatId }))
+    this.store.dispatch(new LoadCurrentChat({ chatId }));
     this.subscribeToMessages();
     this.subscribeToChatDetails();
   }

@@ -3,6 +3,12 @@ import * as admin from "firebase-admin";
 
 admin.initializeApp();
 
+interface ChatParticipant {
+  userId: string;
+  unreadMessagesCount: number;
+}
+
+
 interface UserToken {
   userId: string;
   token: string | null;
@@ -121,36 +127,36 @@ async function incrementUnreadMessages(userId: string) {
   });
 }
 
-exports.onMessageCreated = functions.firestore
+exports.incrementUnreadMessages = functions.firestore
   .document("chats/{chatId}/messages/{messageId}")
-  .onCreate(async (snapshot, context) => {
+  .onCreate((snapshot, context) => {
     const chatId = context.params.chatId;
-
     const chatRef = admin.firestore().collection("chats").doc(chatId);
-    const chatSnapshot = await chatRef.get();
-    const chatData = chatSnapshot.data();
 
-    if (!chatData || !chatData.participants) return;
-
-    const messageSenderId = snapshot.data().senderId;
-    const participants = chatData.participants;
-
-    for (const participantId of participants) {
-      if (participantId !== messageSenderId) {
-        const participantRef =
-          chatRef.collection("participants").doc(participantId);
-        await admin.firestore().runTransaction(async (transaction) => {
-          const participantDoc = await transaction.get(participantRef);
-          if (!participantDoc.exists) {
-            transaction.set(participantRef, {unreadMessagesCount: 1});
-          } else {
-            const unreadCount =
-              (participantDoc.data()?.unreadMessagesCount || 0) + 1;
-            transaction
-              .update(participantRef, {unreadMessagesCount: unreadCount});
-          }
-        });
+    return chatRef.get().then((doc) => {
+      if (!doc.exists) {
+        throw new Error("Chat not found");
       }
-    }
+
+      const chatData = doc.data();
+      const participants = chatData?.details.participants as ChatParticipant[];
+
+      const updatedParticipants =
+        participants.map((participant: ChatParticipant) => {
+          if (participant.userId !== snapshot.data().senderId) {
+            return {
+              unreadMessagesCount: ++participant.unreadMessagesCount,
+              userId: participant.userId,
+            };
+          }
+          return participant;
+        });
+
+      return chatRef.update({"details.participants": updatedParticipants});
+    }).catch((error) => {
+      console.error("Error incrementing unread messages:", error);
+      throw new Error(error);
+    });
   });
+
 
