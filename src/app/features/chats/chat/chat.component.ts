@@ -1,13 +1,21 @@
 import {CommonModule} from "@angular/common";
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, DestroyRef, inject, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {FormsModule} from "@angular/forms";
 import {ActivatedRoute} from "@angular/router";
-import {IonicModule, IonContent } from "@ionic/angular";
+import {IonContent, IonicModule} from "@ionic/angular";
 import {Store} from "@ngxs/store";
+import {
+  distinctUntilChanged,
+  filter,
+  Subscription,
+  take,
+  withLatestFrom
+} from "rxjs";
 
 import {PageHeaderComponent} from "../../../layout/page-header/page-header.component";
 import {AuthState} from "../../../state/auth";
-import {ChatState, LoadCurrentChat, SendMessage} from "../../../state/chat";
+import {ChatState, LoadCurrentChat, ResetChatUnreadMessages, SendMessage} from "../../../state/chat";
 import {UserState} from "../../../state/user";
 import {ChatBoxComponent} from "../chat-box/chat-box.component";
 import {ChatMessage} from "../model/interfaces/chat.interface";
@@ -18,9 +26,9 @@ import {ChatMessage} from "../model/interfaces/chat.interface";
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, PageHeaderComponent, FormsModule, ChatBoxComponent]
+  imports: [IonicModule, CommonModule, PageHeaderComponent, FormsModule, ChatBoxComponent],
 })
-export class ChatComponent  implements OnInit {
+export class ChatComponent  implements OnInit, OnDestroy {
   chatName: string = '';
   message: string = '';
   isLoading = false;
@@ -28,36 +36,39 @@ export class ChatComponent  implements OnInit {
   messages: ChatMessage[] = [];
   processedMessages: (ChatMessage | string)[] = [];
   senderName = this.store.selectSnapshot(UserState.userPreferences).username
+  subscription: Subscription;
 
   @ViewChild(IonContent, { static: false }) content: IonContent;
+  private destroyRef = inject(DestroyRef);
   constructor(private store: Store, private route: ActivatedRoute) { }
 
   ngOnInit() {
     const chatId = this.route.snapshot.paramMap.get('chatId');
-    this.store.dispatch(new LoadCurrentChat({ chatId }));
+    this.store.dispatch(new LoadCurrentChat({ chatId })).pipe(distinctUntilChanged((prev, curr) => prev === curr),take(1));
     this.subscribeToMessages();
-    this.subscribeToChatDetails();
   }
 
   subscribeToMessages() {
-    this.store.select(ChatState.messages).subscribe((messages) => {
-      this.messages = messages?.map(message => ({
-          ...message,
-          timestamp: message.timestamp.seconds ? new Date(message.timestamp.seconds * 1000) : new Date()
-        })
-      );
-      this.processedMessages = this.processMessages(this.messages);
-      setTimeout(() => this.scrollToBottom(), 100);
-    });
-  }
-
-  subscribeToChatDetails() {
-    this.store.select(ChatState.currentChatDetails).subscribe((chatDetails) => {
-      if (chatDetails) {
-        this.chatName = chatDetails.details?.name;
-        this.messages = chatDetails.messages || [];
-      }
-    });
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+    this.subscription = this.store.select(ChatState.messages)
+      .pipe(
+        distinctUntilChanged((prevMessages, currMessages) => prevMessages?.length === currMessages?.length),
+        withLatestFrom(this.store.select(ChatState.currentChatDetails)),
+        filter(([messages, currentChatDetails]) => !!messages?.length && currentChatDetails.id === this.route.snapshot.paramMap.get('chatId')),
+        takeUntilDestroyed(this.destroyRef)
+      )
+      .subscribe(([messages, currentChatDetails]) => {
+        this.chatName = currentChatDetails.details?.name;
+        this.messages = messages?.map(message => ({
+            ...message,
+            timestamp: message.timestamp.seconds ? new Date(message.timestamp.seconds * 1000) : new Date()
+          })
+        );
+        this.processedMessages = this.processMessages(this.messages);
+        setTimeout(() => this.scrollToBottom(), 100);
+      });
   }
 
   sendMessage() {
@@ -97,12 +108,19 @@ export class ChatComponent  implements OnInit {
       }
       processedMessages.push(message);
     });
-
     return processedMessages;
   }
 
   isString(item: any): item is string {
     return typeof item === 'string';
+  }
+
+  trackByIdx(index: number, item: ChatMessage | string): number {
+    return index;
+  }
+
+  ngOnDestroy() {
+    this.store.dispatch(new ResetChatUnreadMessages({chatId: this.route.snapshot.paramMap.get('chatId'), userId: this.currentUserId}))
   }
 
 }

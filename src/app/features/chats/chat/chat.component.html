@@ -1,9 +1,9 @@
 <app-page-header [pageTitle]="chatName" backRedirectionLink="/chats"></app-page-header>
 <ion-content [fullscreen]="true" class="chat-content">
   <ion-list>
-    <ng-container *ngFor="let item of processedMessages">
+    <ng-container *ngFor="let item of processedMessages; trackBy: trackByIdx">
       <div *ngIf="isString(item)" class="date-separator">{{ item }}</div>
-      <app-chat-box [message]="item" [currentUserId]="currentUserId"></app-chat-box>
+      <app-chat-box *ngIf="!isString(item)" [message]="item" [currentUserId]="currentUserId"></app-chat-box>
     </ng-container>
   </ion-list>
 </ion-content>

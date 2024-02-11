@@ -200,3 +200,10 @@ ion-popover {
 ion-textarea {
   --highlight-color-valid: var(--ion-background-color) !important;
 }
+
+ion-toast {
+  --background: rgba(50, 50, 50, 0.9);
+  --color: #ffffff;
+  --border-radius: 8px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}

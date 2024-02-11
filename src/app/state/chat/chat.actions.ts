@@ -12,7 +12,7 @@ export class LoadChatMessages {
 
 export class LoadChatMessagesSuccess {
   static readonly type = '[Chat] Load Chat Messages Success';
-  constructor(public payload: { messages: ChatMessage[] }) {}
+  constructor(public payload: { chatId: string, messages: ChatMessage[] }) {}
 }
 
 export class LoadCurrentChat {

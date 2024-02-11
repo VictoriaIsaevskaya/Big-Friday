@@ -1,7 +1,7 @@
 <ion-tabs class="footer-tabs">
   <ion-tab-bar slot="bottom">
     <ion-tab-button *ngFor="let tabItem of tabs" [tab]="tabItem.tab">
-      <ion-badge color="danger" *ngIf="tabItem.tab === 'chats' && (unreadMessagesCount | async) as count">{{ count }}</ion-badge>
+      <ion-badge color="danger" *ngIf="tabItem.tab === 'chats' && (isChatPage$ | async) === false && (unreadMessagesCount$ | async) as count">{{ count }}</ion-badge>
       <ion-icon [name]="tabItem.icon"></ion-icon>
       <ion-label>{{ tabItem.label }}</ion-label>
     </ion-tab-button>

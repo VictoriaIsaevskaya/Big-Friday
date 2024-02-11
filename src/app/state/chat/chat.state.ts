@@ -1,4 +1,5 @@
 import {Injectable} from "@angular/core";
+import {Router} from "@angular/router";
 import {State, Action, StateContext, Selector} from '@ngxs/store';
 import {EMPTY, take, tap, throwError} from "rxjs";
 import {catchError} from "rxjs/operators";
@@ -43,7 +44,8 @@ const initialState: ChatStateModel = {
   defaults: initialState
 })
 export class ChatState {
-  constructor(private chatService: ChatService, private firestoreApiService: FirestoreApiService, private authService: AuthService) {}
+  constructor(private chatService: ChatService, private firestoreApiService: FirestoreApiService,
+              private authService: AuthService, private router: Router) {}
 
   @Selector()
   static messages(state: ChatStateModel): ChatMessage[] {
@@ -88,7 +90,7 @@ export class ChatState {
     return this.chatService.loadChatById(chatId).pipe(
       tap(chat => {
           const currentChat = {...chat, id: chatId}
-          dispatch(new LoadCurrentChatSuccess({currentChat}))
+          dispatch(new LoadCurrentChatSuccess({currentChat})).pipe(take(1))
         }
       ),
       catchError(error => throwError(() => new Error(error)))
@@ -96,11 +98,12 @@ export class ChatState {
   }
 
   @Action(LoadCurrentChatSuccess)
-  loadCurrentChatSuccess({ patchState, dispatch, getState }: StateContext<ChatStateModel>, { payload: { currentChat } }: LoadCurrentChatSuccess) {
+  loadCurrentChatSuccess({ patchState, dispatch, getState }: StateContext<ChatStateModel>,
+                         { payload: { currentChat } }: LoadCurrentChatSuccess) {
     patchState({
       currentChat
     });
-    dispatch(new LoadChatMessages({ chatId: currentChat.id }))
+    dispatch(new LoadChatMessages({ chatId: currentChat.id })).pipe(take(1))
   }
 
   @Action(SendMessage)
@@ -153,7 +156,7 @@ export class ChatState {
   loadChatMessages({dispatch}: StateContext<ChatStateModel>, { payload: {chatId} }: LoadChatMessages) {
     return this.firestoreApiService.getChatMessages(chatId).pipe(
       tap((messages) => {
-        dispatch(new LoadChatMessagesSuccess({messages}))
+        dispatch(new LoadChatMessagesSuccess({chatId, messages})).pipe(take(1))
       }),
       catchError(error => {
         console.error('Error loading chat messages:', error);
@@ -163,9 +166,12 @@ export class ChatState {
   }
 
   @Action(LoadChatMessagesSuccess)
-  loadChatMessagesSuccess({getState, patchState}: StateContext<ChatStateModel>, { payload: { messages } }: LoadChatMessagesSuccess) {
+  loadChatMessagesSuccess({getState, patchState}: StateContext<ChatStateModel>, { payload: { chatId, messages } }: LoadChatMessagesSuccess) {
     const state = getState();
-    patchState({ currentChat: {...state.currentChat, messages}});
+    const currentChatId = state.currentChat?.id;
+    if (currentChatId === chatId) {
+      patchState({ currentChat: {...state.currentChat, messages}});
+    }
   }
 
   @Action(LoadUserChats)
@@ -211,12 +217,20 @@ export class ChatState {
 
   @Action(UpdateChatsUnreadMessagesCountSuccess)
   updateChatsUnreadMessagesCountSuccess(
-    { getState, patchState }: StateContext<ChatStateModel>,
+    { getState, patchState, dispatch }: StateContext<ChatStateModel>,
     { payload }: UpdateChatsUnreadMessagesCountSuccess
   ) {
     const state = getState();
     const currentUserId = this.authService.getCurrentUserId();
+    const currentUrl = this.router.url;
+    const currentChatId = currentUrl.split('/').find(part => part === 'chats') ? currentUrl.split('/')[currentUrl.split('/').indexOf('chats') + 1] : null;
     const chatsWithUpdatedCounts = state.chats.map(chat => {
+      if (chat.id === currentChatId) {
+        return {
+          ...chat,
+          unreadMessagesCount: 0
+        };
+      }
       const chatUnreadCount = payload.unreadMessagesCounts[chat.id];
       const isCurrentUserParticipant = chat.details.participants?.some(p => p.userId === currentUserId);
       return {
@@ -224,15 +238,22 @@ export class ChatState {
         unreadMessagesCount: isCurrentUserParticipant ? chatUnreadCount : chat.unreadMessagesCount
       };
     });
+    if (currentChatId && currentUserId) {
+      dispatch(new ResetChatUnreadMessagesSuccess({ chatId: currentChatId, userId: currentUserId }))
+    }
 
-    patchState({ chats: chatsWithUpdatedCounts });
+    patchState({ chats: chatsWithUpdatedCounts,
+      unreadMessagesCount: chatsWithUpdatedCounts.reduce((accum, curr) => accum + curr.unreadMessagesCount ?? 0, 0) });
   }
 
   @Action(ResetChatUnreadMessages)
-  resetChatUnreadMessages(ctx: StateContext<ChatStateModel>, { payload: { chatId, userId } }: ResetChatUnreadMessages) {
-    return this.firestoreApiService.resetChatUnreadMessages(chatId, userId).then(() => {
-      ctx.dispatch(new ResetChatUnreadMessagesSuccess({ chatId, userId }));
-    });
+  resetChatUnreadMessages(ctx: StateContext<ChatStateModel>, { payload }: ResetChatUnreadMessages) {
+    if (payload) {
+      return this.firestoreApiService.resetChatUnreadMessages(payload.chatId, payload.userId).then(() => {
+        ctx.dispatch(new ResetChatUnreadMessagesSuccess({ chatId: payload.chatId, userId: payload.userId }));
+      });
+    }
+    return EMPTY
   }
 
   @Action(ResetChatUnreadMessagesSuccess)

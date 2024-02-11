@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
+import {NavigationEnd, Router} from "@angular/router";
 import {Store} from "@ngxs/store";
+import {filter, map, Observable} from "rxjs";
 
-import {ChatState, FetchUnreadMessagesCount} from "../../state/chat";
+import {ChatState} from "../../state/chat";
 
 import {FOOTER_TABS} from "./constants";
 
@@ -11,10 +13,18 @@ import {FOOTER_TABS} from "./constants";
   styleUrls: ['footer.page.scss']
 })
 export class FooterPage {
-  constructor(private store: Store) {
-    this.store.dispatch(new FetchUnreadMessagesCount())
+  isChatPage$: Observable<boolean>;
+  unreadMessagesCount$ = this.store.select(ChatState.unreadMessagesCount);
+
+
+
+  constructor(private store: Store,
+              private router: Router) {
+    this.isChatPage$ = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      map(event => (event as NavigationEnd).urlAfterRedirects === '/chats'),
+    );
   }
-  unreadMessagesCount = this.store.select(ChatState.unreadMessagesCount)
 
   tabs = FOOTER_TABS;
 }

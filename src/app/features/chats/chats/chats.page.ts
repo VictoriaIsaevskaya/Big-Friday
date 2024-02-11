@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngxs/store";
-import {Observable, tap} from "rxjs";
+import {Observable} from "rxjs";
 
 import {AuthState} from "../../../state/auth";
 import {ChatState, ResetAllUnreadMessages, ResetChatUnreadMessages} from "../../../state/chat";
@@ -21,7 +21,9 @@ export class ChatsPage implements OnInit {
               ) {}
 
   ngOnInit() {
-    this.loadUserChats();
+    if (!this.store.selectSnapshot(ChatState.chats)?.length) {
+      this.loadUserChats();
+    }
     this.store.dispatch(new ResetAllUnreadMessages())
   }
 
@@ -32,8 +34,11 @@ export class ChatsPage implements OnInit {
   }
 
   getChat(chatId: string) {
-    this.store.dispatch(new ResetChatUnreadMessages({chatId, userId: this.currentUserId}))
-    this.router.navigate([chatId], { relativeTo: this.route})
+    if (chatId && this.currentUserId) {
+      this.store.dispatch(new ResetChatUnreadMessages({chatId, userId: this.currentUserId}))
+      this.router.navigate([chatId], { relativeTo: this.route})
+    }
+
   }
 
   get chatRooms() {
