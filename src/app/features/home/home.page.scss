@@ -1,36 +1,45 @@
 @import 'src/theme/variables.scss';
 
-.home-content {
-  &__screen {
-    position: relative;
-    &_searchbar {
-      position: absolute;
-      bottom: 26px;
-    }
-  }
-  &__mission-statement {
-    position: relative;
-    text-align: center;
-    &_text {
-      color: var(--ion-color-primary);
-    }
-  }
+//.motivation-text {
+//  color: var(--ion-color-primary-contrast);
+//  z-index: 2;
+//}
 
-  &__button-container {
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-  }
+.carousel {
+  //width: 100%;
+  //text-align: center;
+  z-index: 2;
+  margin-top: 76%;
+}
 
-  &__button {
-    margin: 0 20px;
-    padding: 0 5px;
-    border-radius: 20px;
-    min-width: 110px;
-    transition: all 0.3s ease;
+.background-image {
+  position: absolute;
+  background-image: url('../../../assets/images/friends1.webp');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+}
 
-    &:hover {
-      transform: scale(1.05);
-    }
-  }
+::ng-deep .ion-page {
+  justify-content: space-around;
+}
+
+ion-accordion-group {
+  z-index: 2;
+  width: 80%;
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+ion-label {
+  color: var(--ion-text-color-secondary) !important;
+}
+
+ion-accordion-group {
+  border: 1px solid var(--ion-text-color-secondary);
 }

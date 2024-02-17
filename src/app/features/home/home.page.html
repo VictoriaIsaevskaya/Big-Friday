@@ -1,17 +1,16 @@
+<div class="background-image">
+</div>
 <app-header></app-header>
-
-<ion-content [fullscreen]="true" class="home-content">
-  <div class="home-content__screen">
-    <img class="" src="../../../assets/images/friends.jpg" alt="Concert">
-    <ion-searchbar placeholder="Find Specific Event" class="home-content__screen_searchbar"></ion-searchbar>
-  </div>
-
-  <div class="home-content__mission-statement">
-    <h2>make every friday big!</h2>
-    <p class="home-content__mission-statement_text">Find friends, join events, and enjoy.</p>
-  </div>
-
-  <div>
-    <app-carousel></app-carousel>
-  </div>
-</ion-content>
+<!--<h2 class="secondary-text">Find friends, join events, and enjoy.</h2>-->
+<!--<div class="mission-statement">-->
+<!--    <h2 class="motivation-text">make every friday big! </h2>-->
+<ion-accordion-group [animated]="true">
+  <ion-accordion value="first">
+    <ion-item slot="header" color="light">
+      <ion-label>Find event</ion-label>
+    </ion-item>
+    <div class="ion-padding" slot="content">Filter options</div>
+  </ion-accordion>
+</ion-accordion-group>
+<app-carousel class="carousel"></app-carousel>
+<!--</div>-->

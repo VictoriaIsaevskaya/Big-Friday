@@ -42,7 +42,7 @@ export class EventsPage implements OnInit {
     if (this.activityType) {
       for (const category in eventCategories) {
         if (eventCategories[category].includes(this.activityType.toLowerCase())) {
-          return `events/${category}`;
+          return category;
         }
       }
     }

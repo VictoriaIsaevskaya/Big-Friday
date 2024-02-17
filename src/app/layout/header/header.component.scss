@@ -5,3 +5,21 @@
   }
 }
 
+.header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: transparent; /* Сделать фон прозрачным */
+  //color: white; /* Цвет текста */
+  z-index: 1000; /* Убедитесь, что хедер находится поверх других элементов */
+}
+
+.header-toolbar {
+  --background: transparent; /* Для Ionic компонентов */
+  //color: white; /* Цвет иконок и текста */
+}
+
+.header-toolbar__user ion-icon {
+  //color: white; /* Цвет иконки пользователя */
+}
