@@ -9,3 +9,26 @@
   font-size: 0.8em;
   margin-top: 5px;
 }
+
+.file-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 300px;
+  display: block;
+}
+
+.delete-button {
+  margin-left: auto;
+}
+
+.delete-button ion-icon {
+  font-size: 1.5em;
+  color: var(--ion-color-danger);
+}
+
+.photo-btn {
+  margin-left: -22px;
+  color: var(--ion-text-color-secondary);
+}
+

@@ -19,14 +19,14 @@ export class PreferencesComponent {
 
   preferencesForm: FormGroup;
   formFieldsMap = registerFields;
-
+  fileName: string;
 
   constructor(private fb: FormBuilder, private modalController: ModalController, private store: Store) {
     this.preferencesForm = this.fb.group({
       username: ['', Validators.required],
+      photo: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required]],
-      // confirmPassword: ['', [Validators.required]],
       about: [''],
       preferredLanguages: [''],
       interests: [[]],
@@ -40,6 +40,20 @@ export class PreferencesComponent {
       this.register(email, password, preferences);
       this.dismissModal();
     }
+  }
+
+  onFileChange(event) {
+    const file = event.target.files[0];
+    if (file) {
+      this.fileName = file.name;
+    } else {
+      this.fileName = '';
+    }
+  }
+
+  deleteFile() {
+    this.fileName = ''; // Обнуляем имя файла
+    this.preferencesForm.patchValue({ photo: null });
   }
 
   private register(email: string, password: string, preferences: UserPreferences): void {

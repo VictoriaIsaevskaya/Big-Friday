@@ -1,6 +1,6 @@
-<app-page-header [pageTitle]="chatName" backRedirectionLink="/chats"></app-page-header>
+<app-page-header [pageTitle]="(chatDetails$ | async)?.details.name" backRedirectionLink="/chats"></app-page-header>
 <ion-content [fullscreen]="true" class="chat-content">
-  <ion-list>
+  <ion-list *ngIf="processedMessages.length; else emptyState">
     <ng-container *ngFor="let item of processedMessages; trackBy: trackByIdx">
       <div *ngIf="isString(item)" class="date-separator">{{ item }}</div>
       <app-chat-box *ngIf="!isString(item)" [message]="item" [currentUserId]="currentUserId"></app-chat-box>
@@ -12,7 +12,12 @@
   <ion-toolbar>
     <ion-buttons slot="start">
     </ion-buttons>
-    <ion-textarea autoGrow="true" rows="1" placeholder="Type your message" [(ngModel)]="message">
+    <ion-textarea
+      autoGrow="true"
+      rows="1"
+      placeholder="Type your message"
+      [(ngModel)]="message"
+      (keydown)="handleEnter($event)">
     </ion-textarea>
     <ion-buttons slot="end">
       <ion-button (click)="sendMessage()">
@@ -21,3 +26,10 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-footer>
+<ng-template #emptyState>
+  <app-empty-state
+    icon="chatbubble-ellipses-outline"
+    title="It's quiet in here..."
+    message="Break the ice, say hello!"
+  ></app-empty-state>
+</ng-template>

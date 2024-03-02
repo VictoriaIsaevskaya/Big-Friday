@@ -7,18 +7,19 @@ import {IonContent, IonicModule} from "@ionic/angular";
 import {Store} from "@ngxs/store";
 import {
   distinctUntilChanged,
-  filter,
+  filter, Observable,
   Subscription,
   take,
   withLatestFrom
 } from "rxjs";
 
 import {PageHeaderComponent} from "../../../layout/page-header/page-header.component";
+import {EmptyStateComponent} from "../../../shared/components/empty-state/empty-state.component";
 import {AuthState} from "../../../state/auth";
 import {ChatState, LoadCurrentChat, ResetChatUnreadMessages, SendMessage} from "../../../state/chat";
 import {UserState} from "../../../state/user";
 import {ChatBoxComponent} from "../chat-box/chat-box.component";
-import {ChatMessage} from "../model/interfaces/chat.interface";
+import {ChatMessage, ChatRoom} from "../model/interfaces/chat.interface";
 
 
 @Component({
@@ -26,10 +27,10 @@ import {ChatMessage} from "../model/interfaces/chat.interface";
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
   standalone: true,
-  imports: [IonicModule, CommonModule, PageHeaderComponent, FormsModule, ChatBoxComponent],
+  imports: [IonicModule, CommonModule, PageHeaderComponent, FormsModule, ChatBoxComponent, EmptyStateComponent],
 })
 export class ChatComponent  implements OnInit, OnDestroy {
-  chatName: string = '';
+  chatDetails$: Observable<ChatRoom>;
   message: string = '';
   isLoading = false;
   currentUserId = this.store.selectSnapshot(AuthState.user)?.uid;
@@ -45,6 +46,7 @@ export class ChatComponent  implements OnInit, OnDestroy {
   ngOnInit() {
     const chatId = this.route.snapshot.paramMap.get('chatId');
     this.store.dispatch(new LoadCurrentChat({ chatId })).pipe(distinctUntilChanged((prev, curr) => prev === curr),take(1));
+    this.chatDetails$ = this.store.select(ChatState.currentChatDetails)
     this.subscribeToMessages();
   }
 
@@ -55,12 +57,11 @@ export class ChatComponent  implements OnInit, OnDestroy {
     this.subscription = this.store.select(ChatState.messages)
       .pipe(
         distinctUntilChanged((prevMessages, currMessages) => prevMessages?.length === currMessages?.length),
-        withLatestFrom(this.store.select(ChatState.currentChatDetails)),
+        withLatestFrom(this.chatDetails$),
         filter(([messages, currentChatDetails]) => !!messages?.length && currentChatDetails.id === this.route.snapshot.paramMap.get('chatId')),
         takeUntilDestroyed(this.destroyRef)
       )
       .subscribe(([messages, currentChatDetails]) => {
-        this.chatName = currentChatDetails.details?.name;
         this.messages = messages?.map(message => ({
             ...message,
             timestamp: message.timestamp.seconds ? new Date(message.timestamp.seconds * 1000) : new Date()
@@ -85,6 +86,13 @@ export class ChatComponent  implements OnInit, OnDestroy {
         message: newMessage
       }));
       this.message = '';
+    }
+  }
+
+  handleEnter(event: KeyboardEvent) {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      this.sendMessage();
     }
   }
 

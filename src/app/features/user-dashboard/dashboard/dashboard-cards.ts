@@ -23,11 +23,5 @@ export const DASHBOARD_CARDS: DashboardCard[] = [
     title: 'Past Events',
     description: 'Review events you\'ve attended in the past.',
     link: 'past-events'
-  },
-  {
-    icon: 'chatbubble-ellipses-outline',
-    title: 'My Chats',
-    description: 'Browse through the chats rooms you are participating in.',
-    link: 'chats'
   }
 ];

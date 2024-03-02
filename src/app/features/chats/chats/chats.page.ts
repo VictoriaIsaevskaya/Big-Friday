@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, DestroyRef, inject, OnInit} from '@angular/core';
+import {takeUntilDestroyed} from "@angular/core/rxjs-interop";
 import {ActivatedRoute, Router} from "@angular/router";
 import {Store} from "@ngxs/store";
-import {Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 
 import {AuthState} from "../../../state/auth";
 import {ChatState, ResetAllUnreadMessages, ResetChatUnreadMessages} from "../../../state/chat";
@@ -16,7 +17,8 @@ import {ChatService} from "../chat.service";
 export class ChatsPage implements OnInit {
   users: Observable<any>
   currentUserId = this.store.selectSnapshot(AuthState.user).uid;
-
+  chatRooms$ = this.store.select(ChatState.chats)
+  destroyRef = inject(DestroyRef);
   constructor(private router: Router, private route: ActivatedRoute, private store: Store, private chatService: ChatService
               ) {}
 
@@ -28,9 +30,13 @@ export class ChatsPage implements OnInit {
   }
 
   loadUserChats() {
-    const joinedEvents = this.store.selectSnapshot(UserState.userActivities).joinedEvents;
-    const chatIds = joinedEvents.map(event => event.chatId);
-    this.store.dispatch(new LoadUserChats({chatIds}))
+    this.store.select(UserState.userActivities).pipe(
+      takeUntilDestroyed(this.destroyRef),
+      tap(activities => {
+        const chatIds = activities.joinedEvents.map(event => event.chatId);
+        this.store.dispatch(new LoadUserChats({chatIds}))
+      })
+    ).subscribe()
   }
 
   getChat(chatId: string) {
@@ -38,14 +44,14 @@ export class ChatsPage implements OnInit {
       this.store.dispatch(new ResetChatUnreadMessages({chatId, userId: this.currentUserId}))
       this.router.navigate([chatId], { relativeTo: this.route})
     }
-
-  }
-
-  get chatRooms() {
-    return this.store.selectSnapshot(ChatState.chats);
   }
 
   getUsers() {
     this.users = this.chatService.getUsers();
   }
+
+  goToEvents(){
+    this.router.navigate(['events'])
+  }
+
 }

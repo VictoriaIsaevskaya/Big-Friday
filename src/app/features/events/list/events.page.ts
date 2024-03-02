@@ -46,7 +46,7 @@ export class EventsPage implements OnInit {
         }
       }
     }
-    return '/active';
+    return '/events';
   }
 
   async openCreateEventModal() {

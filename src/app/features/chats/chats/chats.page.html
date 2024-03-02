@@ -10,22 +10,33 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="chat-content">
-  <ion-list>
-    <ion-item *ngFor="let item of chatRooms" (click)="getChat(item.id)" detail="true" class="chat-content__list-item">
-      <ion-avatar slot="start">
-        <img [src]="item.details?.image || '../../../assets/images/bowling.jpg'" alt="">
-      </ion-avatar>
-      <ion-label class="chat-content__list-item__label">
-        {{item.details?.name}}
-        <p *ngIf="item.lastMessage" class="message">
-          <ion-text>
-            {{item.lastMessage.senderName}}: {{item.lastMessage.text}}
-          </ion-text>
-        </p>
-      </ion-label>
-      <ion-text class="chat-content__list-text" slot="end" color="medium">10:00AM</ion-text>
-      <ion-badge *ngIf="item.unreadMessagesCount" color="danger">{{ item.unreadMessagesCount }}</ion-badge>
-    </ion-item>
-  </ion-list>
+  <ng-container *ngIf="(chatRooms$ | async) as chatRooms">
+    <ion-list *ngIf="chatRooms.length; else emptyState">
+      <ion-item *ngFor="let item of chatRooms" (click)="getChat(item.id)" detail="true" class="chat-content__list-item">
+        <ion-avatar slot="start">
+          <img [src]="item.details?.image || '../../../assets/images/bowling.jpg'" alt="">
+        </ion-avatar>
+        <ion-label class="chat-content__list-item__label">
+          {{item.details?.name}}
+          <p *ngIf="item.lastMessage" class="message">
+            <ion-text>
+              {{item.lastMessage.senderName}}: {{item.lastMessage.text}}
+            </ion-text>
+          </p>
+        </ion-label>
+        <ion-text class="chat-content__list-text" slot="end" color="medium">10:00AM</ion-text>
+        <ion-badge *ngIf="item.unreadMessagesCount" color="danger">{{ item.unreadMessagesCount }}</ion-badge>
+      </ion-item>
+    </ion-list>
+  </ng-container>
 </ion-content>
 
+<ng-template #emptyState>
+    <app-empty-state
+    icon="chatbubbles-outline"
+    title="No Chats Here Yet"
+    message="Looks like you haven't joined any events yet. Join an event to start chatting with new friends and see what you've been missing out on!"
+    actionButtonText="Explore Events"
+    (action)="goToEvents()"
+  ></app-empty-state>
+</ng-template>

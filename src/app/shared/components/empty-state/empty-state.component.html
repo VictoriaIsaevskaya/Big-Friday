@@ -1,0 +1,6 @@
+<div class="empty-state-container">
+  <ion-icon [name]="icon"></ion-icon>
+  <h2>{{ title }}</h2>
+  <p>{{ message }}</p>
+  <ion-button *ngIf="actionButtonText" (click)="onAction()"> {{ actionButtonText }}</ion-button>
+</div>

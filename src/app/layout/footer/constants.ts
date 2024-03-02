@@ -2,14 +2,14 @@ import {TabItem} from "./model";
 
 export const FOOTER_TABS: TabItem[] = [
   {
-    tab: 'active',
-    icon: 'bicycle-outline',
-    label: 'Active'
+    tab: 'home',
+    icon: 'home-outline',
+    label: 'Home'
   },
   {
-    tab: 'passive',
-    icon: 'wine-outline',
-    label: 'Passive'
+    tab: 'events',
+    icon: 'bicycle-outline',
+    label: 'Events'
   },
   {
     tab: 'previous',

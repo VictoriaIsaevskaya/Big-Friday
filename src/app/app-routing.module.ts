@@ -27,7 +27,7 @@ const routes: Routes = [
     loadChildren: () => import('./features/chats/chats/chats.module').then(m => m.ChatPageModule)
   },
   {
-    path: 'active',
+    path: 'events',
     loadChildren: () => import('./features/active-pastime/active-pastime.module').then(m => m.ActivePastimeModule)
   },
   {
@@ -40,7 +40,7 @@ const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: '/active',
+    redirectTo: '/events',
     pathMatch: 'full'
   }
 ];

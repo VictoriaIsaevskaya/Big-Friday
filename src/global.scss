@@ -69,6 +69,15 @@ ion-tab-button {
   margin: 0;
 }
 
+.mb-s {
+  margin-bottom: 5px !important;
+}
+
+
+.mb-m {
+  margin-bottom: 10px !important;
+}
+
 .p-s {
   padding: 5px;
 }
@@ -195,10 +204,6 @@ ion-popover {
     box-shadow: none !important;
     background-color: transparent !important;
   }
-}
-
-ion-textarea {
-  --highlight-color-valid: var(--ion-background-color) !important;
 }
 
 ion-toast {

@@ -1,8 +1,7 @@
 <ion-content [fullscreen]="true">
-  <img class="" src="../../../assets/images/2.png" alt="Active lifetime">
   <div class="p-m py-l d-flex ion-justify-content-between align-center">
     <ion-icon name="arrow-back-outline" class="activity-icon ml-s" routerLink="/home"></ion-icon>
-    <h3 class="m-0">Active Events</h3>
+    <h3 class="m-0">Events</h3>
     <ion-icon slot="icon-only" name="add-outline" class="activity-icon mr-s"></ion-icon>
   </div>
   <ion-card *ngFor="let act of activities" (click)="goToActivity(act.activity)" class="activity-card">

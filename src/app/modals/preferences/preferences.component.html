@@ -11,6 +11,33 @@
           <ng-container *ngIf="field.type === 'input' || field.type === 'password'" >
             <ion-input [placeholder]="field.placeholder" [formControlName]="field.controlName" [type]="field.type"></ion-input>
           </ng-container>
+
+          <ng-container *ngIf="field.type === 'file'">
+            <ion-item lines="none" class="file-input-item">
+              <input
+                type="file"
+                #fileInput
+                [formControlName]="field.controlName"
+                (change)="onFileChange($event)"
+                hidden
+              >
+
+              <ion-button *ngIf="!fileName" [fill]="'clear'" slot="start" (click)="fileInput.click()" class="photo-btn">
+                Upload a Photo
+              </ion-button>
+
+              <ion-label *ngIf="fileName" class="file-name">{{ fileName }}</ion-label>
+              <ion-button
+                fill="clear"
+                class="delete-button"
+                *ngIf="fileName"
+                (click)="deleteFile()">
+                <ion-icon name="close-circle"></ion-icon>
+              </ion-button>
+            </ion-item>
+          </ng-container>
+
+
           <ng-container *ngIf="field.type === 'textarea'">
             <ion-textarea [placeholder]="field.placeholder" [formControlName]="field.controlName"></ion-textarea>
           </ng-container>
@@ -28,9 +55,6 @@
               <div *ngIf="field.controlName === 'password' && preferencesForm.controls[field.controlName].errors?.['minLength']">
                 Password should be at least 6 characters.
               </div>
-<!--              <div *ngIf="field.controlName === 'confirmPassword' && preferencesForm.errors?.['mismatch']">-->
-<!--                Passwords do not match.-->
-<!--              </div>-->
               <div *ngIf="preferencesForm.controls[field.controlName].errors?.['required']">
                 {{ field.placeholder }} is required.
               </div>
