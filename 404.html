@@ -1,37 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="utf-8" />
-  <title>Ionic App</title>
-
-  <base href="/" />
-
-  <meta name="color-scheme" content="light dark" />
-  <meta name="viewport" content="viewport-fit=cover, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <meta name="format-detection" content="telephone=no" />
-  <meta name="msapplication-tap-highlight" content="no" />
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cabin&display=swap" rel="stylesheet">
-  <link rel="icon" type="image/png" href="assets/icon/favicon.png" />
-
-  <!-- add to homescreen for ios -->
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <title>Page Not Found</title>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var url = window.location.href;
-      var redirectTo = url.split('?')[1];
-      if (redirectTo) {
-        window.location.href = '/' + redirectTo;
-      }
-    });
+     if (!window.location.pathname.includes("/big-friday/")) {
+      window.location.replace('/big-friday/src/index.html');
+    }
   </script>
 </head>
-
-<body class="dark">
-<app-root></app-root>
+<body>
+<h1>Page Not Found</h1>
+<p>The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.</p>
 </body>
-
 </html>
