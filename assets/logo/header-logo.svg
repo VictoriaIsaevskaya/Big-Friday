@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="150" height="50" viewBox="0 0 300 50">
+  <text x="10" y="40" font-family="Arial" font-size="40" fill="#a17d63">Big Friday</text>
+  <line x1="10" y1="50" x2="55" y2="50" stroke="#e25f20" stroke-width="2" stroke-linecap="round"/>
+  <line x1="140" y1="50" x2="180" y2="50" stroke="#e25f20" stroke-width="2" stroke-linecap="round"/>
+</svg>
+
