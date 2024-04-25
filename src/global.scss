@@ -30,7 +30,6 @@ body {
 
 h1, h2, h3, h4, p, span, ion-title, ion-icon {
   font-family: 'Cabin', sans-serif;
-  color: var(--ion-text-color-secondary);
 }
 
 ion-card-title {
@@ -212,3 +211,28 @@ ion-toast {
   --border-radius: 8px;
   --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 }
+
+ion-popover {
+  --background: rgb(64, 64, 64);
+  --backdrop-opacity: 0.7;
+  --box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.6);
+  --color: white;
+  --width: 90%;
+  --offset-y: 150px;
+}
+
+ion-popover ion-content {
+  --background: rgb(64, 64, 64);
+}
+
+ion-popover::part(backdrop) {
+  background-color: rgb(179, 179, 179);
+  --width: 100%;
+  --min-width: 100%;
+}
+
+.input-label-placement-stacked.sc-ion-input-md-h input.sc-ion-input-md {
+  margin: 10px 0;
+}
+
+

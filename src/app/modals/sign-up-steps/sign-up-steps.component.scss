@@ -1,0 +1,147 @@
+@import 'src/theme/variables.scss';
+
+.form-content {
+  --background: var(--ion-color-medium-contrast);
+}
+
+.sign-up-wrapper {
+  width: 75%;
+  margin: 150px auto;
+}
+
+.sign-up-email {
+  --highlight-color-focused: var(--ion-color-gray-300);
+  --placeholder-color: var(--ion-color-gray-400);
+}
+
+ion-input:hover, ion-input:active, ion-input:focus {
+  box-shadow: 0 4px 7px var(--ion-color-gray-200);
+}
+
+.sign-up-btn {
+  box-shadow: none;
+  border: 1px solid var(--ion-color-gray-400);
+  -webkit-margin-start: 0;
+  margin-inline-start: 0;
+  -webkit-margin-end: 0;
+  margin-inline-end: 0;
+}
+
+.sign-up-btn-continue {
+  margin-top: 50px;
+  --background: var(--ion-color-success-btn);
+  div {
+    text-align: center;
+  }
+  p {
+    width: 100%;
+    color: var(--ion-color-success-contrast);
+  }
+}
+
+ion-button.sign-up-btn-continue {
+  width: 100%;
+  height: 60px;
+}
+
+.sign-up-btn-google {
+  --background: var(--ion-color-gray-50);
+  p {
+    color: var(--ion-color-gray-800);
+  }
+}
+
+.sign-up-btn-content {
+  display: flex;
+  flex-direction: row;
+}
+
+.sign-up-btn-title {
+  font-size: 18px;
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.sign-up-btn-icon {
+  padding: 17px;
+  margin-left: 10px;
+}
+
+.sign-up-or {
+  border-top: 1px solid var(--ion-color-gray-400);
+  text-align: center;
+  margin-bottom: 30px;
+
+  p {
+    background: var(--ion-color-success-contrast);
+    width: 60px;
+    margin: -12px auto 0 auto;
+  }
+}
+
+.sign-up-agreements {
+  position: absolute;
+  bottom: 0;
+  display: inline-block;
+  text-align: center;
+  p {
+    width: 80%;
+    display: inline-block;
+    color: var(--ion-color-gray-500);
+  }
+}
+
+.sign-up-info {
+  margin: 30px 0 50px 0;
+  text-align: center;
+  span {
+    margin-right: 10px;
+    color: var(--ion-color-gray-500);
+  }
+}
+p.sign-up-info {
+  color: var(--ion-color-gray-500);
+}
+ion-input.sign-up-name {
+  --background: white;
+ margin-bottom: 10px;
+}
+
+.sc-ion-input-md-h {
+  --border-width: 1px;
+  --placeholder-color: rgb(179, 179, 179);
+  --placeholder-font-style: ;
+  --placeholder-font-weight: ;
+  font-size: 18px;
+}
+
+ion-input:hover, ion-input:active, ion-input:focus {
+  box-shadow: none;
+}
+
+.input-fill-solid.has-focus.sc-ion-input-md-h {
+  --background: white;
+  --border-color: white;
+}
+
+.input-fill-solid.sc-ion-input-md-h {
+  --border-color: rgb(210, 210, 210);
+}
+
+.input-fill-solid.sc-ion-input-md-h:hover {
+  --background: white;
+}
+
+.input-fill-outline.sc-ion-input-md-h {
+  --border-width: 1px;
+}
+
+.has-focus.input-fill-outline.sc-ion-input-md-h {
+  --border-width: 1px;
+  --border-color: rgb(101, 101, 101);
+}
+
+.has-focus.input-fill-outline.ion-valid.sc-ion-input-md-h {
+  --border-color: rgb(101, 101, 101);
+}
+

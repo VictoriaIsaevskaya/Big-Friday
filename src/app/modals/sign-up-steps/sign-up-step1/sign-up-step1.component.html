@@ -1,0 +1,40 @@
+<ion-content class="form-content">
+  <div class='sign-up-wrapper'>
+    <ion-input
+      class='sign-up-email'
+      inputmode='email'
+      type="email"
+      fill="outline"
+      placeholder="jack.brown@gmail.com"
+      [(ngModel)]="email"
+    >
+    </ion-input>
+    <ion-card (click)="continueWithEmail()" class='sign-up-btn sign-up-btn-continue'>
+      <div class='sign-up-btn-content'>
+        <p class='sign-up-btn-title'>Continue</p>
+      </div>
+    </ion-card>
+    <div class='sign-up-info'>
+      <span>Already have an account?</span>
+      <a>Sign in</a>
+    </div>
+    <div class='sign-up-or'>
+      <p>or</p>
+    </div>
+    <ion-card (click)="signUpViaGoogle()" class='sign-up-btn sign-up-btn-google'>
+      <div class='sign-up-btn-content'>
+        <app-icons class='sign-up-btn-icon' name="google-icon"></app-icons>
+        <p class='sign-up-btn-title'>Continue with Google</p>
+      </div>
+    </ion-card>
+    <div class='sign-up-agreements'>
+      <p>
+        By continuing you agree to our
+        <a>Terms of Service</a>
+        and
+        <a>Privacy Policy</a>
+      </p>
+    </div>
+  </div>
+
+</ion-content>

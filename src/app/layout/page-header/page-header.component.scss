@@ -1,3 +1,10 @@
+.header {
+  box-shadow: 4px 0 7px 4px var(--ion-color-light);
+}
+
 .header-toolbar {
-  color: var(--ion-color-primary) !important;
+  --background: var(--ion-color-medium-contrast);
+  .title-toolbar {
+    text-align: center;
+  }
 }
