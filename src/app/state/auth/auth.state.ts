@@ -3,14 +3,12 @@ import {AngularFirestore} from "@angular/fire/compat/firestore";
 import {Router} from "@angular/router";
 import {ToastController} from "@ionic/angular";
 import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {tap} from "rxjs";
+import { tap } from 'rxjs';
 import {catchError} from "rxjs/operators";
 
 import {AuthService} from "../../services/auth.service";
+import { LoginService } from '../../services/login-service';
 import {UserAuthInfo} from "../../shared/models/interfaces/user";
-import {
-  PreferencesUploadSuccess,
-} from '../user';
 
 import {
   LoginSuccess,
@@ -18,7 +16,13 @@ import {
   SetCurrentUser,
   RegisterSuccess,
   RegisterFailure,
-  Logout, LogoutFailure, LogoutSuccess, RegisterUser, Login,
+  Logout,
+  LogoutFailure,
+  LogoutSuccess,
+  RegisterUser,
+  Login,
+  FetchCurrentUser,
+  SetUserInfo,
 } from './auth.actions';
 
 
@@ -37,24 +41,34 @@ export interface AuthStateModel {
 })
 @Injectable()
 export class AuthState {
-  constructor(private authService: AuthService, private firestore: AngularFirestore, private router: Router, private toastController: ToastController) {
+  constructor(private authService: AuthService, public loginService: LoginService, private firestore: AngularFirestore, private router: Router, private toastController: ToastController) {
   }
 
   @Action(RegisterUser)
   register(ctx: StateContext<AuthStateModel>, action: RegisterUser) {
     const {email, password, preferences} = action.payload;
+    return this.loginService.registerUser({email, password, name: preferences.username})
+      .pipe(
+        tap((data) => {
+          localStorage.setItem('userName', data.displayName)
+          ctx.dispatch(new SetCurrentUser({user: data}))
+          return this.firestore.collection('users').doc(data.uid).set({username: preferences.username, confirmPassword: password})
+        }),
+        catchError((error) => {
+          console.error("Registration error:", error);
+          throw new Error('Registration failed');
+        })
+      )
+  }
 
-    return this.authService.register(email, password).pipe(
-      tap((aUser) => {
-        this.firestore.collection('users').doc(aUser.user.uid).set(preferences);
-        ctx.dispatch(new PreferencesUploadSuccess({preferences}));
-      }),
-      catchError((error) => {
-        console.error('Error during registration:', error);
-        ctx.dispatch(new RegisterFailure({ error }));
-        throw error;
-      })
-    );
+  @Action(SetUserInfo)
+  setUserInfo(ctx: StateContext<AuthStateModel>, action: SetUserInfo) {
+
+  }
+
+  @Action(FetchCurrentUser)
+  fetchCurrentUser (ctx: StateContext<AuthStateModel>, action: FetchCurrentUser) {
+    // add logic
   }
 
 
@@ -162,6 +176,11 @@ export class AuthState {
       ...state,
       error: action.payload.error
     });
+  }
+
+  @Selector()
+  static authData(state: AuthStateModel) {
+    return state;
   }
 
   @Selector()

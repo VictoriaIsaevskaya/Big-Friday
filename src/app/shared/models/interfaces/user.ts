@@ -1,9 +1,11 @@
 import {UserPreferences} from "../../../modals/model/interfaces";
 
 export interface UserAuthInfo {
-  uid?: string;
-  displayName?: string | null;
-  email?: string | null;
+  uid: string;
+  displayName: string | null;
+  email: string | null;
+  emailVerified?: boolean
+  password?: string
 }
 
 export interface User extends UserPreferences, UserActivities {

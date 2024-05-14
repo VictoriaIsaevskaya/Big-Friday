@@ -1,0 +1,47 @@
+<ion-content class="form-content">
+  <div class='sign-up-wrapper'>
+    <form [formGroup]="registrationForm" (ngSubmit)="buttonEvent()">
+      <ion-input label="Name"
+                 formControlName="name"
+                 label-placement="stacked"
+                 fill="solid"
+                 placeholder="Enter your name"
+                 class="sign-up-name">
+      </ion-input>
+
+      <ion-input label="Email"
+                 formControlName="email"
+                 label-placement="stacked"
+                 fill="solid"
+                 class="sign-up-name"
+                 placeholder="Enter your email">
+      </ion-input>
+
+      <ion-input *ngIf="typeOfSignUp === 'email'"
+                 [type]="showPassword ? 'text' : 'password'"
+                 label="Password"
+                 formControlName="password"
+                 label-placement="floating"
+                 fill="solid"
+                 placeholder="Choose a password"
+                 class="sign-up-name">
+        <ion-button fill="clear" slot="end" (click)="togglePassword()">
+          <ion-icon [name]="showPassword ? 'eye' : 'eye-off'"></ion-icon>
+        </ion-button>
+      </ion-input>
+
+      <p class="sign-up-info"> * Your first and last name will be visible to everyone.
+        We will use the specified email address for important notifications</p>
+
+      <ion-button
+        type="submit"
+        [disabled]="!registrationForm.valid"
+        class='sign-up-btn-continue'
+      >
+        <div class='sign-up-btn-content'>
+          <p class='sign-up-btn-title'>Continue</p>
+        </div>
+      </ion-button>
+    </form>
+  </div>
+</ion-content>

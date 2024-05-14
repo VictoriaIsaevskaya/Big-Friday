@@ -1,4 +1,4 @@
-import {UserPreferences} from "../../modals/model/interfaces";
+import { UserInformation, UserPreferences } from '../../modals/model/interfaces';
 import {UserAuthInfo} from "../../shared/models/interfaces/user";
 
 export class Login {
@@ -40,6 +40,11 @@ export class RegisterUser {
   constructor(public payload: { email: string; password: string; preferences: UserPreferences }) {}
 }
 
+export class SetUserInfo {
+  static readonly type = '[Auth] SetUserInfo';
+  constructor(public  payload: {userInfo: UserInformation}) {}
+}
+
 export class RegisterSuccess {
   static readonly type = '[Auth] Register Success';
 }
@@ -47,4 +52,8 @@ export class RegisterSuccess {
 export class RegisterFailure {
   static readonly type = '[Auth] Register Failure';
   constructor(public payload: { error: any }) {}
+}
+
+export class FetchCurrentUser {
+  static readonly type = '[Auth] Fetch Current User'
 }

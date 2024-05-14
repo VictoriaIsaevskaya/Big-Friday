@@ -12,7 +12,20 @@
           "package_name": "io.ionic.starter"
         }
       },
-      "oauth_client": [],
+      "oauth_client": [
+        {
+          "client_id": "663869675591-lrceo07cggpt8f7up07hi60rnpeg715l.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.ionic.starter",
+            "certificate_hash": "466c4ac1ec1f6b5d605af053e6fdf00377ec1b2e"
+          }
+        },
+        {
+          "client_id": "663869675591-a7qvlsc5prsaq7ughqa4tb3pvbdfmgmf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
       "api_key": [
         {
           "current_key": "AIzaSyBv55cUrHST2NeS9JA2Rev2LmIG3nO4htI"
@@ -20,7 +33,19 @@
       ],
       "services": {
         "appinvite_service": {
-          "other_platform_oauth_client": []
+          "other_platform_oauth_client": [
+            {
+              "client_id": "663869675591-a7qvlsc5prsaq7ughqa4tb3pvbdfmgmf.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "663869675591-aor3rs813n3548u3mju50l5sj1j9ehbf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "big-friday"
+              }
+            }
+          ]
         }
       }
     }
