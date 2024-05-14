@@ -30,8 +30,8 @@ import { SignUpStep2Component } from '../sign-up-steps/sign-up-step2/sign-up-ste
   imports: [CommonModule, ReactiveFormsModule, IonicModule, IconComponent, SignUpStep1Component, SignUpStep2Component],
 })
 export class PreferencesComponent implements OnInit, OnDestroy {
-  fileName: string;
-  login: IUserDetails = {};
+  // fileName: string;
+  // login: IUserDetails = {};
   step: number = 1
   private destroyRef = inject(DestroyRef);
 
@@ -64,11 +64,11 @@ export class PreferencesComponent implements OnInit, OnDestroy {
     }
   }
 
-  onSignUp(signUpDetails: IUserDetails) {
+  onSignUp({email, name, password}: IUserDetails) {
      this.store.dispatch(new RegisterUser({
-       email: signUpDetails.email,
-       password: signUpDetails.password,
-       preferences: {username: signUpDetails.name}
+       email,
+       password,
+       preferences: {username: name}
      }))
   }
 

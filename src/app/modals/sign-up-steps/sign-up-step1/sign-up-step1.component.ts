@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Output } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Output } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IonicModule } from '@ionic/angular';
 
@@ -11,7 +11,8 @@ import { SignUpDetails } from '../../model/interfaces';
   templateUrl: './sign-up-step1.component.html',
   styleUrls: ['../sign-up-steps.component.scss'],
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, IonicModule, IconComponent, FormsModule ]
+  imports: [CommonModule, ReactiveFormsModule, IonicModule, IconComponent, FormsModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 

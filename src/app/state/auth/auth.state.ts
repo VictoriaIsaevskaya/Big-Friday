@@ -26,7 +26,6 @@ import {
 } from './auth.actions';
 
 
-
 export interface AuthStateModel {
   user: UserAuthInfo | null;
   error: any | null;
@@ -53,7 +52,7 @@ export class AuthState {
         tap((data) => {
           localStorage.setItem('userName', data.displayName)
           ctx.dispatch(new SetCurrentUser({user: data}))
-          return this.firestore.collection('users').doc(data.uid).set(preferences)
+          return this.firestore.collection('users').doc(data.uid).set({username: preferences.username, confirmPassword: password})
         }),
         catchError((error) => {
           console.error("Registration error:", error);
@@ -69,7 +68,7 @@ export class AuthState {
 
   @Action(FetchCurrentUser)
   fetchCurrentUser (ctx: StateContext<AuthStateModel>, action: FetchCurrentUser) {
-    console.log(ctx.getState().user.displayName, ctx.getState().user.email, ctx.getState().user.uid);
+    // add logic
   }
 
 

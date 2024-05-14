@@ -82,7 +82,6 @@ export class LoginService {
   }
 
   async verificationEmail(email: string) {
-    // this.refreshToken()
     this.authService.sendVerificationEmail(email)
       .pipe(
         tap(async () => {

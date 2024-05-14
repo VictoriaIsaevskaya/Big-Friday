@@ -1,5 +1,6 @@
 export interface UserPreferences {
   username?: string;
+  confirmPassword?: string;
   avatar?: string;
   about?: string;
   preferredLanguages?: string[];
@@ -10,22 +11,20 @@ export interface UserPreferences {
 export interface IUserDetails {
   email?: string;
   name?: string;
-  imageUrl?: string;
   password?: string;
+  imageUrl?: string;
 }
 
-export interface SignUpDetails {
-  email?: string;
+export interface SignUpDetails extends IUserDetails {
   typeOfSignUp?: string;
-  password?: string;
 }
 
 export interface UserInformation {
-  username?: string;
+  username: string;
   avatar?: string;
-  birthday?: string;
-  gender?: string;
-  location?: string;
+  birthday: string;
+  gender: string;
+  location: string;
   interests?: string[];
   isNotifications: boolean;
 }
